@@ -2,21 +2,70 @@ const mongoose = require("mongoose");
 
 const branchSchema = new mongoose.Schema(
   {
-    name: String,
-    address: String,
-    phone: String,
-    account: String,
-    budget: Number,
-    taxPercentage: Number,
-    ethioTelBill: Number,
-    ethioTelAccount: String,
-    ethioTelOwnerName: String,
-    wifi: Number,
-    wifiAccount: String,
-    wifiOwnerName: String,
-    houseRent: Number,
-    houseRentAccount: String,
-    houseRentOwnerName: String,
+    name: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+    account: {
+      type: String,
+      required: true,
+    },
+    budget: {
+      type: Number,
+      required: true,
+    },
+    taxPercentage: {
+      type: Number,
+      required: true,
+    },
+    ethioTelBill: {
+      type: Number,
+      required: true,
+    },
+    ethioTelAccount: {
+      type: String,
+      required: true,
+    },
+    ethioTelOwnerName: {
+      type: String,
+      required: true,
+    },
+    wifi: {
+      type: Number,
+      required: true,
+    },
+    wifiAccount: {
+      type: String,
+      required: true,
+    },
+    wifiOwnerName: {
+      type: String,
+      required: true,
+    },
+    houseRent: {
+      type: Number,
+      required: true,
+    },
+    houseRentAccount: {
+      type: String,
+      required: true,
+    },
+    houseRentOwnerName: {
+      type: String,
+      required: true,
+    },
+    houseRentOwnerName: {
+      type: String,
+      required: true,
+    },
     expenseOneName: String,
     expenseOneAmount: Number,
     expenseTwoName: String,
@@ -24,8 +73,14 @@ const branchSchema = new mongoose.Schema(
     expenseThreeName: String,
     expenseThreeAmount: Number,
     uniqueName: String,
-    paid: Boolean,
-    customerNumber: String,
+    paid: {
+      type: Boolean,
+      default: false,
+    },
+    customerNumber: {
+      type: Number,
+      default: 0,
+    },
     totalIncome: {
       type: Number,
       default: 0,
