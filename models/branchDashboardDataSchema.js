@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const branchDashboardDataSchema = new mongoose.Schema({
   branchId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Branch", // Reference to the Branch collection
+    ref: "Branch",
   },
   branchData: {
     BranchName: String,
