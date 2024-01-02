@@ -1,23 +1,27 @@
 const mongoose = require("mongoose");
 
-const deliveryTurnSchema = new mongoose.Schema({
-  branchId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Branch",
-  },
-  deliveryGuyTurnQueue: {
-    type: [
-      {
-        deliveryGuyId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "DeliveryGuy",
+const deliveryTurnSchema = new mongoose.Schema(
+  {
+    branchId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Branch",
+    },
+    deliveryGuyTurnQueue: {
+      type: [
+        {
+          deliveryGuyId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "DeliveryGuy",
+          },
+          name: String,
         },
-        name: String,
-      },
-    ],
-    default: [],
+      ],
+      default: [],
+    },
   },
-});
+
+  { timestamps: true }
+);
 
 // Enqueue method to add a delivery guy's turn to the end of the queue
 deliveryTurnSchema.methods.enqueue = function (deliveryGuyId, name) {

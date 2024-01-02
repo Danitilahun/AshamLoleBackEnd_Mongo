@@ -1,22 +1,25 @@
 const mongoose = require("mongoose");
 
 // Schema for branchMoneyInformation
-const branchMoneyInformationSchema = new mongoose.Schema({
-  BranchName: String,
-  ID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Branch", // Reference to the Branch collection
+const branchMoneyInformationSchema = new mongoose.Schema(
+  {
+    BranchName: String,
+    ID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Branch",
+    },
+    uniqueName: String,
+    BranchIncome: {
+      type: Number,
+      default: 0,
+    },
+    BranchExpense: {
+      type: Number,
+      default: 0,
+    },
   },
-  uniqueName: String,
-  BranchIncome: {
-    type: Number,
-    default: 0,
-  },
-  BranchExpense: {
-    type: Number,
-    default: 0,
-  },
-});
+  { timestamps: true }
+);
 
 const BranchMoneyInformation = mongoose.model(
   "BranchMoneyInformation",
