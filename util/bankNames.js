@@ -1,0 +1,28 @@
+const bankNames = [
+  "Commercial Bank of Ethiopia (CBE)",
+  "Bank of Abyssinia",
+  "Awash Bank",
+  "Abay Bank",
+  "Addis International Bank",
+  "Amhara Bank",
+  "Berhan Bank",
+  "Bunna Bank",
+  "Cooperative Bank of Oromia",
+  "Dashen Bank",
+  "Debub Global Bank",
+  "Enat Bank",
+  "Hibret Bank",
+  "Hijra Bank",
+  "Lion Bank",
+  "Nib Bank",
+  "Oromia Bank",
+  "Wegagen Bank",
+  "ZamZam Bank",
+  "Zemen Bank",
+  "Shabelle Bank",
+  "Ahadu Bank",
+  "Siinqee Bank",
+  "Tsehay Bank",
+];
+
+module.exports = bankNames;
