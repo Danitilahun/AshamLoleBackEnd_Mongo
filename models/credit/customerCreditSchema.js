@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const customerCreditSchema = new mongoose.Schema(
   {
-    active: {
+    sheetId: {
       type: String,
       required: true,
     },
