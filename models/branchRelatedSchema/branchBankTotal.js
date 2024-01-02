@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bankNames = require("../util/bankNames");
+const bankNames = require("../../util/bankNames");
 
 const branchBankTotalSchema = new mongoose.Schema(
   {
