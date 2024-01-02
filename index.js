@@ -16,3 +16,12 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+
+connectToDB();
+
+app.get("/", (req, res) => {
+  res.send("GET request received!");
+});
+
+const PORT = process.env.PORT || 9000;
+app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
