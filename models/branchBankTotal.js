@@ -4,7 +4,7 @@ const bankNames = require("../util/bankNames");
 const branchBankTotalSchema = new mongoose.Schema({
   branchId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Branch", // Reference to the Branch collection
+    ref: "Branch",
   },
   Withdraw: {
     type: Number,

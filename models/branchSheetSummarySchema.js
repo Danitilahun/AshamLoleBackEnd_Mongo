@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 // Define the schema for branchSheetSummary
 const branchSheetSummarySchema = new mongoose.Schema({
+  branchId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Branch",
+  },
+
   sheetSummary: [
     {
       type: mongoose.Schema.Types.ObjectId,
