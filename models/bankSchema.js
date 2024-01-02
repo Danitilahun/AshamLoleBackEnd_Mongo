@@ -25,7 +25,6 @@ const bankSchema = new mongoose.Schema(
     placement: {
       type: String,
       required: true,
-      enum: ["DeliveryGuy"],
     },
     reason: {
       type: String,
