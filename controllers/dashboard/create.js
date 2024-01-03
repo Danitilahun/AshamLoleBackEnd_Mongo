@@ -1,5 +1,4 @@
 const Dashboard = require("../../models/dashboardSchema");
-const createDocument = require("../../services/common/create.doc");
 
 const createDashboard = async (req, res) => {
   try {
@@ -11,11 +10,11 @@ const createDashboard = async (req, res) => {
       totalIncome: 0,
       activeEmployees: 0,
     };
-    // Use createDocument function to create a new dashboard document
-    const newDashboardData = await createDocument(Dashboard, dashboardData);
+    const newDashboardData = await Dashboard.create(dashboardData);
 
     res.status(201).json({ success: true, data: newDashboardData });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
