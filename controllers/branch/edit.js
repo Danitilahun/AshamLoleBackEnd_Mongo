@@ -23,8 +23,6 @@ const editBranch = async (req, res) => {
 
     // Update the branch if there are changes
     if (updatedData.budget && updatedData.budget !== prevBudget) {
-      branch.budget = updatedData.budget;
-      await branch.save();
       // Update related documents based on branchId
       await BranchSheetSummary.findOneAndUpdate(
         { branchId },
@@ -39,8 +37,6 @@ const editBranch = async (req, res) => {
     }
 
     if (updatedData.name && updatedData.name !== prevBranchName) {
-      branch.name = updatedData.name;
-      await branch.save();
       // Update related documents based on branchId
       await BranchDashboardData.findOneAndUpdate(
         { branchId },
@@ -55,6 +51,14 @@ const editBranch = async (req, res) => {
     }
 
     await session.commitTransaction();
+
+    Object.keys(updatedData).forEach((key) => {
+      if (branch[key] !== undefined) {
+        branch[key] = updatedData[key];
+      }
+    });
+
+    await branch.save();
 
     res.status(200).json({
       success: true,
