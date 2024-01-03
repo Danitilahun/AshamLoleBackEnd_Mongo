@@ -53,6 +53,8 @@ const createBranch = async (req, res) => {
       throw new Error("No document found to update.");
     }
 
+    print("Branch created successfully");
+
     await session.commitTransaction();
 
     res.status(201).json({
