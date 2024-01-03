@@ -102,6 +102,41 @@ const branchSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",
     },
+
+    PrevactiveSheet: {
+      type: String,
+    },
+
+    active: {
+      type: String,
+    },
+
+    activeDailySummery: {
+      type: String,
+    },
+
+    activeSheet: {
+      type: String,
+    },
+
+    activeTable: {
+      type: String,
+    },
+
+    salaryTable: [
+      {
+        id: String,
+        name: String,
+      },
+    ],
+
+    worker: [
+      {
+        id: String,
+        name: String,
+        role: String,
+      },
+    ],
   },
   { timestamps: true }
 );
