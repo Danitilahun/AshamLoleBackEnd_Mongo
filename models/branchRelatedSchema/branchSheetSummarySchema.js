@@ -6,6 +6,7 @@ const branchSheetSummarySchema = new mongoose.Schema(
     branchId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Branch",
+      required: true,
     },
 
     sheetSummary: [
@@ -17,7 +18,7 @@ const branchSheetSummarySchema = new mongoose.Schema(
 
     budget: {
       type: Number,
-      default: 0,
+      required: true,
     },
 
     netGain: {

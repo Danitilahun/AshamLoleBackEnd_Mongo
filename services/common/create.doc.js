@@ -6,17 +6,15 @@
  * @throws {Error} Throws an error if the operation fails.
  */
 
-const createDocument = async (Model, data) => {
+const createDocument = async (Model, data, session) => {
   try {
-    const createdDocument = await Model.create(data);
+    const createdDocument = await Model.create([data], { session });
     console.log(
       `Document successfully created in ${Model.collection.name} collection`
     );
-    return createdDocument; // Return the ID of the created document
+    return createdDocument;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
-
-module.exports = createDocument;

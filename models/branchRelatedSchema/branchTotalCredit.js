@@ -5,6 +5,7 @@ const branchTotalCreditSchema = new mongoose.Schema(
     branchId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Branch",
+      required: true,
     },
     customerCredit: {
       type: Number,

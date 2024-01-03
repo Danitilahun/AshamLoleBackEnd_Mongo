@@ -3,12 +3,19 @@ const mongoose = require("mongoose");
 // Schema for branchMoneyInformation
 const branchMoneyInformationSchema = new mongoose.Schema(
   {
-    BranchName: String,
-    ID: {
+    BranchName: {
+      type: String,
+      required: true,
+    },
+    branchId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Branch",
     },
-    uniqueName: String,
+    uniqueName: {
+      type: String,
+      required: true,
+    },
+
     BranchIncome: {
       type: Number,
       default: 0,

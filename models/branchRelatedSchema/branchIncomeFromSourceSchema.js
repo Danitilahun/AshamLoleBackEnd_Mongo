@@ -23,7 +23,9 @@ const branchIncomeFromSourceSchema = new Schema({
     default: 3601,
   },
   branchId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Branch",
+    required: true,
   },
 });
 
