@@ -45,7 +45,6 @@ const createBankTransaction = async (req, res) => {
     branchBankTotal.total = branchBankTotal.Deposit - branchBankTotal.Withdraw;
 
     await branchBankTotal.save({ session });
-
     await session.commitTransaction();
 
     res.status(201).json({

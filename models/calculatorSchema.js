@@ -30,15 +30,7 @@ const calculatorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    actual: {
-      type: Number,
-      required: true,
-    },
-    balance: {
-      type: Number,
-      required: true,
-    },
-    bank: {
+    sum: {
       type: Number,
       required: true,
     },
@@ -46,30 +38,10 @@ const calculatorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    dailyCredit: {
-      type: Number,
-      default: 0,
-    },
-    income: {
-      type: Number,
-      required: true,
-    },
-    sum: {
-      type: Number,
-      required: true,
-    },
-    totalCredit: {
-      type: Number,
-      required: true,
-    },
   },
   { timestamps: true }
 );
 
-const CalculatorSchema = mongoose.model("Calculator", calculatorSchema);
+const Calculator = mongoose.model("Calculator", calculatorSchema);
 
-module.exports = CalculatorSchema;
+module.exports = Calculator;
