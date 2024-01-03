@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 require("dotenv").config();
 const connectToDB = require("./config/database");
+const apiRoutes = require("./routes/api");
 
 const app = express();
 
@@ -22,6 +23,8 @@ connectToDB();
 app.get("/", (req, res) => {
   res.send("GET request received!");
 });
+
+app.use("/api", apiRoutes);
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
