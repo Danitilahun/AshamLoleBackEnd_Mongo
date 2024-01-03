@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bankNames = require("../util/bankNames");
 
 const bankSchema = new mongoose.Schema(
   {
@@ -8,6 +9,7 @@ const bankSchema = new mongoose.Schema(
     },
     bankName: {
       type: String,
+      enum: bankNames,
       required: true,
     },
     branchId: {
@@ -32,7 +34,6 @@ const bankSchema = new mongoose.Schema(
     },
     source: {
       type: String,
-      required: true,
       enum: ["branch", "finance"],
     },
     transactionType: {
