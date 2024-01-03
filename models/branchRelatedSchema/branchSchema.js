@@ -93,6 +93,15 @@ const branchSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+
+    managerName: {
+      type: String,
+    },
+
+    managerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admin",
+    },
   },
   { timestamps: true }
 );
