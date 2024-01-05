@@ -18,6 +18,6 @@ const SheetsSchema = new Schema({
   tableCount: Number,
 });
 
-const Sheets = mongoose.model("Sheets", SheetsSchema);
+const Sheet = mongoose.model("Sheets", SheetsSchema);
 
-module.exports = Sheets;
+module.exports = Sheet;
