@@ -32,7 +32,7 @@ const calculatorSchema = new mongoose.Schema(
     },
     sum: {
       type: Number,
-      required: true,
+      default: 0,
     },
     branchId: {
       type: String,
