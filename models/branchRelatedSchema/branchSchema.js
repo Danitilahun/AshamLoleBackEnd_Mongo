@@ -123,6 +123,11 @@ const branchSchema = new mongoose.Schema(
       type: String,
     },
 
+    sheetStatus: {
+      type: String,
+      enum: ["Pending", "Completed"],
+    },
+
     salaryTable: [
       {
         id: String,
