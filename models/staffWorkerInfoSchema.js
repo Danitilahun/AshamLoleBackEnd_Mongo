@@ -2,16 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const StaffWorkerInfoSchema = new Schema({
-  addbonus: String,
-  bankAccount: String,
-  bonus: Number,
-  fixedSalary: Number,
-  holidayBonus: Number,
-  name: String,
-  penality: Number,
-  total: Number,
-  totalCredit: Number,
-  uniqueName: String,
+  addbonus: { type: String, default: "0" },
+  bankAccount: { type: String, default: "0" },
+  bonus: { type: Number, default: 0 },
+  fixedSalary: { type: Number, default: 0 },
+  holidayBonus: { type: Number, default: 0 },
+  penality: { type: Number, default: 0 },
+  total: { type: Number, default: 0 },
+  totalCredit: { type: Number, default: 0 },
 });
 
 const StaffWorkerInfo = mongoose.model(
