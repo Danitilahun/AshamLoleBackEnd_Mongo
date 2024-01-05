@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const deliveryGuyWorkSchema = new mongoose.Schema({
+const deliveryGuySalaryDetailsSchema = new mongoose.Schema({
   asbezaNumber: {
     type: Number,
     default: 0,
   },
-  asbezaProfit: {
+  bonus: {
     type: Number,
     default: 0,
   },
@@ -18,6 +18,26 @@ const deliveryGuyWorkSchema = new mongoose.Schema({
     default: 0,
   },
   cardFee: {
+    type: Number,
+    default: 0,
+  },
+  fixedSalary: {
+    type: Number,
+    default: 0,
+  },
+  holidayBonus: {
+    type: Number,
+    default: 0,
+  },
+  penality: {
+    type: Number,
+    default: 0,
+  },
+  total: {
+    type: Number,
+    default: 0,
+  },
+  totalCredit: {
     type: Number,
     default: 0,
   },
@@ -37,19 +57,11 @@ const deliveryGuyWorkSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  hotelProfit: {
-    type: Number,
-    default: 0,
-  },
-  total: {
-    type: Number,
-    default: 0,
-  },
 });
 
-const DeliveryGuyWork = mongoose.model(
-  "DeliveryGuyWork",
-  deliveryGuyWorkSchema
+const DeliveryGuySalaryDetails = mongoose.model(
+  "DeliveryGuySalaryDetails",
+  deliveryGuySalaryDetailsSchema
 );
 
-module.exports = DeliveryGuyWork;
+module.exports = DeliveryGuySalaryDetails;
