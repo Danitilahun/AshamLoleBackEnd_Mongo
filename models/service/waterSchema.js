@@ -2,18 +2,6 @@ const mongoose = require("mongoose");
 
 const waterSchema = new mongoose.Schema(
   {
-    active: {
-      type: String,
-      required: true,
-    },
-    activeDailySummery: {
-      type: String,
-      required: true,
-    },
-    activeTable: {
-      type: String,
-      required: true,
-    },
     billPayerName: {
       type: String,
       required: true,
@@ -39,14 +27,6 @@ const waterSchema = new mongoose.Schema(
       required: true,
     },
     callcenterName: {
-      type: String,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
-    createdDate: {
       type: String,
       required: true,
     },
