@@ -107,11 +107,10 @@ const branchSchema = new mongoose.Schema(
       type: String,
     },
 
-    active: {
+    activeDailySummery: {
       type: String,
     },
-
-    activeDailySummery: {
+    activeDGSummery: {
       type: String,
     },
 
@@ -123,6 +122,21 @@ const branchSchema = new mongoose.Schema(
       type: String,
     },
 
+    activeStatus: {
+      type: String,
+    },
+
+    activeCalculator: {
+      type: String,
+    },
+
+    activeDeliverySalaryTable: {
+      type: String,
+    },
+
+    activeStaffSalarySheet: {
+      type: String,
+    },
     sheetStatus: {
       type: String,
       enum: ["Pending", "Completed"],

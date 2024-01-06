@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const otherFieldsSchema = new mongoose.Schema({
+const othersSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -37,7 +37,6 @@ const statusSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     houseRent: {
       type: Number,
       required: true,
@@ -52,27 +51,27 @@ const statusSchema = new mongoose.Schema(
     },
     taxPersentage: {
       type: Number,
-      required: true,
+      default: 0,
     },
     totalDeliveryGuySalary: {
       type: Number,
-      required: true,
+      default: 0,
     },
     totalExpense: {
       type: Number,
-      required: true,
+      default: 0,
     },
     totalIncome: {
       type: Number,
-      required: true,
+      default: 0,
     },
     totalStaffSalary: {
       type: Number,
-      required: true,
+      default: 0,
     },
     totaltax: {
       type: Number,
-      required: true,
+      default: 0,
     },
     wifi: {
       type: Number,
@@ -86,7 +85,7 @@ const statusSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    otherFields: [otherFieldsSchema],
+    others: [othersSchema],
   },
   { timestamps: true }
 );
