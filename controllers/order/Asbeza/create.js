@@ -1,28 +1,13 @@
 const mongoose = require("mongoose");
+const Asbeza = require("../../../models/service/asbezaSchema");
+const Customer = require("../../../models/customerSchema");
 
 const createCustomerAndAsbeza = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const {
-      blockHouse,
-      branchId,
-      branchName,
-      name,
-      phone,
-      additionalInfo,
-      branchKey,
-      callcenterId,
-      callcenterName,
-      date,
-      deliveryguyId,
-      deliveryguyName,
-      fromWhere,
-      order,
-      status,
-      updatedAt,
-    } = req.body;
+    const { blockHouse, branchId, branchName, name, phone } = req.body;
 
     const newAsbeza = new Asbeza(req.body);
 
@@ -34,6 +19,7 @@ const createCustomerAndAsbeza = async (req, res) => {
       blockHouse,
       name,
       phone,
+      orderId: newAsbeza._id,
     });
 
     await newAsbeza.save({ session });
@@ -43,7 +29,7 @@ const createCustomerAndAsbeza = async (req, res) => {
     session.endSession();
 
     res.status(201).json({
-      message: "Asbeza and Customer created successfully",
+      message: "Asbeza created successfully",
       newAsbeza,
       newCustomer,
     });
