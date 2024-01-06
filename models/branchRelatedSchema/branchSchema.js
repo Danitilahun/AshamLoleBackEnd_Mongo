@@ -66,12 +66,30 @@ const branchSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    expenseOneName: String,
-    expenseOneAmount: Number,
-    expenseTwoName: String,
-    expenseTwoAmount: Number,
-    expenseThreeName: String,
-    expenseThreeAmount: Number,
+    expenseOneName: {
+      type: String,
+      default: "",
+    },
+    expenseOneAmount: {
+      type: Number,
+      default: 0,
+    },
+    expenseTwoName: {
+      type: String,
+      default: "",
+    },
+    expenseTwoAmount: {
+      type: Number,
+      default: 0,
+    },
+    expenseThreeName: {
+      type: String,
+      default: "",
+    },
+    expenseThreeAmount: {
+      type: Number,
+      default: 0,
+    },
     uniqueName: String,
     paid: {
       type: Boolean,
@@ -101,10 +119,6 @@ const branchSchema = new mongoose.Schema(
     managerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",
-    },
-
-    PrevactiveSheet: {
-      type: String,
     },
 
     activeDailySummery: {

@@ -90,6 +90,6 @@ const statusSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const StatusSchema = mongoose.model("Status", statusSchema);
+const Status = mongoose.model("Status", statusSchema);
 
-module.exports = StatusSchema;
+module.exports = Status;
