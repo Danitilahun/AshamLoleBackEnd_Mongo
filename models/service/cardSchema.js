@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const cardSchema = new mongoose.Schema(
   {
-    sheetId: {
-      type: String,
-      required: true,
-    },
     amountBirr: {
       type: Number,
       required: true,
