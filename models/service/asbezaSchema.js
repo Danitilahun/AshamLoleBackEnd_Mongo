@@ -1,21 +1,6 @@
 const mongoose = require("mongoose");
 
 const asbezaSchema = new mongoose.Schema({
-  active: {
-    type: String,
-    required: true,
-  },
-
-  activeDailySummery: {
-    type: String,
-    required: true,
-  },
-
-  activeTable: {
-    type: String,
-    required: true,
-  },
-
   additionalInfo: {
     type: String,
     required: true,
@@ -56,11 +41,6 @@ const asbezaSchema = new mongoose.Schema({
     required: true,
   },
 
-  createdDate: {
-    type: String,
-    required: true,
-  },
-
   date: {
     type: String,
     required: true,
@@ -96,10 +76,6 @@ const asbezaSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true,
-  },
-  updatedAt: {
-    type: Date,
     required: true,
   },
 });
