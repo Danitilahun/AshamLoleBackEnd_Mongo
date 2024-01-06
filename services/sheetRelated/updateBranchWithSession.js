@@ -1,5 +1,4 @@
-const Branch = require("./path_to_your_Branch_model");
-const mongoose = require("mongoose");
+const Branch = require("../../models/branchRelatedSchema/branchSchema");
 
 async function updateBranchWithSession(branchId, updateObject, session) {
   try {
