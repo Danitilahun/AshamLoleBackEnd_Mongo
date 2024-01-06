@@ -6,10 +6,6 @@ const essentialSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    branchId: {
-      type: String,
-      required: true,
-    },
     company: {
       type: String,
       required: true,
@@ -34,6 +30,6 @@ const essentialSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const EssentialSchema = mongoose.model("Essential", essentialSchema);
+const Essential = mongoose.model("Essential", essentialSchema);
 
-module.exports = EssentialSchema;
+module.exports = Essential;
