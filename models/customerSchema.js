@@ -30,23 +30,11 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
-    createdDate: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
     },
     phone: {
-      type: String,
-      required: true,
-    },
-    type: {
       type: String,
       required: true,
     },
