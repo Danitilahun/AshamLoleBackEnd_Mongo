@@ -63,6 +63,7 @@ const createCardFeeAndDailyCredit = async (req, res) => {
     // Save both documents within the same transaction
     await cardFee.save({ session });
     await dailyCredit.save({ session });
+    await updateDailyCredit(deliveryguyId, price, session);
 
     // Commit the transaction
     await session.commitTransaction();
