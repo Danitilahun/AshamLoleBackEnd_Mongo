@@ -2,19 +2,7 @@ const mongoose = require("mongoose");
 
 const hotelProfitSchema = new mongoose.Schema(
   {
-    CHECK_SOURCE: {
-      type: String,
-      required: true,
-    },
     active: {
-      type: String,
-      required: true,
-    },
-    activeDailySummery: {
-      type: String,
-      required: true,
-    },
-    activeTable: {
       type: String,
       required: true,
     },
