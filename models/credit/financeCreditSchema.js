@@ -6,7 +6,7 @@ const financeCreditSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    branchId: {
+    financeId: {
       type: String,
       required: true,
     },
