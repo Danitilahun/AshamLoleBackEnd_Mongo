@@ -1,12 +1,11 @@
 const Status = require("../../models/statusSchema");
 
-const updateTotalDeliveryGuySalary = async (branchId, value) => {
+const updateTotalDeliveryGuySalary = async (branchId, value, session) => {
   try {
     // Update the totalDeliveryGuySalary for the given branchId using $inc
     const updatedStatus = await Status.findOneAndUpdate(
       { branchId },
       { $inc: { totalDeliveryGuySalary: value } },
-      { new: true }, // To return the updated document
       { new: true, session } // To return the updated document and use the provided session
     );
 

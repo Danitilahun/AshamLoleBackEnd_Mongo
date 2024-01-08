@@ -1,12 +1,12 @@
 const Deliveryguy = require("../../models/deliveryguySchema");
 
-const updateDailyCredit = async (docId, value) => {
+const updateDailyCredit = async (docId, value, session) => {
   try {
     // Find the delivery guy document by ID and update dailyCredit using $inc
     const updatedDeliveryGuy = await Deliveryguy.findByIdAndUpdate(
       docId,
       { $inc: { dailyCredit: value } },
-      { new: true } // To return the updated document
+      { new: true, session } // To return the updated document
     );
 
     if (!updatedDeliveryGuy) {

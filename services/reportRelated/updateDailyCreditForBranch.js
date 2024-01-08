@@ -1,12 +1,12 @@
 const BranchTotalCredit = require("../../models/branchRelatedSchema/branchTotalCredit");
 
-const updateDailyCreditForBranch = async (branchId, value) => {
+const updateDailyCreditForBranch = async (branchId, value, session) => {
   try {
     // Update the dailyCredit for the given branchId using $inc
     const updatedBranchCredit = await BranchTotalCredit.findOneAndUpdate(
       { branchId },
       { $inc: { dailyCredit: value } },
-      { new: true } // To return the updated document
+      { new: true, session }
     );
 
     if (!updatedBranchCredit) {

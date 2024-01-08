@@ -1,10 +1,17 @@
 const DeliveryGuyWork = require("../../models/deliveryGuyWorkSchema");
 const SalaryTable = require("../../models/salaryTableSchema");
 
-const updateCardFeeAndTotal = async (deliveryGuyId, salaryTableId, value) => {
+const updateCardFeeAndTotal = async (
+  deliveryGuyId,
+  salaryTableId,
+  value,
+  session
+) => {
   try {
-    // Find SalaryTable document with the given _id
-    const salaryTable = await SalaryTable.findById(salaryTableId);
+    // Find SalaryTable document with the given _id within the provided session
+    const salaryTable = await SalaryTable.findById(salaryTableId).session(
+      session
+    );
 
     if (
       !salaryTable ||
@@ -26,13 +33,11 @@ const updateCardFeeAndTotal = async (deliveryGuyId, salaryTableId, value) => {
       );
     }
 
-    // Update cardFee and total using atomic operation in DeliveryGuyWork
+    // Update cardFee and total using atomic operation in DeliveryGuyWork within the provided session
     const updatedDeliveryGuyWork = await DeliveryGuyWork.findByIdAndUpdate(
       deliveryGuyWorkId,
-      {
-        $inc: { cardFee: value, total: value },
-      },
-      { new: true } // To return the updated document
+      { $inc: { cardFee: value, total: value } },
+      { new: true, session } // To return the updated document and use the provided session
     );
 
     if (!updatedDeliveryGuyWork) {
