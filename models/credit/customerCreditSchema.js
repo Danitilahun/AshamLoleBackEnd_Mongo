@@ -46,9 +46,6 @@ const customerCreditSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const CustomerCreditSchema = mongoose.model(
-  "CustomerCredit",
-  customerCreditSchema
-);
+const CustomerCredit = mongoose.model("CustomerCredit", customerCreditSchema);
 
-module.exports = CustomerCreditSchema;
+module.exports = CustomerCredit;
