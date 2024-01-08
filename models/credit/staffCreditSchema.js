@@ -14,10 +14,6 @@ const staffCreditSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
     date: {
       type: String,
       required: true,
@@ -37,14 +33,6 @@ const staffCreditSchema = new mongoose.Schema(
     reason: {
       type: String,
       required: true,
-    },
-    type: {
-      type: String,
-      required: true,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
     },
   },
   { timestamps: true }
