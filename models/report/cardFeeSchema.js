@@ -10,14 +10,6 @@ const cardFeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    activeDailySummery: {
-      type: String,
-      required: true,
-    },
-    activeTable: {
-      type: String,
-      required: true,
-    },
     amount: {
       type: Number,
       required: true,
@@ -26,14 +18,7 @@ const cardFeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    date: {
-      type: String,
-      required: true,
-    },
+
     deliveryguyId: {
       type: String,
       required: true,
@@ -78,6 +63,6 @@ const cardFeeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const CardFeeSchema = mongoose.model("CardFee", cardFeeSchema);
+const CardFee = mongoose.model("CardFee", cardFeeSchema);
 
-module.exports = CardFeeSchema;
+module.exports = CardFee;
