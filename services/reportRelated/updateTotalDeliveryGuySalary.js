@@ -6,7 +6,8 @@ const updateTotalDeliveryGuySalary = async (branchId, value) => {
     const updatedStatus = await Status.findOneAndUpdate(
       { branchId },
       { $inc: { totalDeliveryGuySalary: value } },
-      { new: true } // To return the updated document
+      { new: true }, // To return the updated document
+      { new: true, session } // To return the updated document and use the provided session
     );
 
     if (!updatedStatus) {
