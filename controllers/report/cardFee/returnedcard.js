@@ -1,4 +1,4 @@
-const CardFee = require("../../models/report/cardFeeSchema");
+const CardFee = require("../../../models/report/cardFeeSchema");
 
 const recordReturnCard = async (req, res) => {
   try {
