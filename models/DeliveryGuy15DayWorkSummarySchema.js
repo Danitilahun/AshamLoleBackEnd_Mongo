@@ -14,9 +14,9 @@ const DeliveryGuy15DayWorkSummarySchema = new mongoose.Schema({
 });
 
 // Create model using the schema
-const DeliveryGuy15DayWorkSummary = mongoose.model(
-  "DeliveryGuy15DayWorkSummary",
+const DeliveryGuy15DayWork = mongoose.model(
+  "DeliveryGuy15DayWork",
   DeliveryGuy15DayWorkSummarySchema
 );
 
-module.exports = DeliveryGuy15DayWorkSummary;
+module.exports = DeliveryGuy15DayWork;
