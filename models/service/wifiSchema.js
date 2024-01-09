@@ -6,7 +6,6 @@ const wifiSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     blockHouse: {
       type: String,
       required: true,
