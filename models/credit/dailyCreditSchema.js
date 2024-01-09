@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DailyCreditSchema = new Schema({
-  CHECK_SOURCE: {
-    type: String,
-    required: true,
-  },
-  active: {
+  sheetId: {
     type: String,
     required: true,
   },
