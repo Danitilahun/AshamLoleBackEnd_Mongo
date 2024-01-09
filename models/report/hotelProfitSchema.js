@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const hotelProfitSchema = new mongoose.Schema(
   {
-    active: {
+    sheetId: {
       type: String,
       required: true,
     },

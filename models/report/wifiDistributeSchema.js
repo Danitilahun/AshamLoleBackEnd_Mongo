@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const WifiDistributeSchema = new Schema({
-  active: {
+  sheetId: {
     type: String,
     required: true,
   },

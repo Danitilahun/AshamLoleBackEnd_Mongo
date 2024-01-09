@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 
 const cardFeeSchema = new mongoose.Schema(
   {
-    CHECK_SOURCE: {
-      type: String,
-      required: true,
-    },
-    active: {
+    sheetId: {
       type: String,
       required: true,
     },
