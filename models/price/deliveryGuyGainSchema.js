@@ -3,39 +3,39 @@ const mongoose = require("mongoose");
 const deliveryGuyGainSchema = new mongoose.Schema({
   asbezaPrice: {
     type: Number,
-    default: 9,
+    default: 0,
   },
   card_collect_price: {
     type: Number,
-    default: 6,
+    default: 0,
   },
   card_distribute_price: {
     type: Number,
-    default: 5,
+    default: 0,
   },
   card_fee_price: {
     type: Number,
-    default: 40,
+    default: 0,
   },
   fixedSalary: {
     type: Number,
-    default: 20,
+    default: 0,
   },
   water_collect_price: {
     type: Number,
-    default: 5,
+    default: 0,
   },
   water_distribute_price: {
     type: Number,
-    default: 5,
+    default: 0,
   },
   wifi_collect_price: {
     type: Number,
-    default: 5,
+    default: 0,
   },
   wifi_distribute_price: {
     type: Number,
-    default: 5,
+    default: 0,
   },
 });
 
