@@ -74,6 +74,7 @@ const createCardFeeAndDailyCredit = async (req, res) => {
     const cardFeePrice = deliveryGuyGainDoc.card_fee_price;
     await updateTotalDeliveryGuySalary(branchId, cardFeePrice, session);
     await updateField(branchId, "cardFee", price, session);
+
     // Commit the transaction
     await session.commitTransaction();
     session.endSession();

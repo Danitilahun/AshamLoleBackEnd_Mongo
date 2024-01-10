@@ -45,6 +45,6 @@ const bonusSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const BonusSchema = mongoose.model("Bonus", bonusSchema);
+const Bonus = mongoose.model("Bonus", bonusSchema);
 
-module.exports = BonusSchema;
+module.exports = Bonus;
