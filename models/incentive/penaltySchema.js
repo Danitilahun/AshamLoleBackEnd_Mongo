@@ -42,6 +42,6 @@ const penaltySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const PenaltySchema = mongoose.model("Penalty", penaltySchema);
+const Penalty = mongoose.model("Penalty", penaltySchema);
 
-module.exports = PenaltySchema;
+module.exports = Penalty;
