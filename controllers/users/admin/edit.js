@@ -1,3 +1,5 @@
+const Admin = require("../../../models/user/adminSchema");
+
 // Edit an existing admin
 const editAdmin = async (req, res) => {
   try {
