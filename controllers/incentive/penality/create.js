@@ -1,5 +1,4 @@
 const Penalty = require("../../../models/incentive/penaltySchema");
-
 // Create a new penalty
 const createPenalty = async (req, res) => {
   try {
