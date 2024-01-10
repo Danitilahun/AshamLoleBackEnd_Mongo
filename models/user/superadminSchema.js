@@ -58,6 +58,6 @@ const superadminSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const SuperadminSchema = mongoose.model("Superadmin", superadminSchema);
+const Superadmin = mongoose.model("Superadmin", superadminSchema);
 
-module.exports = SuperadminSchema;
+module.exports = Superadmin;
