@@ -26,17 +26,9 @@ const CompanyWorksSchema = new Schema({
     type: Number,
     default: 0,
   },
-  name: {
-    type: String,
-    required: true,
-  },
   total: {
     type: Number,
     default: 0,
-  },
-  uniqueName: {
-    type: String,
-    required: true,
   },
   waterCollect: {
     type: Number,

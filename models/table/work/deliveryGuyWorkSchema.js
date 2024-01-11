@@ -1,11 +1,7 @@
 const mongoose = require("mongoose");
 
 const deliveryGuyWorkSchema = new mongoose.Schema({
-  asbezaNumber: {
-    type: Number,
-    default: 0,
-  },
-  asbezaProfit: {
+  asbeza: {
     type: Number,
     default: 0,
   },
@@ -42,6 +38,23 @@ const deliveryGuyWorkSchema = new mongoose.Schema({
     default: 0,
   },
   total: {
+    type: Number,
+    default: 0,
+  },
+  bonus: {
+    type: Number,
+    default: 0,
+  },
+  holidayBonus: { type: Number, default: 0 },
+  fixedSalary: {
+    type: Number,
+    default: 0,
+  },
+  totalCredit: {
+    type: Number,
+    default: 0,
+  },
+  penality: {
     type: Number,
     default: 0,
   },

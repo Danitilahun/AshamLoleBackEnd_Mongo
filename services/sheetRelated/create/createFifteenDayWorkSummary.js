@@ -1,4 +1,4 @@
-const FifteenDayWorkSummary = require("../../models/FifteenDayWorkSummarySchema");
+const FifteenDayWorkSummary = require("../../../models/table/FifteenDayWorkSummarySchema");
 
 async function createFifteenDayWorkSummary(session, branchId, sheetId) {
   try {

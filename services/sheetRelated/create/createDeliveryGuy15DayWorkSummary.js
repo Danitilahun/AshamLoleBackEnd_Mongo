@@ -1,6 +1,6 @@
 const Deliveryguy = require("../../../models/deliveryguySchema");
 const DeliveryGuy15DayWorkSummary = require("../../../models/table/DeliveryGuy15DayWorkSummarySchema");
-const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
+const CompanyWorks = require("../../../models/table/work/companyWorksSchema");
 
 const createDeliveryGuy15DayWorkSummary = async (
   branchId,
@@ -23,7 +23,7 @@ const createDeliveryGuy15DayWorkSummary = async (
     // Iterate through each delivery guy found within the session
     for (const deliveryGuy of deliveryGuys) {
       // Create a DeliveryGuyWork document with default values within the provided session
-      const deliveryGuyWork = new DeliveryGuyWork({});
+      const deliveryGuyWork = new CompanyWorks({});
 
       // Save the DeliveryGuyWork document within the provided session
       await deliveryGuyWork.save({ session });

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const DeliveryGuy15DayWorkSummary = require("../../../models/table/DeliveryGuy15DayWorkSummarySchema");
 const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
+const CompanyWorks = require("../../../models/table/work/companyWorksSchema");
 
 const updateDeliveryGuy15DayWorkSummary = async (
   summaryId,
@@ -34,7 +35,7 @@ const updateDeliveryGuy15DayWorkSummary = async (
     const deliveryGuyWorkId = personWork.work;
 
     // Find the DeliveryGuyWork using the ID
-    const deliveryGuyWork = await DeliveryGuyWork.findById(
+    const deliveryGuyWork = await CompanyWorks.findById(
       deliveryGuyWorkId
     ).session(session);
 
