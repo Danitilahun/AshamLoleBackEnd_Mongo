@@ -1,12 +1,8 @@
-const DeliveryGuySalaryDetails = require("../../models/deliveryGuySalaryDetailsSchema");
 const Deliveryguy = require("../../../models/deliveryguySchema");
-const SalaryTable = require("../../models/salaryTableSchema");
+const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
+const DeliveryGuySalaryInfo = require("../../../models/table/work/deliveryGuySalaryInfoSchema");
 
-const createDeliveryGuy15DayWorkSummary = async (
-  branchId,
-  sheetId,
-  session
-) => {
+const createDeliveryGuySalaryTable = async (branchId, sheetId, session) => {
   try {
     // Find multiple delivery guys within the provided session
     const deliveryGuys = await Deliveryguy.find({ branchId: branchId }).session(
@@ -23,7 +19,7 @@ const createDeliveryGuy15DayWorkSummary = async (
     // Iterate through each delivery guy found within the session
     for (const deliveryGuy of deliveryGuys) {
       // Create a DeliveryGuyWork document with default values within the provided session
-      const deliveryGuyWork = new DeliveryGuySalaryDetails({});
+      const deliveryGuyWork = new DeliveryGuySalaryInfo({});
 
       // Save the DeliveryGuyWork document within the provided session
       await deliveryGuyWork.save({ session });
@@ -39,7 +35,7 @@ const createDeliveryGuy15DayWorkSummary = async (
     }
 
     // Create a single DeliveryGuy15DayWorkSummary document with all personWork entries
-    const summary = new SalaryTable({
+    const summary = new DeliveryGuySalaryTable({
       personWork: personWorkEntries,
       branchId: branchId,
       sheetID: sheetId,
@@ -55,4 +51,4 @@ const createDeliveryGuy15DayWorkSummary = async (
   }
 };
 
-module.exports = createDeliveryGuy15DayWorkSummary;
+module.exports = createDeliveryGuySalaryTable;
