@@ -1,6 +1,6 @@
-const DeliveryGuySalaryDetails = require("../../models/deliveryGuySalaryDetailsSchema");
-const Deliveryguy = require("../../models/deliveryguySchema");
 const SalaryTable = require("../../models/salaryTableSchema");
+const Staff = require("../../../models/staffSchema");
+const StaffWorkerInfo = require("../../models/staffWorkerInfoSchema");
 
 const createDeliveryGuy15DayWorkSummary = async (
   branchId,
@@ -9,7 +9,7 @@ const createDeliveryGuy15DayWorkSummary = async (
 ) => {
   try {
     // Find multiple delivery guys within the provided session
-    const deliveryGuys = await Deliveryguy.find({ branchId: branchId }).session(
+    const deliveryGuys = await Staff.find({ branchId: branchId }).session(
       session
     );
 
@@ -23,7 +23,7 @@ const createDeliveryGuy15DayWorkSummary = async (
     // Iterate through each delivery guy found within the session
     for (const deliveryGuy of deliveryGuys) {
       // Create a DeliveryGuyWork document with default values within the provided session
-      const deliveryGuyWork = new DeliveryGuySalaryDetails({});
+      const deliveryGuyWork = new StaffWorkerInfo({});
 
       // Save the DeliveryGuyWork document within the provided session
       await deliveryGuyWork.save({ session });

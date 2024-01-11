@@ -3,7 +3,7 @@ const DailyTable = require("../../models/table/DailyTable");
 const DeliveryGuyWork = require("../../models/table/work/deliveryGuyWorkSchema");
 
 const updateDailyTableEntry = async (
-  dailyTableId, // Change parameter to take the unique identifier of DailyTable
+  dailyTableId,
   deliveryGuyId,
   fieldName,
   valueToUpdate
