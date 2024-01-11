@@ -1,4 +1,4 @@
-const DeliveryGuyWork = require("../../models/deliveryGuyWorkSchema");
+const DeliveryGuyWork = require("../../models/table/work/deliveryGuyWorkSchema");
 const SalaryTable = require("../../models/table/salaryTableSchema");
 
 const updateField = async (
