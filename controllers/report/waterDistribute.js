@@ -6,6 +6,10 @@ const {
   DailyGainCredit,
 } = require("../../models/credit/dailyCreditSchema");
 const DeliveryGuyGain = require("../../models/price/deliveryGuyGainSchema");
+const updateCredit = require("../../services/creditRelated/updateCredit");
+const updateTotalDeliveryGuySalary = require("../../services/reportRelated/updateTotalDeliveryGuySalary");
+const updateField = require("../../services/reportRelated/updateField");
+const updateDailyCredit = require("../../services/reportRelated/updateDailyCredit");
 
 const createWaterDistributeAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
