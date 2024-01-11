@@ -49,6 +49,7 @@ const createCardFeeAndDailyCredit = async (req, res) => {
       deliveryguyName,
       reason: "cardFee",
       source,
+      type: "cardFee",
     });
 
     // Save both documents within the same transaction
