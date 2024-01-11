@@ -7,11 +7,9 @@ const updateDeliveryGuy15DayWorkSummary = async (
   summaryId,
   deliveryGuyId,
   fieldName,
-  valueToUpdate
+  valueToUpdate,
+  session
 ) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
   try {
     // Find the DeliveryGuy15DayWorkSummary entry by its unique identifier
     const summary = await DeliveryGuy15DayWorkSummary.findById(
@@ -52,15 +50,10 @@ const updateDeliveryGuy15DayWorkSummary = async (
     summary.markModified("personWork");
     await summary.save({ session });
 
-    await session.commitTransaction();
-    session.endSession();
-
     return {
       message: "DeliveryGuy15DayWorkSummary entry updated successfully",
     };
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
     return { error: error.message };
   }
 };

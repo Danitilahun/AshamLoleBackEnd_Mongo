@@ -6,7 +6,8 @@ const updateDeliveryGuySalaryTable = async (
   summaryId,
   deliveryGuyId,
   fieldName,
-  valueToUpdate
+  valueToUpdate,
+  session
 ) => {
   const session = await mongoose.startSession();
   session.startTransaction();
