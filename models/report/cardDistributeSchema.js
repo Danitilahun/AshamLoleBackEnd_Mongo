@@ -6,27 +6,11 @@ const cardDistributeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    activeDailySummery: {
-      type: String,
-      required: true,
-    },
-    activeTable: {
-      type: String,
-      required: true,
-    },
     amount: {
       type: Number,
       required: true,
     },
     branchId: {
-      type: String,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
-    date: {
       type: String,
       required: true,
     },
@@ -47,10 +31,6 @@ const cardDistributeSchema = new mongoose.Schema(
       required: true,
     },
     reason: {
-      type: String,
-      required: true,
-    },
-    source: {
       type: String,
       required: true,
     },

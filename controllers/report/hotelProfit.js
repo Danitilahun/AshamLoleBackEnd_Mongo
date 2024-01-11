@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const HotelProfit = require("../models/HotelProfit"); // Update the path to your HotelProfit model
-const DailyCredit = require("../models/DailyCredit"); // Update the path to your DailyCredit model
 const { DailyExpenseCredit } = require("../../models/credit/dailyCreditSchema");
 const updateDailyCredit = require("../../services/reportRelated/updateDailyCredit");
 
