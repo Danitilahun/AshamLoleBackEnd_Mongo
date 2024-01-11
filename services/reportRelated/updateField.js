@@ -1,5 +1,5 @@
 const DeliveryGuyWork = require("../../models/deliveryGuyWorkSchema");
-const SalaryTable = require("../../models/salaryTableSchema");
+const SalaryTable = require("../../models/table/salaryTableSchema");
 
 const updateField = async (
   deliveryGuyId,
