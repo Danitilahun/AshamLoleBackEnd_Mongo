@@ -45,7 +45,10 @@ const deliveryGuyWorkSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  holidayBonus: { type: Number, default: 0 },
+  holidayBonus: {
+    type: Number,
+    default: 0,
+  },
   fixedSalary: {
     type: Number,
     default: 0,
