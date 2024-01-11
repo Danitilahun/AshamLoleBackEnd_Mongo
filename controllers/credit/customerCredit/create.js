@@ -1,5 +1,4 @@
 const { startSession } = require("mongoose");
-const updateCredit = require("../../../service/credit/totalCredit/DailyCreditUpdate");
 const CustomerCredit = require("../../../models/credit/customerCreditSchema");
 
 const createCredit = async (req, res) => {
@@ -18,13 +17,14 @@ const createCredit = async (req, res) => {
     // Create a new credit document in MongoDB
     data.borrowedOn = new Date();
     data.daysSinceBorrowed = 0;
+
     await CustomerCredit.create([data], { session });
 
     // Update the total credit using the provided function
-    const customerCreditTotalId = `${data.branchId}-customer`;
+
     await updateCredit(
-      customerCreditTotalId,
-      "customerCreditTotal",
+      data.branchId,
+      "customerCredit",
       parseFloat(data.amount ? data.amount : 0),
       session
     );
