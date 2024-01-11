@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 
-const CardFee = require("../models/CardFee"); // Update the path to your CardFee model
-const DailyCredit = require("../models/DailyCredit"); // Update the path to your DailyCredit model
 const DeliveryGuyGain = require("../../../models/price/deliveryGuyGainSchema");
 const updateDailyCredit = require("../../../services/reportRelated/updateDailyCredit");
 const updateDailyCreditForBranch = require("../../../services/reportRelated/updateDailyCreditForBranch");
 const updateTotalDeliveryGuySalary = require("../../../services/reportRelated/updateTotalDeliveryGuySalary");
 const updateField = require("../../../services/reportRelated/updateField");
+const {
+  DailyExpenseCredit,
+} = require("../../../models/credit/dailyCreditSchema");
+const CardFee = require("../../../models/report/cardFeeSchema");
 
 const createCardFeeAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
@@ -14,66 +16,50 @@ const createCardFeeAndDailyCredit = async (req, res) => {
 
   try {
     const {
-      active,
+      sheetId,
       amount,
       branchId,
       deliveryguyId,
       deliveryguyName,
-      gain,
       numberOfCard,
-      price,
       reason,
       returnCardNumber,
-      source,
       time,
-      total,
     } = req.body;
 
     // Create CardFee document
     const cardFee = new CardFee({
-      CHECK_SOURCE,
-      active,
+      sheetId,
       amount,
       branchId,
       deliveryguyId,
       deliveryguyName,
-      gain,
       numberOfCard,
-      price,
       reason,
       returnCardNumber,
-      source,
       time,
-      total,
     });
 
     // Create DailyCredit document
-    const dailyCredit = new DailyCredit({
-      CHECK_SOURCE,
-      active,
+    const dailyCredit = new DailyExpenseCredit({
+      sheetId,
       amount,
       branchId,
       deliveryguyId,
       deliveryguyName,
-      gain,
-      numberOfCard,
-      price,
-      reason,
-      returnCardNumber,
+      reason: "cardFee",
       source,
-      time,
-      total,
     });
 
     // Save both documents within the same transaction
     await cardFee.save({ session });
     await dailyCredit.save({ session });
-    await updateDailyCredit(deliveryguyId, price, session);
-    await updateDailyCreditForBranch(branchId, price, session);
+    await updateDailyCredit(deliveryguyId, amount, session);
+    await updateDailyCreditForBranch(branchId, amount, session);
     const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
     const cardFeePrice = deliveryGuyGainDoc.card_fee_price;
     await updateTotalDeliveryGuySalary(branchId, cardFeePrice, session);
-    await updateField(branchId, "cardFee", price, session);
+    await updateField(branchId, "cardFee", amount, session);
 
     // Commit the transaction
     await session.commitTransaction();

@@ -14,7 +14,6 @@ const cardFeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     deliveryguyId: {
       type: String,
       required: true,
@@ -23,15 +22,7 @@ const cardFeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    gain: {
-      type: Number,
-      required: true,
-    },
     numberOfCard: {
-      type: Number,
-      required: true,
-    },
-    price: {
       type: Number,
       required: true,
     },
@@ -43,16 +34,8 @@ const cardFeeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    source: {
-      type: String,
-      required: true,
-    },
     time: {
       type: String,
-      required: true,
-    },
-    total: {
-      type: Number,
       required: true,
     },
   },
