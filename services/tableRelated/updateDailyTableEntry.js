@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-const DailyTable = require("../../models/DailyTable");
-const DeliveryGuyWork = require("../../models/deliveryGuyWorkSchema");
+const DailyTable = require("../../models/table/DailyTable");
+const DeliveryGuyWork = require("../../models/table/work/deliveryGuyWorkSchema");
 
 const updateDailyTableEntry = async (
-  branchId,
-  sheetId,
+  dailyTableId, // Change parameter to take the unique identifier of DailyTable
   deliveryGuyId,
   fieldName,
   valueToUpdate
@@ -13,12 +12,14 @@ const updateDailyTableEntry = async (
   session.startTransaction();
 
   try {
-    // Find the DailyTable entry with branchId and sheetId
-    const dailyTableEntry = await DailyTable.findOne({
-      branchId,
-      sheetId,
-    }).session(session);
+    // Find the DailyTable entry by its unique identifier
+    const dailyTableEntry = await DailyTable.findById(dailyTableId).session(
+      session
+    );
 
+    if (!dailyTableEntry) {
+      throw new Error("DailyTable entry not found for the given id");
+    }
     // Find the PersonWorkSchema for the given deliveryGuyId
     const personWork = dailyTableEntry.personWork.find(
       (entry) => entry.person.toString() === deliveryGuyId
