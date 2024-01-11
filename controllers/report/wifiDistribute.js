@@ -1,88 +1,86 @@
 const mongoose = require("mongoose");
-const WifiDistribute = require("../models/WifiDistribute"); // Update the path to your WifiDistribute model
-const DailyCredit = require("../models/DailyCredit"); // Update the path to your DailyCredit model
+const CompanyGain = require("../../models/price/companyGainSchema");
+const WifiDistribute = require("../../models/report/wifiDistributeSchema");
+const {
+  DailyExpenseCredit,
+  DailyGainCredit,
+} = require("../../models/credit/dailyCreditSchema");
+const DeliveryGuyGain = require("../../models/price/deliveryGuyGainSchema");
+const updateCredit = require("../../services/creditRelated/updateCredit");
+const updateTotalDeliveryGuySalary = require("../../services/reportRelated/updateTotalDeliveryGuySalary");
+const updateField = require("../../services/reportRelated/updateField");
+const updateDailyCredit = require("../../services/reportRelated/updateDailyCredit");
 
 const createWifiDistributeAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const {
-      active,
-      amount,
-      branchId,
-      createdAt,
-      date,
-      deliveryguyId,
-      deliveryguyName,
-      gain,
-      numberOfCard,
-      price,
-      reason,
-      returnCardNumber,
-      source,
-      time,
-      total,
-    } = req.body;
+    const data = req.body;
+    const companyGainDoc = await CompanyGain.findOne();
+    const wifiDistributeGain = companyGainDoc.wifi_distribute_gain;
+    data.gain = data.numberOfCard * wifiDistributeGain;
+    data.total = data.amount + data.gain;
 
     // Create WifiDistribute document
-    const wifiDistribute = new WifiDistribute({
-      active,
-      amount,
-      branchId,
-      createdAt,
-      date,
-      deliveryguyId,
-      deliveryguyName,
-      gain,
-      numberOfCard,
-      price,
-      reason,
-      returnCardNumber,
-      source,
-      time,
-      total,
+    const wifiDistribute = new WifiDistribute(data);
+
+    // Create DailyCredit documents
+    const dailyExpenseCredit = new DailyExpenseCredit({
+      sheetId: data.sheetId,
+      amount: data.amount,
+      branchId: data.branchId,
+      deliveryguyId: data.deliveryguyId,
+      deliveryguyName: data.deliveryguyName,
+      reason: "wifiDistribute",
+      source: "Report",
+      type: "wifiDistribute",
     });
 
-    // Create DailyCredit document
-    const dailyCredit = new DailyCredit({
-      active,
-      amount,
-      branchId,
-      createdAt,
-      date,
-      deliveryguyId,
-      deliveryguyName,
-      gain,
-      numberOfCard,
-      price,
-      reason,
-      returnCardNumber,
-      source,
-      time,
-      total,
+    const dailyGainCredit = new DailyGainCredit({
+      sheetId: data.sheetId,
+      amount: data.gain,
+      branchId: data.branchId,
+      deliveryguyId: data.deliveryguyId,
+      deliveryguyName: data.deliveryguyName,
+      reason: "wifiDistribute",
+      source: "Report",
+      type: "wifiDistribute",
     });
 
-    // Save both documents within the same transaction
+    // Save all documents within the same transaction
     await wifiDistribute.save({ session });
-    await dailyCredit.save({ session });
+    await dailyExpenseCredit.save({ session });
+    await dailyGainCredit.save({ session });
+
+    // Update various fields and documents
+    await updateCredit(data.branchId, "dailyCredit", data.amount, session);
+    const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
+    const wifiDistributePrice = deliveryGuyGainDoc.wifi_distribute_price;
+    await updateTotalDeliveryGuySalary(
+      data.branchId,
+      wifiDistributePrice,
+      session
+    );
+    await updateField(data.branchId, "wifiDistribute", data.amount, session);
+    await updateDailyCredit(data.deliveryguyId, data.amount, session);
 
     // Commit the transaction
     await session.commitTransaction();
     session.endSession();
 
-    res
-      .status(201)
-      .json({ message: "WifiDistribute and DailyCredit created successfully" });
+    res.status(201).json({
+      message: "WifiDistribute and DailyCredit created successfully",
+    });
   } catch (error) {
     // If any error occurs, abort the transaction
     await session.abortTransaction();
     session.endSession();
 
     console.error("Error creating WifiDistribute and DailyCredit:", error);
-    res
-      .status(500)
-      .json({ error: "Error creating WifiDistribute and DailyCredit" });
+    res.status(500).json({
+      error: "Error creating WifiDistribute and DailyCredit",
+    });
   }
 };
 
