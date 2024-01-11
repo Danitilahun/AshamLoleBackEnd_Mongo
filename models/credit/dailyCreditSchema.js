@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DailyCreditSchema = new Schema({
+  uniqueDailyCreditId: {
+    type: String,
+    required: true,
+  },
   sheetId: {
     type: String,
     required: true,
