@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const DailyCredit = require("../../../models/credit/dailyCreditSchema");
+const { DailyCredit } = require("../../../models/credit/dailyCreditSchema");
+const updateDailyCredit = require("../../../services/reportRelated/updateDailyCredit");
+const updateCredit = require("../../../services/creditRelated/updateCredit");
 
 /**
  * Create a credit document and perform related operations.
@@ -30,24 +32,23 @@ const createCredit = async (req, res) => {
       deliveryguyName: data.deliveryguyName,
       reason: data.reason,
       source: "Credit",
-      total: parseFloat(data.amount),
     });
 
     await dailyCredit.save();
 
     // Update the delivery guy's document
-    await updateDeliveryGuy(
+    await updateDailyCredit(
       data.deliveryguyId,
-      "dailyCredit",
-      parseInt(data.amount ? data.amount : 0)
+      parseInt(data.amount ? data.amount : 0),
+      session
     );
 
     // Update the daily credit total document
-    const dailyCreditTotalId = generateCustomID(`${data.branchId}-daily`);
-    await updateCreditDocument(
-      dailyCreditTotalId,
-      "dailyCreditTotal",
-      parseFloat(data.amount ? data.amount : 0)
+    await updateCredit(
+      data.branchId,
+      "dailyCredit",
+      parseFloat(data.amount ? data.amount : 0),
+      session
     );
 
     // Commit the transaction
