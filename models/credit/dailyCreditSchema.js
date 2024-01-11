@@ -2,36 +2,39 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Common schema without the 'type' property
-const DailyCreditSchema = new Schema({
-  sheetId: {
-    type: String,
-    required: true,
+const DailyCreditSchema = new Schema(
+  {
+    sheetId: {
+      type: String,
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    branchId: {
+      type: String,
+      required: true,
+    },
+    deliveryguyId: {
+      type: String,
+      required: true,
+    },
+    deliveryguyName: {
+      type: String,
+      required: true,
+    },
+    reason: {
+      type: String,
+      required: true,
+    },
+    source: {
+      type: String,
+      required: true,
+    },
   },
-  amount: {
-    type: Number,
-    required: true,
-  },
-  branchId: {
-    type: String,
-    required: true,
-  },
-  deliveryguyId: {
-    type: String,
-    required: true,
-  },
-  deliveryguyName: {
-    type: String,
-    required: true,
-  },
-  reason: {
-    type: String,
-    required: true,
-  },
-  source: {
-    type: String,
-    required: true,
-  },
-});
+  { timestamps: true }
+);
 
 // DailyCredit model without 'type'
 const DailyCredit = mongoose.model("DailyCredit", DailyCreditSchema);
