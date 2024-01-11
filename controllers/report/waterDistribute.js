@@ -1,84 +1,82 @@
 const mongoose = require("mongoose");
-const WaterDistribute = require("../models/WaterDistribute"); // Update the path to your WaterDistribute model
-const DailyCredit = require("../models/DailyCredit"); // Update the path to your DailyCredit model
+const CompanyGain = require("../../models/price/companyGainSchema");
+const WaterDistribute = require("../../models/report/waterDistributeSchema");
+const {
+  DailyExpenseCredit,
+  DailyGainCredit,
+} = require("../../models/credit/dailyCreditSchema");
+const DeliveryGuyGain = require("../../models/price/deliveryGuyGainSchema");
 
 const createWaterDistributeAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const {
-      active,
-      amount,
-      branchId,
-      deliveryguyId,
-      deliveryguyName,
-      gain,
-      numberOfCard,
-      price,
-      reason,
-      returnCardNumber,
-      source,
-      time,
-      total,
-    } = req.body;
+    const data = req.body;
+    const companyGainDoc = await CompanyGain.findOne();
+    const waterDistributeGain = companyGainDoc.water_distribute_gain;
+    data.gain = data.numberOfCard * waterDistributeGain;
+    data.total = data.amount + data.gain;
 
     // Create WaterDistribute document
-    const waterDistribute = new WaterDistribute({
-      active,
-      amount,
-      branchId,
-      deliveryguyId,
-      deliveryguyName,
-      gain,
-      numberOfCard,
-      price,
-      reason,
-      returnCardNumber,
-      source,
-      time,
-      total,
+    const waterDistribute = new WaterDistribute(data);
+
+    // Create DailyCredit documents
+    const dailyExpenseCredit = new DailyExpenseCredit({
+      sheetId: data.sheetId,
+      amount: data.amount,
+      branchId: data.branchId,
+      deliveryguyId: data.deliveryguyId,
+      deliveryguyName: data.deliveryguyName,
+      reason: "waterDistribute",
+      source: "Report",
+      type: "waterDistribute",
     });
 
-    // Create DailyCredit document
-    const dailyCredit = new DailyCredit({
-      active,
-      amount,
-      branchId,
-      deliveryguyId,
-      deliveryguyName,
-      gain,
-      numberOfCard,
-      price,
-      reason,
-      returnCardNumber,
-      source,
-      time,
-      total,
+    const dailyGainCredit = new DailyGainCredit({
+      sheetId: data.sheetId,
+      amount: data.gain,
+      branchId: data.branchId,
+      deliveryguyId: data.deliveryguyId,
+      deliveryguyName: data.deliveryguyName,
+      reason: "waterDistribute",
+      source: "Report",
+      type: "waterDistribute",
     });
 
-    // Save both documents within the same transaction
+    // Save all documents within the same transaction
     await waterDistribute.save({ session });
-    await dailyCredit.save({ session });
+    await dailyExpenseCredit.save({ session });
+    await dailyGainCredit.save({ session });
+
+    // Update various fields and documents
+    await updateCredit(data.branchId, "dailyCredit", data.amount, session);
+    const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
+    const waterDistributePrice = deliveryGuyGainDoc.water_distribute_price;
+    await updateTotalDeliveryGuySalary(
+      data.branchId,
+      waterDistributePrice,
+      session
+    );
+    await updateField(data.branchId, "waterDistribute", data.amount, session);
+    await updateDailyCredit(data.deliveryguyId, data.amount, session);
 
     // Commit the transaction
     await session.commitTransaction();
     session.endSession();
 
-    res
-      .status(201)
-      .json({
-        message: "WaterDistribute and DailyCredit created successfully",
-      });
+    res.status(201).json({
+      message: "WaterDistribute and DailyCredit created successfully",
+    });
   } catch (error) {
     // If any error occurs, abort the transaction
     await session.abortTransaction();
     session.endSession();
 
     console.error("Error creating WaterDistribute and DailyCredit:", error);
-    res
-      .status(500)
-      .json({ error: "Error creating WaterDistribute and DailyCredit" });
+    res.status(500).json({
+      error: "Error creating WaterDistribute and DailyCredit",
+    });
   }
 };
 

@@ -14,10 +14,6 @@ const WaterDistributeSchema = new Schema({
     type: String,
     required: true,
   },
-  date: {
-    type: String,
-    required: true,
-  },
   deliveryguyId: {
     type: String,
     required: true,
@@ -35,10 +31,6 @@ const WaterDistributeSchema = new Schema({
     required: true,
   },
   reason: {
-    type: String,
-    required: true,
-  },
-  source: {
     type: String,
     required: true,
   },
