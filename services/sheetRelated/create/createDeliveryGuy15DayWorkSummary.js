@@ -1,6 +1,6 @@
-const DeliveryGuy15DayWorkSummary = require("../../models/DeliveryGuy15DayWorkSummarySchema");
-const DeliveryGuyWork = require("../../models/deliveryGuyWorkSchema");
 const Deliveryguy = require("../../../models/deliveryguySchema");
+const DeliveryGuy15DayWorkSummary = require("../../../models/table/DeliveryGuy15DayWorkSummarySchema");
+const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 
 const createDeliveryGuy15DayWorkSummary = async (
   branchId,
