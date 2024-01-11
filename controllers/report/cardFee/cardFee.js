@@ -9,6 +9,7 @@ const {
   DailyExpenseCredit,
 } = require("../../../models/credit/dailyCreditSchema");
 const CardFee = require("../../../models/report/cardFeeSchema");
+const updateCredit = require("../../../services/creditRelated/updateCredit");
 
 const createCardFeeAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
@@ -56,7 +57,7 @@ const createCardFeeAndDailyCredit = async (req, res) => {
     await cardFee.save({ session });
     await dailyCredit.save({ session });
     await updateDailyCredit(deliveryguyId, amount, session);
-    await updateDailyCreditForBranch(branchId, amount, session);
+    await updateCredit(branchId, "dailyCredit", amount, session);
     const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
     const cardFeePrice = deliveryGuyGainDoc.card_fee_price;
     await updateTotalDeliveryGuySalary(branchId, cardFeePrice, session);
