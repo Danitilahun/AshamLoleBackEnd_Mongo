@@ -49,7 +49,7 @@ const createCardFeeAndDailyCredit = async (req, res) => {
       deliveryguyId,
       deliveryguyName,
       reason: "cardFee",
-      source,
+      source: "Report",
       type: "cardFee",
     });
 
@@ -57,11 +57,11 @@ const createCardFeeAndDailyCredit = async (req, res) => {
     await cardFee.save({ session });
     await dailyCredit.save({ session });
     await updateDailyCredit(deliveryguyId, amount, session);
-    await updateCredit(branchId, "dailyCredit", amount, session);
+    await updateField(branchId, "cardFee", amount, session);
     const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
     const cardFeePrice = deliveryGuyGainDoc.card_fee_price;
     await updateTotalDeliveryGuySalary(branchId, cardFeePrice, session);
-    await updateField(branchId, "cardFee", amount, session);
+    await updateCredit(branchId, "dailyCredit", amount, session);
 
     // Commit the transaction
     await session.commitTransaction();

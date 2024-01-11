@@ -14,14 +14,6 @@ const hotelProfitSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
-    date: {
-      type: String,
-      required: true,
-    },
     deliveryguyId: {
       type: String,
       required: true,
@@ -30,24 +22,8 @@ const hotelProfitSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    gain: {
-      type: Number,
-      required: true,
-    },
-    reason: {
-      type: String,
-      required: true,
-    },
-    source: {
-      type: String,
-      required: true,
-    },
     time: {
       type: String,
-      required: true,
-    },
-    total: {
-      type: Number,
       required: true,
     },
   },

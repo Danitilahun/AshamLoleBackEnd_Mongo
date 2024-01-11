@@ -1,40 +1,35 @@
 const mongoose = require("mongoose");
 const HotelProfit = require("../models/HotelProfit"); // Update the path to your HotelProfit model
 const DailyCredit = require("../models/DailyCredit"); // Update the path to your DailyCredit model
+const { DailyExpenseCredit } = require("../../models/credit/dailyCreditSchema");
+const updateDailyCredit = require("../../services/reportRelated/updateDailyCredit");
 
 const createHotelProfitAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const {
-      // Capture required fields for HotelProfit
-      // Update the fields below as per your schema
-      field1,
-      field2,
-      // ... other fields for HotelProfit
-    } = req.body;
+    const data = req.body;
 
     // Create HotelProfit document
-    const hotelProfit = new HotelProfit({
-      field1,
-      field2,
-      // ... other fields for HotelProfit
-    });
+    const hotelProfit = new HotelProfit(data);
 
     // Create DailyCredit document
-    const dailyCredit = new DailyCredit({
-      // Capture required fields for DailyCredit
-      // Update the fields below as per your schema
-      fieldA,
-      fieldB,
-      // ... other fields for DailyCredit
+    const dailyCredit = new DailyExpenseCredit({
+      sheetId: data.sheetId,
+      amount: data.amount,
+      branchId: data.branchId,
+      deliveryguyId: data.deliveryguyId,
+      deliveryguyName: data.deliveryguyName,
+      reason: "hotelProfit",
+      source: "Report",
+      type: "hotelProfit",
     });
 
     // Save both documents within the same transaction
     await hotelProfit.save({ session });
     await dailyCredit.save({ session });
-
+    await updateDailyCredit(data.deliveryguyId, data.amount, session);
     // Commit the transaction
     await session.commitTransaction();
     session.endSession();
