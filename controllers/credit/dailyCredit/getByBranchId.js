@@ -1,4 +1,4 @@
-const DailyCreditSchema = require("../../../models/DailyCreditSchema");
+const { DailyCredit } = require("../../../models/credit/dailyCreditSchema");
 
 const getDailyCreditsByBranchId = async (req, res) => {
   try {
@@ -6,7 +6,7 @@ const getDailyCreditsByBranchId = async (req, res) => {
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    const dailyCredits = await DailyCreditSchema.find({ branchId })
+    const dailyCredits = await DailyCredit.find({ branchId })
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
