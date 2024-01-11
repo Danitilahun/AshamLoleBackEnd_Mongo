@@ -23,15 +23,11 @@ const createCredit = async (req, res) => {
 
     // Create a new credit document
     const dailyCredit = new DailyCredit({
-      uniqueDailyCreditId: generateCustomID("Cred1t_Reason_987X1_normalcredit"),
       sheetId: data.sheetId,
       amount: parseFloat(data.amount),
       branchId: data.branchId,
       deliveryguyId: data.deliveryguyId,
       deliveryguyName: data.deliveryguyName,
-      gain: parseFloat(data.amount),
-      numberOfCard: data.numberOfCard,
-      price: parseFloat(data.price),
       reason: data.reason,
       source: "Credit",
       total: parseFloat(data.amount),

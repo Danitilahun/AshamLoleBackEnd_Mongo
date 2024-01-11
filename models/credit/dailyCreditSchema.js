@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Common schema without the 'source' property
+// Common schema without the 'type' property
 const DailyCreditSchema = new Schema({
   sheetId: {
     type: String,
@@ -27,12 +27,16 @@ const DailyCreditSchema = new Schema({
     type: String,
     required: true,
   },
+  source: {
+    type: String,
+    required: true,
+  },
 });
 
-// DailyCredit model without 'source'
+// DailyCredit model without 'type'
 const DailyCredit = mongoose.model("DailyCredit", DailyCreditSchema);
 
-// Enum for DailyExpenseCredit source
+// Enum for DailyExpenseCredit type
 const expenseCreditSources = [
   "cardFee",
   "cardDistribute",
@@ -41,10 +45,10 @@ const expenseCreditSources = [
   "hotelProfit",
 ];
 
-// Schema for DailyExpenseCredit with 'source' enum
+// Schema for DailyExpenseCredit with 'type' enum
 const DailyExpenseCreditSchema = new Schema({
   ...DailyCreditSchema.obj, // Include properties from the common schema
-  source: {
+  type: {
     type: String,
     enum: expenseCreditSources,
     required: true,
@@ -56,17 +60,17 @@ const DailyExpenseCredit = mongoose.model(
   DailyExpenseCreditSchema
 );
 
-// Enum for DailyGainCredit source
+// Enum for DailyGainCredit type
 const gainCreditSources = [
   "cardDistribute",
   "waterDistribute",
   "wifiDistribute",
 ];
 
-// Schema for DailyGainCredit with 'source' enum
+// Schema for DailyGainCredit with 'type' enum
 const DailyGainCreditSchema = new Schema({
   ...DailyCreditSchema.obj, // Include properties from the common schema
-  source: {
+  type: {
     type: String,
     enum: gainCreditSources,
     required: true,
