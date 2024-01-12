@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Deliveryguy = require("../../models/deliveryguySchema");
 const DeliveryGuyWork = require("../../models/deliveryGuyWorkSchema");
 const DailyTable = require("../../models/DailyTable");
+const updateBranchWithSession = require("../../services/sheetRelated/updateBranchWithSession");
 
 const createDailyTable = async (req, res) => {
   const session = await mongoose.startSession();
@@ -35,6 +36,13 @@ const createDailyTable = async (req, res) => {
     });
 
     const savedDailyTable = await dailyTable.save({ session });
+    await updateBranchWithSession(
+      branchId,
+      {
+        activeTable: savedDailyTable._id,
+      },
+      session
+    );
     await session.commitTransaction();
     session.endSession();
 
