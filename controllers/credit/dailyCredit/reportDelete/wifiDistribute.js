@@ -3,11 +3,11 @@ const updateDeliveryGuy15DayWorkSummary = require("../../../../services/sheetRel
 const updateFieldInFifteenDayWorkSummary = require("../../../../services/sheetRelated/update/updateFieldInFifteenDayWorkSummary");
 const updateDailyTableEntry = require("../../../../services/tableRelated/updateDailyTableEntry");
 
-const CardDistribute = async (data, session) => {
+const wifiDistribute = async (data, session) => {
   try {
     const companyGainDoc = await CompanyGain.findOne();
-    const cartDistributeGain = companyGainDoc.card_distribute_gain;
-    if (!companyGainDoc) {
+    const wifiDistributeGain = companyGainDoc.wifi_distribute_gain;
+    if (!wifiDistributeGain) {
       throw new Error(
         "Company gain information is missing.Please refresh your browser and try again."
       );
@@ -18,9 +18,9 @@ const CardDistribute = async (data, session) => {
     await updateDailyTableEntry(
       data.activeTable,
       data.deliveryguyId,
-      "cardDistribute",
+      "wifiDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.card_distribute_gain,
+      data.numberOfCard * cartDistributeGain.wifi_distribute_gain,
       session
     );
 
@@ -29,9 +29,9 @@ const CardDistribute = async (data, session) => {
     await updateDeliveryGuy15DayWorkSummary(
       data.activeDailySummery,
       data.deliveryguyId,
-      "cardDistribute",
+      "wifiDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.card_distribute_gain,
+      data.numberOfCard * cartDistributeGain.wifi_distribute_gain,
       session
     );
 
@@ -41,14 +41,14 @@ const CardDistribute = async (data, session) => {
       session,
       data.activeDGSummery,
       data.date,
-      "cardDistribute",
+      "wifiDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.card_distribute_gain
+      data.numberOfCard * cartDistributeGain.wifi_distribute_gain
     );
   } catch (error) {
-    console.error("Error in CardFee:", error);
+    console.error("Error in wifiDistribute:", error);
     throw error;
   }
 };
 
-module.exports = CardDistribute;
+module.exports = wifiDistribute;
