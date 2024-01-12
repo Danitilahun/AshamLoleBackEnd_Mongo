@@ -38,6 +38,6 @@ const staffCreditSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const StaffCreditSchema = mongoose.model("StaffCredit", staffCreditSchema);
+const StaffCredit = mongoose.model("StaffCredit", staffCreditSchema);
 
-module.exports = StaffCreditSchema;
+module.exports = StaffCredit;
