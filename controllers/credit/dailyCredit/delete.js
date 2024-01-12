@@ -7,6 +7,21 @@ const {
 const updateDailyCredit = require("../../../services/reportRelated/updateDailyCredit");
 const updateCredit = require("../../../services/creditRelated/updateCredit");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
+const CardDistribute = require("./reportDelete/CardDistribute");
+const waterDistribute = require("./reportDelete/waterDistribute");
+const wifiDistribute = require("./reportDelete/wifiDistribute");
+const HotelProfit = require("./reportDelete/HotelProfit");
+const CardFee = require("./reportDelete/cardFee");
+
+/**
+ * Helper function to perform common updates during credit deletion.
+ * @param {Object} credit - Credit document to update.
+ * @param {Object} session - Mongoose session.
+ */
+const performCommonUpdates = async (credit, session) => {
+  await updateDailyCredit(credit.deliveryguyId, -credit.amount, session);
+  await updateCredit(credit.branchId, "dailyCredit", -credit.amount, session);
+};
 
 /**
  * Delete a credit document and perform related operations.
@@ -38,42 +53,27 @@ const deleteCredit = async (req, res) => {
     }
 
     if (existingCredit) {
-      await updateDailyCredit(
-        existingCredit.deliveryguyId,
-        -existingCredit.amount,
-        session
-      );
-      await updateCredit(
-        existingCredit.branchId,
-        "dailyCredit",
-        -existingCredit.amount,
-        session
-      );
+      await performCommonUpdates(existingCredit, session);
       await existingCredit.remove();
     } else if (existingExpenseCredit) {
-      await updateDailyCredit(
-        existingExpenseCredit.deliveryguyId,
-        -existingExpenseCredit.amount,
-        session
-      );
-      await updateCredit(
-        existingExpenseCredit.branchId,
-        "dailyCredit",
-        -existingExpenseCredit.amount,
-        session
-      );
+      await performCommonUpdates(existingExpenseCredit, session);
       const branch = await Branch.findById(existingExpenseCredit.branchId);
       if (existingExpenseCredit.type === "cardFee") {
-        branch.cardFee -= existingExpenseCredit.amount;
-      } else if (existingExpenseCredit.type === "cardDistribute") {
-        branch.cardDistribute -= existingExpenseCredit.amount;
-      } else if (existingExpenseCredit.type === "waterDistribute") {
-        branch.waterDistribute -= existingExpenseCredit.amount;
-      } else if (existingExpenseCredit.type === "wifiDistribute") {
-        branch.wifiDistribute -= existingExpenseCredit.amount;
+        await CardFee({ ...branch, ...existingExpenseCredit }, session);
       }
       await existingExpenseCredit.remove();
     } else if (existingGainCredit) {
+      const branch = await Branch.findById(existingGainCredit.branchId);
+
+      if (existingExpenseCredit.type === "cardDistribute") {
+        await CardDistribute({ ...branch, ...existingGainCredit }, session);
+      } else if (existingExpenseCredit.type === "waterDistribute") {
+        await waterDistribute({ ...branch, ...existingGainCredit }, session);
+      } else if (existingExpenseCredit.type === "wifiDistribute") {
+        await wifiDistribute({ ...branch, ...existingGainCredit }, session);
+      } else if (existingExpenseCredit.type === "hotelProfit") {
+        await HotelProfit({ ...branch, ...existingGainCredit }, session);
+      }
       await existingGainCredit.remove();
     }
 
