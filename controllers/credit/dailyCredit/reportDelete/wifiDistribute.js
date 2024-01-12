@@ -20,7 +20,7 @@ const wifiDistribute = async (data, session) => {
       data.deliveryguyId,
       "wifiDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.wifi_distribute_gain,
+      data.numberOfCard * wifiDistributeGain,
       session
     );
 
@@ -31,7 +31,7 @@ const wifiDistribute = async (data, session) => {
       data.deliveryguyId,
       "wifiDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.wifi_distribute_gain,
+      data.numberOfCard * wifiDistributeGain,
       session
     );
 
@@ -43,7 +43,7 @@ const wifiDistribute = async (data, session) => {
       data.date,
       "wifiDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.wifi_distribute_gain
+      data.numberOfCard * wifiDistributeGain
     );
   } catch (error) {
     console.error("Error in wifiDistribute:", error);

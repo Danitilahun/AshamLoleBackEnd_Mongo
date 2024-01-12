@@ -6,7 +6,7 @@ const updateDailyTableEntry = require("../../../../services/tableRelated/updateD
 const CardDistribute = async (data, session) => {
   try {
     const companyGainDoc = await CompanyGain.findOne();
-    const cartDistributeGain = companyGainDoc.card_distribute_gain;
+    const cardDistributeGain = companyGainDoc.card_distribute_gain;
     if (!companyGainDoc) {
       throw new Error(
         "Company gain information is missing.Please refresh your browser and try again."
@@ -20,7 +20,7 @@ const CardDistribute = async (data, session) => {
       data.deliveryguyId,
       "cardDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.card_distribute_gain,
+      data.numberOfCard * cardDistributeGain,
       session
     );
 
@@ -31,7 +31,7 @@ const CardDistribute = async (data, session) => {
       data.deliveryguyId,
       "cardDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.card_distribute_gain,
+      data.numberOfCard * cardDistributeGain,
       session
     );
 
@@ -43,7 +43,7 @@ const CardDistribute = async (data, session) => {
       data.date,
       "cardDistribute",
       data.numberOfCard,
-      data.numberOfCard * cartDistributeGain.card_distribute_gain
+      data.numberOfCard * cardDistributeGain
     );
   } catch (error) {
     console.error("Error in CardFee:", error);
