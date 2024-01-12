@@ -1,40 +1,18 @@
 const Sheet = require("../../models/sheetsSchema");
+const checkPreviousSheet = require("../../services/sheetRelated/checkPreviousSheet");
+const checkPreviousSheetStatus = require("../../services/sheetRelated/checkPreviousSheetStatus");
 
 // Create a new sheet
 const createSheet = async (req, res) => {
   try {
-    const {
-      Tables,
-      active,
-      activeDailySummary,
-      branchId,
-      date,
-      name,
-      prevActive,
-      previousActive,
-      realDate,
-      sheetNumber,
-      sheetStatus,
-      tableDate,
-      tableCount,
-    } = req.body;
+    const data = req.body;
 
-    const newSheet = new Sheet({
-      Tables,
-      active,
-      activeDailySummary,
-      branchId,
-      date,
-      name,
-      prevActive,
-      previousActive,
-      realDate,
-      sheetNumber,
-      sheetStatus,
-      tableDate,
-      tableCount,
-    });
+    const prevSheetCheckResult = await checkPreviousSheet(data.sheetId);
+    if (prevSheetCheckResult) {
+      return res.status(400).json(prevSheetCheckResult);
+    }
 
+    const newSheet = new Sheet(data);
     const savedSheet = await newSheet.save();
     res.status(201).json(savedSheet);
   } catch (error) {
