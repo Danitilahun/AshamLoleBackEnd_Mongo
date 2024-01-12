@@ -37,28 +37,34 @@ const deleteCredit = async (req, res) => {
     }
 
     if (existingCredit) {
+      await updateDailyCredit(
+        existingCredit.deliveryguyId,
+        -existingCredit.amount,
+        session
+      );
+      await updateCredit(
+        existingCredit.branchId,
+        "dailyCredit",
+        -existingCredit.amount,
+        session
+      );
       await existingCredit.remove();
     } else if (existingExpenseCredit) {
+      await updateDailyCredit(
+        existingExpenseCredit.deliveryguyId,
+        -existingExpenseCredit.amount,
+        session
+      );
+      await updateCredit(
+        existingExpenseCredit.branchId,
+        "dailyCredit",
+        -existingExpenseCredit.amount,
+        session
+      );
       await existingExpenseCredit.remove();
     } else if (existingGainCredit) {
       await existingGainCredit.remove();
     }
-    // Delete the credit document
-
-    // Update the delivery guy's document with negative amount
-    await updateDailyCredit(
-      existingCredit.deliveryguyId,
-      -existingCredit.amount,
-      session
-    );
-
-    // Update the daily credit total document with negative amount
-    await updateCredit(
-      existingCredit.branchId,
-      "dailyCredit",
-      -existingCredit.amount,
-      session
-    );
 
     // Commit the transaction
     await session.commitTransaction();
