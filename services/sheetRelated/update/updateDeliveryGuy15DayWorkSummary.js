@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
 const DeliveryGuy15DayWorkSummary = require("../../../models/table/DeliveryGuy15DayWorkSummarySchema");
-const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 const CompanyWorks = require("../../../models/table/work/companyWorksSchema");
 
 const updateDeliveryGuy15DayWorkSummary = async (

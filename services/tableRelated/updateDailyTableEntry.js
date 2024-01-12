@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const DailyTable = require("../../models/table/DailyTable");
 const DeliveryGuyWork = require("../../models/table/work/deliveryGuyWorkSchema");
 
@@ -6,11 +5,9 @@ const updateDailyTableEntry = async (
   dailyTableId,
   deliveryGuyId,
   fieldName,
-  valueToUpdate
+  valueToUpdate,
+  session
 ) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
   try {
     // Find the DailyTable entry by its unique identifier
     const dailyTableEntry = await DailyTable.findById(dailyTableId).session(
@@ -43,21 +40,18 @@ const updateDailyTableEntry = async (
 
     // Update the specified field in DeliveryGuyWork and the 'total' field in DailyTable
     deliveryGuyWork[fieldName] += valueToUpdate;
-    deliveryGuyWork.total += valueToUpdate;
+    deliveryGuyWork.total += fieldName !== "cardFee" ? valueToUpdate : 0;
     await deliveryGuyWork.save({ session });
 
     // Update the 'total' field in DailyTable
     dailyTableEntry.markModified("personWork");
     await dailyTableEntry.save({ session });
 
-    await session.commitTransaction();
-    session.endSession();
-
     return { message: "DailyTable entry updated successfully" };
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-    return { error: error.message };
+    throw new Error(
+      `Error updating DailyTable entry with ID ${dailyTableId}: ${error}`
+    );
   }
 };
 

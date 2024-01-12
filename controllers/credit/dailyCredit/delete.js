@@ -6,6 +6,7 @@ const {
 } = require("../../../models/credit/dailyCreditSchema");
 const updateDailyCredit = require("../../../services/reportRelated/updateDailyCredit");
 const updateCredit = require("../../../services/creditRelated/updateCredit");
+const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 
 /**
  * Delete a credit document and perform related operations.
@@ -61,6 +62,16 @@ const deleteCredit = async (req, res) => {
         -existingExpenseCredit.amount,
         session
       );
+      const branch = await Branch.findById(existingExpenseCredit.branchId);
+      if (existingExpenseCredit.type === "cardFee") {
+        branch.cardFee -= existingExpenseCredit.amount;
+      } else if (existingExpenseCredit.type === "cardDistribute") {
+        branch.cardDistribute -= existingExpenseCredit.amount;
+      } else if (existingExpenseCredit.type === "waterDistribute") {
+        branch.waterDistribute -= existingExpenseCredit.amount;
+      } else if (existingExpenseCredit.type === "wifiDistribute") {
+        branch.wifiDistribute -= existingExpenseCredit.amount;
+      }
       await existingExpenseCredit.remove();
     } else if (existingGainCredit) {
       await existingGainCredit.remove();
