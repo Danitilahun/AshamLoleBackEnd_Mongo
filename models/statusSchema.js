@@ -15,11 +15,9 @@ const statusSchema = new mongoose.Schema(
   {
     branchId: {
       type: String,
-      required: true,
     },
     date: {
-      type: Date,
-      required: true,
+      type: String,
     },
     ethioTelBill: {
       type: Number,
