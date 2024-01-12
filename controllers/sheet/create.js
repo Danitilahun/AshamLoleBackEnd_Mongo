@@ -12,6 +12,10 @@ const createSheet = async (req, res) => {
       return res.status(400).json(prevSheetCheckResult);
     }
 
+    const prevSheetCheck = await checkPreviousSheetStatus(data.branchId);
+    if (prevSheetCheck) {
+      return res.status(400).json(prevSheetCheck);
+    }
     const newSheet = new Sheet(data);
     const savedSheet = await newSheet.save();
     res.status(201).json(savedSheet);
