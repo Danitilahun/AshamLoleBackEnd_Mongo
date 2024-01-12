@@ -1,6 +1,7 @@
 const { startSession } = require("mongoose");
 const updateCredit = require("../../../service/credit/totalCredit/DailyCreditUpdate");
 const StaffCredit = require("../../../models/credit/staffCreditSchema");
+const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 
 const deleteCredit = async (req, res) => {
   const session = await startSession();
@@ -13,6 +14,7 @@ const deleteCredit = async (req, res) => {
     const creditToDelete = await StaffCredit.findById(creditId).session(
       session
     );
+
     if (!creditToDelete) {
       return res.status(404).json({
         message: "Credit document not found for the given ID.",
@@ -21,13 +23,33 @@ const deleteCredit = async (req, res) => {
 
     // Update the total credit by reducing the amount (send negative of the credit amount)
     const negativeAmount = -parseFloat(creditToDelete.amount || 0);
-
+    const branch = await Branch.findById(creditToDelete.branchId);
     await updateCredit(
       creditToDelete.branchId,
       "staffCredit",
       negativeAmount,
       session
     );
+
+    if (creditToDelete.placement === "DeliveryGuy") {
+      await updateDeliveryGuySalaryTable(
+        branch.activeDeliverySalaryTable,
+        creditToDelete.deliveryguyId,
+        "totalCredit",
+        negativeAmount,
+        -negativeAmount,
+        session
+      );
+    } else {
+      await updateStaffSalaryTableEntry(
+        branch.activeStaffSalarySheet,
+        creditToDelete.employeeId,
+        "totalCredit",
+        negativeAmount,
+        -negativeAmount,
+        session
+      );
+    }
 
     // Delete the credit document from MongoDB
     await StaffCredit.findByIdAndDelete(creditId).session(session);
