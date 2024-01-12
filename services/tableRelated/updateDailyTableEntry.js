@@ -6,6 +6,7 @@ const updateDailyTableEntry = async (
   deliveryGuyId,
   fieldName,
   valueToUpdate,
+  valueTotal,
   session
 ) => {
   try {
@@ -39,8 +40,9 @@ const updateDailyTableEntry = async (
     }
 
     // Update the specified field in DeliveryGuyWork and the 'total' field in DailyTable
+
     deliveryGuyWork[fieldName] += valueToUpdate;
-    deliveryGuyWork.total += fieldName !== "cardFee" ? valueToUpdate : 0;
+    deliveryGuyWork.total += valueTotal;
     await deliveryGuyWork.save({ session });
 
     // Update the 'total' field in DailyTable

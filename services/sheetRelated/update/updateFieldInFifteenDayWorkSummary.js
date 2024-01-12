@@ -6,7 +6,8 @@ async function updateFieldInFifteenDayWorkSummary(
   summaryId,
   day,
   fieldName,
-  valueToUpdate
+  valueToUpdate,
+  valueTotal
 ) {
   try {
     // Find the FifteenDayWorkSummary entry by its unique identifier
@@ -33,7 +34,7 @@ async function updateFieldInFifteenDayWorkSummary(
     // Update the specified field in the CompanyWorks entry
     await CompanyWorks.findByIdAndUpdate(
       companyWorksId,
-      { $inc: { [fieldName]: valueToUpdate, total: valueToUpdate } },
+      { $inc: { [fieldName]: valueToUpdate, total: valueTotal } },
       { session }
     );
 

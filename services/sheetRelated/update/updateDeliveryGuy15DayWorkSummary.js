@@ -6,6 +6,7 @@ const updateDeliveryGuy15DayWorkSummary = async (
   deliveryGuyId,
   fieldName,
   valueToUpdate,
+  valueTotal,
   session
 ) => {
   try {
@@ -41,7 +42,7 @@ const updateDeliveryGuy15DayWorkSummary = async (
 
     // Update the specified field in DeliveryGuyWork and the 'total' field in DeliveryGuy15DayWorkSummary
     deliveryGuyWork[fieldName] += valueToUpdate;
-    deliveryGuyWork.total += valueToUpdate;
+    deliveryGuyWork.total += valueTotal;
     await deliveryGuyWork.save({ session });
 
     // Update the 'total' field in DeliveryGuy15DayWorkSummary

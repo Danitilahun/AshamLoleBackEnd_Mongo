@@ -6,6 +6,7 @@ const updateStaffSalaryTableEntry = async (
   staffId,
   fieldName,
   valueToUpdate,
+  valueTotal,
   session
 ) => {
   try {
@@ -41,12 +42,13 @@ const updateStaffSalaryTableEntry = async (
 
     // Update the specified field in StaffWorkerInfo and the 'total' field in StaffSalaryTable
     staffWorkerInfo[fieldName] += valueToUpdate;
-    staffWorkerInfo.total += valueToUpdate;
+    staffWorkerInfo.total += valueTotal;
     await staffWorkerInfo.save({ session });
 
     // Update the 'total' field in StaffSalaryTable
     staffSalaryTableEntry.markModified("personWork");
     await staffSalaryTableEntry.save({ session });
+
     return { message: "StaffSalaryTable entry updated successfully" };
   } catch (error) {
     return { error: error.message };

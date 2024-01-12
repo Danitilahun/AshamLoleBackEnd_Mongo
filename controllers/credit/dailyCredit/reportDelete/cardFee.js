@@ -9,6 +9,7 @@ const CardFee = async (data, session) => {
       data.deliveryguyId,
       "cardFee",
       1,
+      0,
       session
     );
 
@@ -19,6 +20,7 @@ const CardFee = async (data, session) => {
       data.deliveryguyId,
       "cardFee",
       1,
+      0,
       session
     );
 
@@ -29,7 +31,8 @@ const CardFee = async (data, session) => {
       data.activeDGSummery,
       data.deliveryguyId,
       "cardFee",
-      1
+      1,
+      0
     );
   } catch (error) {
     console.error("Error in updateDeliveryAndDashboard:", error);

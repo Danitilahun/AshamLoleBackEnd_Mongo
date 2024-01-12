@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
 const DeliveryGuySalaryInfo = require("../../../models/table/work/deliveryGuySalaryInfoSchema");
 
@@ -7,11 +6,9 @@ const updateDeliveryGuySalaryTable = async (
   deliveryGuyId,
   fieldName,
   valueToUpdate,
+  valueTotal,
   session
 ) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
   try {
     // Find the DeliveryGuySalaryTable entry by its unique identifier
     const summary = await DeliveryGuySalaryTable.findById(summaryId).session(
@@ -47,21 +44,18 @@ const updateDeliveryGuySalaryTable = async (
 
     // Update the specified field in DeliveryGuySalaryInfo and the 'total' field in DeliveryGuySalaryTable
     deliveryGuyWork[fieldName] += valueToUpdate;
-    deliveryGuyWork.total += valueToUpdate;
+    deliveryGuyWork.total += valueTotal;
     await deliveryGuyWork.save({ session });
 
     // Update the 'total' field in DeliveryGuySalaryTable
     summary.markModified("personWork");
     await summary.save({ session });
 
-    await session.commitTransaction();
-    session.endSession();
-
     return { message: "DeliveryGuySalaryTable entry updated successfully" };
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-    return { error: error.message };
+    throw new Error(
+      `Error updating DeliveryGuySalaryTable entry with ID ${summaryId}: ${error}`
+    );
   }
 };
 
