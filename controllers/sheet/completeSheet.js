@@ -4,6 +4,9 @@ const deleteDailyCreditsByBranchId = require("../../services/sheetRelated/delete
 const deleteSheetRelatedDocumentsByBranchId = require("../../services/sheetRelated/deleteSheetRelatedDocumentsByBranchId");
 const deleteStaffCreditsByBranchId = require("../../services/sheetRelated/deleteStaffCreditsByBranchId");
 const updateBranchWithSession = require("../../services/sheetRelated/updateBranchWithSession");
+const calculateAndUpdateTotalDeliveryGuySalaryTable = require("../../services/total/calculateAndUpdateTotalDeliveryGuySalaryTable");
+const calculateAndUpdateTotalStaffSalaryTable = require("../../services/total/calculateAndUpdateTotalStaffSalaryTable");
+const calculateCompanyWorkTotal = require("../../services/total/calculateCompanyWorkTotal");
 
 const ChangeSheetStatus = async (req, res) => {
   const session = await startSession();
@@ -31,8 +34,28 @@ const ChangeSheetStatus = async (req, res) => {
     );
 
     await deleteSheetRelatedDocumentsByBranchId(branchId, session);
+
     const totalCredit = await updateAndCalculateBranchTotalCredit(
       data.branchId,
+      session
+    );
+
+    const totalStaffInfo = await calculateAndUpdateTotalStaffSalaryTable(
+      data.branchId,
+      data.sheetId,
+      session
+    );
+
+    const totalDeliveryGuyInfo =
+      await calculateAndUpdateTotalDeliveryGuySalaryTable(
+        data.branchId,
+        data.sheetId,
+        session
+      );
+
+    const totalSummeryInfo = await calculateCompanyWorkTotal(
+      data.branchId,
+      data.sheetId,
       session
     );
 
