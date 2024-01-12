@@ -24,6 +24,8 @@ const ChangeSheetStatus = async (req, res) => {
       session
     );
 
+    await deleteStaffCreditsByBranchId(branchId);
+
     res.status(200).json({
       message: `Sheet status successfully changed to Completed.`,
     });
