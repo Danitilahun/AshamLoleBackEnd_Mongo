@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const CompanyWorks = require("../path-to-company-works-model"); // Replace with the actual path
+const DailyTable = require("../../models/table/DailyTable");
 
 const calculateAndUpdateTotalDailyTable = async (
   branchId,
