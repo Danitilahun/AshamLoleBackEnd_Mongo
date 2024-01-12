@@ -26,7 +26,7 @@ const deleteBonus = async (req, res) => {
     if (deletedBonus.placement === "DeliveryGuy") {
       await updateDeliveryGuySalaryTable(
         branch.activeDeliverySalaryTable,
-        deletedBonus.deliveryguyId,
+        deletedBonus.employeeId,
         "bonus",
         -deletedBonus.amount,
         -deletedBonus.amount,

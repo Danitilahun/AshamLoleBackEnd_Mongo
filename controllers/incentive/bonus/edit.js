@@ -33,7 +33,7 @@ const editBonus = async (req, res) => {
     if (data.placement === "DeliveryGuy") {
       await updateDeliveryGuySalaryTable(
         branch.activeDeliverySalaryTable,
-        data.deliveryguyId,
+        deletedBonus.employeeId,
         "bonus",
         bonusDifference,
         bonusDifference,
