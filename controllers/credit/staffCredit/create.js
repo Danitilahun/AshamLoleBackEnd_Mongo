@@ -7,6 +7,8 @@ const checkTotal = require("../../../services/creditRelated/checkTotal");
 const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
 const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 const updateStaffSalaryTableEntry = require("../../../services/sheetRelated/update/updateStaffSalaryTableEntry");
+const StaffSalaryTable = require("../../../models/table/salary/StaffSalaryTable");
+const StaffWorkerInfo = require("../../../models/table/work/staffWorkerInfoSchema");
 
 const createStaffCredit = async (req, res) => {
   const session = await startSession();
@@ -29,7 +31,7 @@ const createStaffCredit = async (req, res) => {
         branch.activeStaffSalarySheet,
         data.employeeId,
         StaffSalaryTable,
-        StaffWork,
+        StaffWorkerInfo,
         session
       );
     }
