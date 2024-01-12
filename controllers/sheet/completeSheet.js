@@ -1,3 +1,4 @@
+const updateAndCalculateBranchTotalCredit = require("../../services/creditRelated/updateAndCalculateBranchTotalCredit");
 const checkPreviousSheet = require("../../services/sheetRelated/checkPreviousSheet");
 const deleteDailyCreditsByBranchId = require("../../services/sheetRelated/deleteDailyCreditsByBranchId");
 const deleteSheetRelatedDocumentsByBranchId = require("../../services/sheetRelated/deleteSheetRelatedDocumentsByBranchId");
@@ -30,6 +31,10 @@ const ChangeSheetStatus = async (req, res) => {
     );
 
     await deleteSheetRelatedDocumentsByBranchId(branchId, session);
+    const totalCredit = await updateAndCalculateBranchTotalCredit(
+      data.branchId,
+      session
+    );
 
     // Commit the transaction if successful
     await session.commitTransaction();

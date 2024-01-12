@@ -1,9 +1,11 @@
 const BranchTotalCredit = require("../../models/branchRelatedSchema/branchTotalCredit");
 
-const updateAndCalculateBranchTotalCredit = async (branchId) => {
+const updateAndCalculateBranchTotalCredit = async (branchId, session) => {
   try {
-    // Retrieve BranchTotalCredit document by branchId
-    let branchTotalCredit = await BranchTotalCredit.findOne({ branchId });
+    // Retrieve BranchTotalCredit document by branchId within the provided session
+    let branchTotalCredit = await BranchTotalCredit.findOne({
+      branchId,
+    }).session(session);
 
     if (!branchTotalCredit) {
       throw new Error(
@@ -12,6 +14,7 @@ const updateAndCalculateBranchTotalCredit = async (branchId) => {
     }
 
     const oldTotal = branchTotalCredit.total;
+
     // Calculate the new total by reducing staffCredit and dailyCredit
     // Update the document with the new total and reduced staffCredit, dailyCredit
     await BranchTotalCredit.findOneAndUpdate(
@@ -24,7 +27,7 @@ const updateAndCalculateBranchTotalCredit = async (branchId) => {
           branchTotalCredit.staffCredit -
           branchTotalCredit.dailyCredit,
       },
-      { new: true } // Return the updated document
+      { new: true, session } // Return the updated document within the provided session
     );
 
     if (!branchTotalCredit) {

@@ -17,36 +17,16 @@ const statusSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdDate: {
-      type: String,
-      required: true,
-    },
     date: {
       type: Date,
-      required: true,
-    },
-    ethioTelAccount: {
-      type: String,
       required: true,
     },
     ethioTelBill: {
       type: Number,
       required: true,
     },
-    ethioTelOwnerName: {
-      type: String,
-      required: true,
-    },
     houseRent: {
       type: Number,
-      required: true,
-    },
-    houseRentAccount: {
-      type: String,
-      required: true,
-    },
-    houseRentOwnerName: {
-      type: String,
       required: true,
     },
     taxPersentage: {
@@ -75,14 +55,6 @@ const statusSchema = new mongoose.Schema(
     },
     wifi: {
       type: Number,
-      required: true,
-    },
-    wifiAccount: {
-      type: String,
-      required: true,
-    },
-    wifiOwnerName: {
-      type: String,
       required: true,
     },
     others: [othersSchema],
