@@ -1,5 +1,6 @@
 const checkPreviousSheet = require("../../services/sheetRelated/checkPreviousSheet");
 const deleteDailyCreditsByBranchId = require("../../services/sheetRelated/deleteDailyCreditsByBranchId");
+const deleteSheetRelatedDocumentsByBranchId = require("../../services/sheetRelated/deleteSheetRelatedDocumentsByBranchId");
 const deleteStaffCreditsByBranchId = require("../../services/sheetRelated/deleteStaffCreditsByBranchId");
 const updateBranchWithSession = require("../../services/sheetRelated/updateBranchWithSession");
 
@@ -28,8 +29,7 @@ const ChangeSheetStatus = async (req, res) => {
       session
     );
 
-    await deleteStaffCreditsByBranchId(branchId);
-    await deleteDailyCreditsByBranchId(branchId, session);
+    await deleteSheetRelatedDocumentsByBranchId(branchId, session);
 
     // Commit the transaction if successful
     await session.commitTransaction();
