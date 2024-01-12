@@ -11,12 +11,10 @@ const deleteBonus = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const data = req.body;
-    const branch = await Branch.findById(data.branchId);
 
     // Find the existing bonus document by ID within the session
     const deletedBonus = await Bonus.findByIdAndDelete(id).session(session);
-
+    const branch = await Branch.findById(deletedBonus.branchId);
     if (!deletedBonus) {
       // Abort the transaction and end the session if bonus not found
       await session.abortTransaction();
