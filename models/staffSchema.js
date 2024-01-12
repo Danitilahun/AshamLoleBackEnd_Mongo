@@ -5,7 +5,6 @@ const StaffSchema = new Schema(
   {
     bankAccount: String,
     branchId: String,
-    createdAt: Date,
     fullAddress: String,
     fullName: String,
     paid: Boolean,
