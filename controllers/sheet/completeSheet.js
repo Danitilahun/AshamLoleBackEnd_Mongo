@@ -13,6 +13,12 @@ const ChangeSheetStatus = async (req, res) => {
     await updateBranchWithSession(
       data.branchId,
       {
+        activeSheet: "",
+        activeCalculator: "",
+        activeDailySummery: "",
+        activeDGSummery: "",
+        activeDeliverySalaryTable: "",
+        activeStaffSalarySheet: "",
         sheetStatus: "Pending",
       },
       session
