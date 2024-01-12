@@ -26,7 +26,7 @@ const ChangeSheetStatus = async (req, res) => {
         activeDGSummery: "",
         activeDeliverySalaryTable: "",
         activeStaffSalarySheet: "",
-        sheetStatus: "Pending",
+        sheetStatus: "Completed",
       },
       session
     );

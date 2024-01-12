@@ -60,6 +60,46 @@ const statusSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Pre-save middleware to populate some fields from the Branch model
+statusSchema.pre("save", async function (next) {
+  try {
+    const branch = await Branch.findOne({ _id: this.branchId });
+    if (branch) {
+      this.ethioTelBill = branch.ethioTelBill;
+      this.houseRent = branch.houseRent;
+      this.taxPercentage = branch.taxPercentage;
+      this.wifi = branch.wifi;
+
+      // Populate others array
+      this.others = [];
+
+      if (branch.expenseOneName && branch.expenseOneAmount) {
+        this.others.push({
+          name: branch.expenseOneName,
+          amount: branch.expenseOneAmount,
+        });
+      }
+
+      if (branch.expenseTwoName && branch.expenseTwoAmount) {
+        this.others.push({
+          name: branch.expenseTwoName,
+          amount: branch.expenseTwoAmount,
+        });
+      }
+
+      if (branch.expenseThreeName && branch.expenseThreeAmount) {
+        this.others.push({
+          name: branch.expenseThreeName,
+          amount: branch.expenseThreeAmount,
+        });
+      }
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 const Status = mongoose.model("Status", statusSchema);
 
 module.exports = Status;
