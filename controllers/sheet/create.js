@@ -67,6 +67,7 @@ const createSheet = async (req, res) => {
         activeDGSummery: summary15Day._id,
         activeDeliverySalaryTable: deliveryGuySalary._id,
         activeStaffSalarySheet: staffSalary._id,
+        sheetStatus: "Pending",
       },
       session
     );
