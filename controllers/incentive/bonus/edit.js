@@ -4,32 +4,8 @@ const Bonus = require("../../../models/incentive/bonusSchema");
 const editBonus = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      sheetId,
-      amount,
-      branchId,
-      date,
-      employeeId,
-      employeeName,
-      placement,
-      reason,
-    } = req.body;
-
-    const updatedBonus = await Bonus.findByIdAndUpdate(
-      id,
-      {
-        sheetId,
-        amount,
-        branchId,
-        date,
-        employeeId,
-        employeeName,
-        placement,
-        reason,
-      },
-      { new: true }
-    );
-
+    const data = req.body;
+    const updatedBonus = await Bonus.findByIdAndUpdate(id, data, { new: true });
     if (!updatedBonus) {
       return res.status(404).json({ message: "Bonus not found" });
     }

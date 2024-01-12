@@ -1,33 +1,28 @@
+const { startSession } = require("mongoose");
 const Bonus = require("../../../models/incentive/bonusSchema");
 
 // Create a new bonus
 const createBonus = async (req, res) => {
+  const session = await startSession();
+  session.startTransaction();
+
   try {
-    const {
-      sheetId,
-      amount,
-      branchId,
-      date,
-      employeeId,
-      employeeName,
-      placement,
-      reason,
-    } = req.body;
+    const data = req.body;
 
-    const newBonus = new Bonus({
-      sheetId,
-      amount,
-      branchId,
-      date,
-      employeeId,
-      employeeName,
-      placement,
-      reason,
-    });
+    // Create a new bonus document within the session
+    const newBonus = new Bonus(data);
+    const savedBonus = await newBonus.save({ session });
 
-    const savedBonus = await newBonus.save();
+    // Commit the transaction if successful
+    await session.commitTransaction();
+    session.endSession();
+
     res.status(201).json(savedBonus);
   } catch (error) {
+    // Abort the transaction and end the session in case of an error
+    await session.abortTransaction();
+    session.endSession();
+
     res.status(500).json({ message: error.message });
   }
 };
