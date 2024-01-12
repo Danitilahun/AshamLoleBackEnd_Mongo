@@ -1,14 +1,26 @@
 const Bonus = require("../../../models/incentive/bonusSchema");
+const { startSession } = require("mongoose");
 
 // Edit an existing bonus
 const editBonus = async (req, res) => {
+  const session = await startSession();
+  session.startTransaction();
   try {
     const { id } = req.params;
     const data = req.body;
-    const updatedBonus = await Bonus.findByIdAndUpdate(id, data, { new: true });
-    if (!updatedBonus) {
-      return res.status(404).json({ message: "Bonus not found" });
+    // Find the existing bonus document by ID
+    const existingBonus = await Bonus.findById(id).session(session);
+
+    if (!existingBonus) {
+      throw new Error("Bonus not found for the given ID");
     }
+
+    Object.assign(existingBonus, data);
+    const updatedBonus = await existingBonus.save({ session });
+
+    // Commit the transaction if successful
+    await session.commitTransaction();
+    session.endSession();
 
     res.status(200).json(updatedBonus);
   } catch (error) {
