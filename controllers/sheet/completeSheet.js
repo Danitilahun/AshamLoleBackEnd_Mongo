@@ -1,4 +1,5 @@
 const checkPreviousSheet = require("../../services/sheetRelated/checkPreviousSheet");
+const updateBranchWithSession = require("../../services/sheetRelated/updateBranchWithSession");
 
 const ChangeSheetStatus = async (req, res) => {
   try {
@@ -8,6 +9,14 @@ const ChangeSheetStatus = async (req, res) => {
     if (prevSheetCheckResult) {
       return res.status(400).json(prevSheetCheckResult);
     }
+
+    await updateBranchWithSession(
+      data.branchId,
+      {
+        sheetStatus: "Pending",
+      },
+      session
+    );
 
     res.status(200).json({
       message: `Sheet status successfully changed to Completed.`,
