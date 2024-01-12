@@ -5,6 +5,7 @@ const { startSession } = require("mongoose");
 const editBonus = async (req, res) => {
   const session = await startSession();
   session.startTransaction();
+
   try {
     const { id } = req.params;
     const data = req.body;
