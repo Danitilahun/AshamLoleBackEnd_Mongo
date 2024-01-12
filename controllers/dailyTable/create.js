@@ -3,6 +3,7 @@ const Deliveryguy = require("../../models/deliveryguySchema");
 const DeliveryGuyWork = require("../../models/deliveryGuyWorkSchema");
 const DailyTable = require("../../models/DailyTable");
 const updateBranchWithSession = require("../../services/sheetRelated/updateBranchWithSession");
+const Branch = require("../../models/branchRelatedSchema/branchSchema");
 
 const createDailyTable = async (req, res) => {
   const session = await mongoose.startSession();
@@ -11,6 +12,11 @@ const createDailyTable = async (req, res) => {
   try {
     const { branchId, sheetId, date } = req.body;
 
+    const branch = await Branch.findById(branchId);
+
+    if (branch.date === date) {
+      return res.status(400).json({ message: "Daily table already created" });
+    }
     // Fetch all delivery guys based on the given branchId
     const deliveryGuys = await Deliveryguy.find({ branchId }).session(session);
 
