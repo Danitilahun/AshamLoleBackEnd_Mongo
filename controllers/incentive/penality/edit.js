@@ -34,7 +34,7 @@ const editPenalty = async (req, res) => {
         branch.activeDeliverySalaryTable,
         data.employeeId,
         "penalty",
-        -penaltyDifference,
+        penaltyDifference,
         -penaltyDifference,
         session
       );
@@ -43,7 +43,7 @@ const editPenalty = async (req, res) => {
         branch.activeStaffSalarySheet,
         data.employeeId,
         "penalty",
-        -penaltyDifference,
+        penaltyDifference,
         -penaltyDifference,
         session
       );

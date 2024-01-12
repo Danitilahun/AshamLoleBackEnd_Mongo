@@ -22,7 +22,7 @@ const createPenalty = async (req, res) => {
         branch.activeDeliverySalaryTable,
         data.employeeId,
         "penalty",
-        -parseFloat(data.amount ? data.amount : 0),
+        parseFloat(data.amount ? data.amount : 0),
         -parseFloat(data.amount ? data.amount : 0),
         session
       );
@@ -31,7 +31,7 @@ const createPenalty = async (req, res) => {
         branch.activeStaffSalarySheet,
         data.employeeId,
         "penalty",
-        -parseFloat(data.amount ? data.amount : 0),
+        parseFloat(data.amount ? data.amount : 0),
         -parseFloat(data.amount ? data.amount : 0),
         session
       );
