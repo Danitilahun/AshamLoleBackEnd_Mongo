@@ -45,7 +45,6 @@ const expenseCreditSources = [
   "cardDistribute",
   "waterDistribute",
   "wifiDistribute",
-  "hotelProfit",
 ];
 
 // Schema for DailyExpenseCredit with 'type' enum
@@ -68,6 +67,7 @@ const gainCreditSources = [
   "cardDistribute",
   "waterDistribute",
   "wifiDistribute",
+  "hotelProfit",
 ];
 
 // Schema for DailyGainCredit with 'type' enum

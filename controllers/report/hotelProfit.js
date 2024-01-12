@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const HotelProfit = require("../models/HotelProfit"); // Update the path to your HotelProfit model
-const { DailyExpenseCredit } = require("../../models/credit/dailyCreditSchema");
+const { DailyGainCredit } = require("../../models/credit/dailyCreditSchema");
 const updateDailyCredit = require("../../services/reportRelated/updateDailyCredit");
 
 const createHotelProfitAndDailyCredit = async (req, res) => {
@@ -14,7 +14,7 @@ const createHotelProfitAndDailyCredit = async (req, res) => {
     const hotelProfit = new HotelProfit(data);
 
     // Create DailyCredit document
-    const dailyCredit = new DailyExpenseCredit({
+    const dailyCredit = new DailyGainCredit({
       sheetId: data.sheetId,
       amount: data.amount,
       branchId: data.branchId,

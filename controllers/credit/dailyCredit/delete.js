@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
-const { DailyCredit } = require("../../../models/credit/dailyCreditSchema");
+const {
+  DailyCredit,
+  DailyExpenseCredit,
+  DailyGainCredit,
+} = require("../../../models/credit/dailyCreditSchema");
 const updateDailyCredit = require("../../../services/reportRelated/updateDailyCredit");
 const updateCredit = require("../../../services/creditRelated/updateCredit");
 
@@ -23,13 +27,23 @@ const deleteCredit = async (req, res) => {
 
     // Fetch the existing credit document
     const existingCredit = await DailyCredit.findById(creditId);
+    const existingExpenseCredit = await DailyExpenseCredit.findById(creditId);
+    const existingGainCredit = await DailyGainCredit.findById(creditId);
 
-    if (!existingCredit) {
-      return res.status(404).json({ message: "Credit document not found." });
+    if (!existingCredit && !existingExpenseCredit && !existingGainCredit) {
+      return res.status(404).json({
+        message: "Credit document with the given ID does not exist.",
+      });
     }
 
+    if (existingCredit) {
+      await existingCredit.remove();
+    } else if (existingExpenseCredit) {
+      await existingExpenseCredit.remove();
+    } else if (existingGainCredit) {
+      await existingGainCredit.remove();
+    }
     // Delete the credit document
-    await existingCredit.remove();
 
     // Update the delivery guy's document with negative amount
     await updateDailyCredit(
