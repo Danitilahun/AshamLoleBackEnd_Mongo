@@ -1,4 +1,5 @@
 const CompanyGain = require("../../../../models/price/companyGainSchema");
+const updateStatus = require("../../../../services/reportRelated/updateStatus");
 const updateDailyTableEntry = require("../../../../services/tableRelated/updateDailyTableEntry");
 
 const CardDistribute = async (data, session) => {
@@ -42,17 +43,6 @@ const CardDistribute = async (data, session) => {
       "cardDistribute",
       data.numberOfCard,
       data.numberOfCard * cartDistributeGain.card_distribute_gain
-    );
-
-    // Fourth update: Salary of the delivery guy table
-
-    await updateSheetStatus(
-      db,
-      batch,
-      data.active,
-      "totalIncome",
-      newIncome.total.total +
-        data.numberOfCard * companyGain.card_distribute_gain
     );
   } catch (error) {
     console.error("Error in CardFee:", error);
