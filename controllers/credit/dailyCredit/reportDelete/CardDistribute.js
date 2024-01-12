@@ -1,5 +1,7 @@
 const CompanyGain = require("../../../../models/price/companyGainSchema");
 const updateStatus = require("../../../../services/reportRelated/updateStatus");
+const updateDeliveryGuy15DayWorkSummary = require("../../../../services/sheetRelated/update/updateDeliveryGuy15DayWorkSummary");
+const updateFieldInFifteenDayWorkSummary = require("../../../../services/sheetRelated/update/updateFieldInFifteenDayWorkSummary");
 const updateDailyTableEntry = require("../../../../services/tableRelated/updateDailyTableEntry");
 
 const CardDistribute = async (data, session) => {
@@ -39,7 +41,7 @@ const CardDistribute = async (data, session) => {
     await updateFieldInFifteenDayWorkSummary(
       session,
       data.activeDGSummery,
-      data.deliveryguyId,
+      data.date,
       "cardDistribute",
       data.numberOfCard,
       data.numberOfCard * cartDistributeGain.card_distribute_gain

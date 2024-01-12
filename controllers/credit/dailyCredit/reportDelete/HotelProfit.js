@@ -1,15 +1,17 @@
 const updateDeliveryGuy15DayWorkSummary = require("../../../../services/sheetRelated/update/updateDeliveryGuy15DayWorkSummary");
 const updateFieldInFifteenDayWorkSummary = require("../../../../services/sheetRelated/update/updateFieldInFifteenDayWorkSummary");
-const CardFee = async (data, session) => {
+const updateDailyTableEntry = require("../../../../services/tableRelated/updateDailyTableEntry");
+
+const HotelProfit = async (data, session) => {
   try {
     // First update: Update the "tables" collection with cardFee: 1
 
     await updateDailyTableEntry(
       data.activeTable,
       data.deliveryguyId,
-      "cardFee",
-      1,
-      0,
+      "hotelProfit",
+      parseFloat(data.amount),
+      parseFloat(data.amount),
       session
     );
 
@@ -18,9 +20,9 @@ const CardFee = async (data, session) => {
     await updateDeliveryGuy15DayWorkSummary(
       data.activeDailySummery,
       data.deliveryguyId,
-      "cardFee",
-      1,
-      0,
+      "hotelProfit",
+      parseFloat(data.amount),
+      parseFloat(data.amount),
       session
     );
 
@@ -30,14 +32,14 @@ const CardFee = async (data, session) => {
       session,
       data.activeDGSummery,
       data.date,
-      "cardFee",
-      1,
-      0
+      "hotelProfit",
+      parseFloat(data.amount),
+      parseFloat(data.amount)
     );
   } catch (error) {
-    console.error("Error in updateDeliveryAndDashboard:", error);
+    console.error("Error in HotelProfit:", error);
     throw error;
   }
 };
 
-module.exports = CardFee;
+module.exports = HotelProfit;
