@@ -63,6 +63,7 @@ const statusSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 // Pre-save middleware to populate some fields from the Branch model
 statusSchema.pre("save", async function (next) {
   try {
@@ -74,12 +75,16 @@ statusSchema.pre("save", async function (next) {
       this.taxPercentage = branch.taxPercentage;
       this.wifi = branch.wifi;
 
+      // Calculate totalTax using branch taxPercentage times totalIncome
+      this.totalTax = (branch.taxPercentage / 100) * this.totalIncome;
+
       // Add values to totalExpense
       this.totalExpense =
         branch.ethioTelBill +
         branch.houseRent +
         branch.taxPercentage +
-        branch.wifi;
+        branch.wifi +
+        this.totalTax; // Adding totalTax
 
       // Populate others array
       this.others = [];
@@ -107,6 +112,9 @@ statusSchema.pre("save", async function (next) {
         });
         this.totalExpense += branch.expenseThreeAmount; // Add to totalExpense
       }
+
+      // Add totalStaffSalary and totalDeliveryGuySalary to totalExpense
+      this.totalExpense += this.totalStaffSalary + this.totalDeliveryGuySalary;
     }
     next();
   } catch (err) {
