@@ -9,7 +9,7 @@ const createDailyTable = async (req, res) => {
   session.startTransaction();
 
   try {
-    const { branchId, sheetId } = req.body;
+    const { branchId, sheetId, date } = req.body;
 
     // Fetch all delivery guys based on the given branchId
     const deliveryGuys = await Deliveryguy.find({ branchId }).session(session);
@@ -31,8 +31,8 @@ const createDailyTable = async (req, res) => {
     // Create DailyTable entry
     const dailyTable = new DailyTable({
       personWork: personWorkEntries,
-      branchId,
-      sheetId,
+      branchId: branchId,
+      sheetId: sheetId,
     });
 
     const savedDailyTable = await dailyTable.save({ session });
@@ -40,6 +40,7 @@ const createDailyTable = async (req, res) => {
       branchId,
       {
         activeTable: savedDailyTable._id,
+        date: date,
       },
       session
     );

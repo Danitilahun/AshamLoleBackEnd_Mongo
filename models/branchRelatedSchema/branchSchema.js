@@ -116,6 +116,10 @@ const branchSchema = new mongoose.Schema(
       type: String,
     },
 
+    date: {
+      type: String,
+    },
+
     managerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",
