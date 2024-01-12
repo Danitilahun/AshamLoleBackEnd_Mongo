@@ -17,9 +17,9 @@ const createStaffCredit = async (req, res) => {
   try {
     const data = req.body;
     const branch = await Branch.findById(data.branchId);
-    let employeCredit;
+    let employeeTotal;
     if (data.placement === "DeliveryGuy") {
-      employeCredit = await checkTotal(
+      employeeTotal = await checkTotal(
         branch.activeDeliverySalaryTable,
         data.employeeId,
         DeliveryGuySalaryTable,
@@ -27,7 +27,7 @@ const createStaffCredit = async (req, res) => {
         session
       );
     } else {
-      employeCredit = await checkTotal(
+      employeeTotal = await checkTotal(
         branch.activeStaffSalarySheet,
         data.employeeId,
         StaffSalaryTable,
@@ -36,7 +36,7 @@ const createStaffCredit = async (req, res) => {
       );
     }
 
-    if (employeCredit < data.amount) {
+    if (employeeTotal < data.amount) {
       return res.status(400).json({
         message: "Credit amount is greater than the total credit.",
       });
