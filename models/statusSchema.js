@@ -51,6 +51,10 @@ const statusSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    totalCredit: {
+      type: Number,
+      default: 0,
+    },
     wifi: {
       type: Number,
       required: true,
@@ -59,16 +63,23 @@ const statusSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
 // Pre-save middleware to populate some fields from the Branch model
 statusSchema.pre("save", async function (next) {
   try {
     const branch = await Branch.findOne({ _id: this.branchId });
     if (branch) {
+      // Assign values from branch to corresponding fields in Status
       this.ethioTelBill = branch.ethioTelBill;
       this.houseRent = branch.houseRent;
       this.taxPercentage = branch.taxPercentage;
       this.wifi = branch.wifi;
+
+      // Add values to totalExpense
+      this.totalExpense =
+        branch.ethioTelBill +
+        branch.houseRent +
+        branch.taxPercentage +
+        branch.wifi;
 
       // Populate others array
       this.others = [];
@@ -78,6 +89,7 @@ statusSchema.pre("save", async function (next) {
           name: branch.expenseOneName,
           amount: branch.expenseOneAmount,
         });
+        this.totalExpense += branch.expenseOneAmount; // Add to totalExpense
       }
 
       if (branch.expenseTwoName && branch.expenseTwoAmount) {
@@ -85,6 +97,7 @@ statusSchema.pre("save", async function (next) {
           name: branch.expenseTwoName,
           amount: branch.expenseTwoAmount,
         });
+        this.totalExpense += branch.expenseTwoAmount; // Add to totalExpense
       }
 
       if (branch.expenseThreeName && branch.expenseThreeAmount) {
@@ -92,6 +105,7 @@ statusSchema.pre("save", async function (next) {
           name: branch.expenseThreeName,
           amount: branch.expenseThreeAmount,
         });
+        this.totalExpense += branch.expenseThreeAmount; // Add to totalExpense
       }
     }
     next();
