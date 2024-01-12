@@ -85,7 +85,7 @@ statusSchema.pre("save", async function (next) {
         branch.houseRent +
         branch.taxPercentage +
         branch.wifi +
-        this.totalTax; // Adding totalTax
+        this.totalTax;
 
       // Populate others array
       this.others = [];
