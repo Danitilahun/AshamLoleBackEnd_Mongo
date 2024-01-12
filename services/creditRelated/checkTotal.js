@@ -1,14 +1,6 @@
-const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
-const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
+const DeliveryGuySalaryTable = require("../../models/table/salary/DeliveryGuySalaryTable");
 
-const updateDeliveryGuySalaryTable = async (
-  summaryId,
-  deliveryGuyId,
-  fieldName,
-  valueToUpdate,
-  valueTotal,
-  session
-) => {
+const checkTotal = async (summaryId, deliveryGuyId, session) => {
   try {
     // Find the DeliveryGuySalaryTable entry by its unique identifier
     const summary = await DeliveryGuySalaryTable.findById(summaryId).session(
@@ -51,7 +43,11 @@ const updateDeliveryGuySalaryTable = async (
     summary.markModified("personWork");
     await summary.save({ session });
 
-    return { message: "DeliveryGuySalaryTable entry updated successfully" };
+    // Return the total value from DeliveryGuySalaryInfo
+    return {
+      total: deliveryGuyWork.total,
+      message: "DeliveryGuySalaryTable entry updated successfully",
+    };
   } catch (error) {
     throw new Error(
       `Error updating DeliveryGuySalaryTable entry with ID ${summaryId}: ${error}`
@@ -59,4 +55,4 @@ const updateDeliveryGuySalaryTable = async (
   }
 };
 
-module.exports = updateDeliveryGuySalaryTable;
+module.exports = checkTotal;

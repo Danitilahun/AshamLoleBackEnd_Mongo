@@ -35,9 +35,9 @@ const createStaffCredit = async (req, res) => {
       await updateDeliveryGuySalaryTable(
         branch.activeDeliverySalaryTable,
         data.deliveryguyId,
-        "staffCredit",
+        "totalCredit",
         parseFloat(data.amount ? data.amount : 0),
-        parseFloat(data.amount ? data.amount : 0),
+        -parseFloat(data.amount ? data.amount : 0),
         session
       );
     }
