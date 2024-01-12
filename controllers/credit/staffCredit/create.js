@@ -1,6 +1,8 @@
 const { startSession } = require("mongoose");
 const StaffCredit = require("../../../models/credit/staffCreditSchema");
 const updateCredit = require("../../../services/creditRelated/updateCredit");
+const updateDeliveryGuySalaryTable = require("../../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
+const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 
 const createStaffCredit = async (req, res) => {
   const session = await startSession();
@@ -27,6 +29,18 @@ const createStaffCredit = async (req, res) => {
       parseFloat(data.amount ? data.amount : 0),
       session
     );
+
+    if (data.placement === "DeliveryGuy") {
+      const branch = await Branch.findById(existingExpenseCredit.branchId);
+      await updateDeliveryGuySalaryTable(
+        branch.activeDeliverySalaryTable,
+        data.deliveryguyId,
+        "staffCredit",
+        parseFloat(data.amount ? data.amount : 0),
+        parseFloat(data.amount ? data.amount : 0),
+        session
+      );
+    }
 
     await session.commitTransaction();
     session.endSession();

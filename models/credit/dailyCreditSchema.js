@@ -28,6 +28,10 @@ const DailyCreditSchema = new Schema(
       type: String,
       required: true,
     },
+    date: {
+      type: Date,
+      required: true,
+    },
     source: {
       type: String,
       required: true,

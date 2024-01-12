@@ -1,5 +1,6 @@
 const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
 const DeliveryGuySalaryInfo = require("../../../models/table/work/deliveryGuySalaryInfoSchema");
+const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 
 const updateDeliveryGuySalaryTable = async (
   summaryId,
@@ -32,7 +33,7 @@ const updateDeliveryGuySalaryTable = async (
     const deliveryGuyWorkId = personWork.work;
 
     // Find the DeliveryGuySalaryInfo using the ID
-    const deliveryGuyWork = await DeliveryGuySalaryInfo.findById(
+    const deliveryGuyWork = await DeliveryGuyWork.findById(
       deliveryGuyWorkId
     ).session(session);
 
