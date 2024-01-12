@@ -136,10 +136,6 @@ const branchSchema = new mongoose.Schema(
       type: String,
     },
 
-    activeStatus: {
-      type: String,
-    },
-
     activeCalculator: {
       type: String,
     },
