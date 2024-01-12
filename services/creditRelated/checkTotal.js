@@ -1,15 +1,16 @@
-const DeliveryGuySalaryTable = require("../../models/table/salary/DeliveryGuySalaryTable");
-const DeliveryGuyWork = require("../../models/table/work/deliveryGuyWorkSchema");
-
-const checkTotal = async (salaryId, deliveryGuyId, session) => {
+const checkTotal = async (
+  salaryId,
+  deliveryGuyId,
+  TableModel,
+  WorkModel,
+  session
+) => {
   try {
-    // Find the DeliveryGuySalaryTable entry by its unique identifier
-    const summary = await DeliveryGuySalaryTable.findById(salaryId).session(
-      session
-    );
+    // Find the TableModelA entry by its unique identifier
+    const summary = await TableModel.findById(salaryId).session(session);
 
     if (!summary) {
-      throw new Error("DeliveryGuySalaryTable not found for the given id");
+      throw new Error("TableModelA not found for the given id");
     }
 
     // Find the PersonWorkSchema for the given deliveryGuyId
@@ -21,25 +22,23 @@ const checkTotal = async (salaryId, deliveryGuyId, session) => {
       throw new Error("PersonWorkSchema not found for the given delivery guy");
     }
 
-    // Get the DeliveryGuySalaryInfo ID from PersonWorkSchema
+    // Get the WorkModel ID from PersonWorkSchema
     const deliveryGuyWorkId = personWork.work;
 
-    // Find the DeliveryGuySalaryInfo using the ID
-    const deliveryGuyWork = await DeliveryGuyWork.findById(
-      deliveryGuyWorkId
-    ).session(session);
+    // Find the WorkModel using the ID
+    const deliveryGuyWork = await WorkModel.findById(deliveryGuyWorkId).session(
+      session
+    );
 
     if (!deliveryGuyWork) {
-      throw new Error(
-        "DeliveryGuySalaryInfo not found for the given delivery guy"
-      );
+      throw new Error("WorkModel not found for the given delivery guy");
     }
 
-    // Return the total value from DeliveryGuySalaryInfo
+    // Return the total value from WorkModel
     return deliveryGuyWork.total;
   } catch (error) {
     throw new Error(
-      `Error updating DeliveryGuySalaryTable entry with ID ${salaryId}: ${error}`
+      `Error updating TableModelA entry with ID ${salaryId}: ${error}`
     );
   }
 };

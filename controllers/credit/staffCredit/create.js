@@ -3,6 +3,10 @@ const StaffCredit = require("../../../models/credit/staffCreditSchema");
 const updateCredit = require("../../../services/creditRelated/updateCredit");
 const updateDeliveryGuySalaryTable = require("../../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
+const checkTotal = require("../../../services/creditRelated/checkTotal");
+const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
+const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
+const updateStaffSalaryTableEntry = require("../../../services/sheetRelated/update/updateStaffSalaryTableEntry");
 
 const createStaffCredit = async (req, res) => {
   const session = await startSession();
@@ -10,13 +14,31 @@ const createStaffCredit = async (req, res) => {
 
   try {
     const data = req.body;
-    if (!data || !data.branchId || !data.active) {
-      return res.status(400).json({
-        message:
-          "Request body is missing or empty. Please refresh your browser and try again.",
-      });
+    const branch = await Branch.findById(data.branchId);
+    let employeCredit;
+    if (data.placement === "DeliveryGuy") {
+      employeCredit = await checkTotal(
+        branch.activeDeliverySalaryTable,
+        data.employeeId,
+        DeliveryGuySalaryTable,
+        DeliveryGuyWork,
+        session
+      );
+    } else {
+      employeCredit = await checkTotal(
+        branch.activeStaffSalarySheet,
+        data.employeeId,
+        StaffSalaryTable,
+        StaffWork,
+        session
+      );
     }
 
+    if (employeCredit < data.amount) {
+      return res.status(400).json({
+        message: "Credit amount is greater than the total credit.",
+      });
+    }
     // Create a new staff credit document in MongoDB
     data.date = new Date();
     await StaffCredit.create([data], { session });
@@ -31,10 +53,18 @@ const createStaffCredit = async (req, res) => {
     );
 
     if (data.placement === "DeliveryGuy") {
-      const branch = await Branch.findById(existingExpenseCredit.branchId);
       await updateDeliveryGuySalaryTable(
         branch.activeDeliverySalaryTable,
         data.deliveryguyId,
+        "totalCredit",
+        parseFloat(data.amount ? data.amount : 0),
+        -parseFloat(data.amount ? data.amount : 0),
+        session
+      );
+    } else {
+      await updateStaffSalaryTableEntry(
+        branch.activeStaffSalarySheet,
+        data.employeeId,
         "totalCredit",
         parseFloat(data.amount ? data.amount : 0),
         -parseFloat(data.amount ? data.amount : 0),
