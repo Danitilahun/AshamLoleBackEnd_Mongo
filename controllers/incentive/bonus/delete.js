@@ -1,5 +1,8 @@
 const { startSession } = require("mongoose");
 const Bonus = require("../../../models/incentive/bonusSchema");
+const updateDeliveryGuySalaryTable = require("../../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
+const updateStaffSalaryTableEntry = require("../../../services/sheetRelated/update/updateStaffSalaryTableEntry");
+const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 
 // Delete a bonus
 const deleteBonus = async (req, res) => {
@@ -8,6 +11,10 @@ const deleteBonus = async (req, res) => {
 
   try {
     const { id } = req.params;
+    const data = req.body;
+    const branch = await Branch.findById(data.branchId);
+
+    // Find the existing bonus document by ID within the session
     const deletedBonus = await Bonus.findByIdAndDelete(id).session(session);
 
     if (!deletedBonus) {
@@ -15,6 +22,27 @@ const deleteBonus = async (req, res) => {
       await session.abortTransaction();
       session.endSession();
       return res.status(404).json({ message: "Bonus not found" });
+    }
+
+    // Update the salary table based on placement with the negative bonus amount
+    if (deletedBonus.placement === "DeliveryGuy") {
+      await updateDeliveryGuySalaryTable(
+        branch.activeDeliverySalaryTable,
+        deletedBonus.deliveryguyId,
+        "bonus",
+        -deletedBonus.amount,
+        -deletedBonus.amount,
+        session
+      );
+    } else {
+      await updateStaffSalaryTableEntry(
+        branch.activeStaffSalarySheet,
+        deletedBonus.employeeId,
+        "bonus",
+        -deletedBonus.amount,
+        -deletedBonus.amount,
+        session
+      );
     }
 
     // Commit the transaction if successful

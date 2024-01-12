@@ -36,7 +36,7 @@ const editBonus = async (req, res) => {
         data.deliveryguyId,
         "bonus",
         bonusDifference,
-        -bonusDifference,
+        bonusDifference,
         session
       );
     } else {
@@ -45,7 +45,7 @@ const editBonus = async (req, res) => {
         data.employeeId,
         "bonus",
         bonusDifference,
-        -bonusDifference,
+        bonusDifference,
         session
       );
     }

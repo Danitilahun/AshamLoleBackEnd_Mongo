@@ -23,7 +23,7 @@ const createBonus = async (req, res) => {
         data.deliveryguyId,
         "bonus",
         parseFloat(data.amount ? data.amount : 0),
-        -parseFloat(data.amount ? data.amount : 0),
+        parseFloat(data.amount ? data.amount : 0),
         session
       );
     } else {
@@ -32,7 +32,7 @@ const createBonus = async (req, res) => {
         data.employeeId,
         "bonus",
         parseFloat(data.amount ? data.amount : 0),
-        -parseFloat(data.amount ? data.amount : 0),
+        parseFloat(data.amount ? data.amount : 0),
         session
       );
     }
