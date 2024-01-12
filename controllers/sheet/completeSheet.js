@@ -57,15 +57,19 @@ const ChangeSheetStatus = async (req, res) => {
       session
     );
 
-    await Status({
-      branchId: data.branchId,
-      date: data.date,
-      totalCredit: totalCredit,
-      totalStaffSalary: totalStaffInfo.total,
-      totalDeliveryGuySalary: totalDeliveryGuyInfo.total,
-      totalIncome: totalSummeryInfo.total,
-      session,
-    });
+    // Creating Status document using session
+    await Status.create(
+      {
+        branchId: data.branchId,
+        date: data.date,
+        totalCredit: totalCredit,
+        totalStaffSalary: totalStaffInfo.total,
+        totalDeliveryGuySalary: totalDeliveryGuyInfo.total,
+        totalIncome: totalSummeryInfo.total,
+      },
+      { session }
+    );
+
     // Commit the transaction if successful
     await session.commitTransaction();
     session.endSession();
