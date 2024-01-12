@@ -1,14 +1,18 @@
-const updateDeliveryGuySalaryTable = require("../../../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
+const Branch = require("../../../../models/branchRelatedSchema/branchSchema");
+const updateStaffSalaryTableEntry = require("../../../../services/sheetRelated/update/updateStaffSalaryTableEntry");
 
-const DeliveryGuyHolidayBonus = async (req, res) => {
+const StaffHolidayBonus = async (req, res) => {
   const session = await startSession();
   session.startTransaction();
   try {
     const data = req.body;
-    await updateDeliveryGuySalaryTable(
-      data.activeDeliverySalaryTable,
-      data.deliveryguyId,
-      "bonus",
+
+    const branch = await Branch.findById(data.branchId);
+
+    await updateStaffSalaryTableEntry(
+      branch.activeStaffSalarySheet,
+      data.employeeId,
+      "holidayBonus",
       parseFloat(data.amount ? data.amount : 0),
       parseFloat(data.amount ? data.amount : 0),
       session
@@ -29,4 +33,4 @@ const DeliveryGuyHolidayBonus = async (req, res) => {
   }
 };
 
-module.exports = DeliveryGuyHolidayBonus;
+module.exports = StaffHolidayBonus;

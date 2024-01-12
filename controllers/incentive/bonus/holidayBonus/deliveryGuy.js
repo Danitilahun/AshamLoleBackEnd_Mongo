@@ -25,7 +25,7 @@ const DeliveryGuyHolidayBonus = async (req, res) => {
       await updateDeliveryGuySalaryTable(
         branch.activeDeliverySalaryTable,
         deliveryGuy._id,
-        "bonus",
+        "holidayBonus",
         parseFloat(data.amount ? data.amount : 0),
         parseFloat(data.amount ? data.amount : 0),
         session

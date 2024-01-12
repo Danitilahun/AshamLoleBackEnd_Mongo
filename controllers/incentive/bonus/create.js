@@ -20,7 +20,7 @@ const createBonus = async (req, res) => {
     if (data.placement === "DeliveryGuy") {
       await updateDeliveryGuySalaryTable(
         branch.activeDeliverySalaryTable,
-        data.deliveryguyId,
+        data.employeeId,
         "bonus",
         parseFloat(data.amount ? data.amount : 0),
         parseFloat(data.amount ? data.amount : 0),
