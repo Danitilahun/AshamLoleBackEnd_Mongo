@@ -1,10 +1,10 @@
 const Status = require("../../models/statusSchema");
 
-const updateStatus = async (branchId, increments, session) => {
+const updateStatus = async (statusId, increments, session) => {
   try {
     // Update the Status document for the given branchId using $inc
     const updatedStatus = await Status.findOneAndUpdate(
-      { branchId },
+      statusId,
       { $inc: increments }, // Use $inc to increment specified fields
       { new: true, session } // To return the updated document and use the provided session
     );
