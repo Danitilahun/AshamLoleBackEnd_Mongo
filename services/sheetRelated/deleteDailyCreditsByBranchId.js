@@ -4,7 +4,7 @@ const {
   DailyGainCredit,
 } = require("../../models/credit/dailyCreditSchema");
 // Function to delete all staffCredits with a given branchId
-const deleteStaffCreditsByBranchId = async (branchId, session) => {
+const deleteDailyCreditsByBranchId = async (branchId, session) => {
   try {
     // Delete staffCredits from DailyCredit collection
     await DailyCredit.deleteMany({ branchId, source: "staffCredit" }).session(
@@ -28,4 +28,4 @@ const deleteStaffCreditsByBranchId = async (branchId, session) => {
   }
 };
 
-module.exports = deleteStaffCreditsByBranchId;
+module.exports = deleteDailyCreditsByBranchId;

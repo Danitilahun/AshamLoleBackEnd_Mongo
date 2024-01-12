@@ -77,6 +77,9 @@ const createSheet = async (req, res) => {
     session.endSession();
     res.status(201).json(savedSheet);
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+
     res.status(500).json({ message: error.message });
   }
 };
