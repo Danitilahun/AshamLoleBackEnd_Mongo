@@ -1,7 +1,10 @@
+const CompanyGain = require("../../../models/price/companyGainSchema");
+const DeliveryGuyGain = require("../../../models/price/deliveryGuyGainSchema");
 const Asbeza = require("../../../models/service/asbezaSchema");
 const Card = require("../../../models/service/cardSchema");
 const Water = require("../../../models/service/waterSchema");
 const Wifi = require("../../../models/service/wifiSchema");
+const updateDeliveryGuySalaryTable = require("../../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
 const updateDocumentsStatusByCriteria = require("../../../services/users/deleteDocumentsByCriteria");
 
 const completeTask = async (req, res) => {
@@ -9,9 +12,13 @@ const completeTask = async (req, res) => {
     branchId,
     deliveryguyId,
     date,
-    active,
+    activeSheet,
     activeTable,
+    activeDGSummery,
     activeDailySummery,
+    activeCalculator,
+    activeDeliverySalaryTable,
+    activeStaffSalarySheet,
   } = req.body;
 
   const session = await mongoose.startSession();
@@ -59,6 +66,9 @@ const completeTask = async (req, res) => {
       session
     );
 
+    const companyGain = await CompanyGain.findOne();
+    const deliveryGuyGain = await DeliveryGuyGain.findOne().session(session);
+
     const total = AsbezaCount + CardCount + WaterCount + WifiCount;
 
     if (total == 0) {
@@ -68,22 +78,25 @@ const completeTask = async (req, res) => {
       });
     }
 
-    const result = await payDeliveryGuy(
-      db,
+    await updateDeliveryGuySalaryTable(
+      activeDeliverySalaryTable,
+      deliveryguyId,
       {
-        active: active,
-        branchId: branchId,
-        deliveryguyId: deliveryguyId,
+        asbezaNumber: parseInt(AsbezaCount) * deliveryGuyGain.asbezaPrice,
+        cardCollect:
+          parseInt(CardCount) * deliveryGuyGain.card_distribute_price,
+        waterCollect:
+          parseInt(WaterCount) * deliveryGuyGain.water_distribute_price,
+        wifiCollect:
+          parseInt(WifiCount) * deliveryGuyGain.wifi_distribute_price,
+        total:
+          parseInt(AsbezaCount) * deliveryGuyGain.asbezaPrice +
+          parseInt(CardCount) * deliveryGuyGain.card_distribute_price +
+          parseInt(WaterCount) * deliveryGuyGain.water_distribute_price +
+          parseInt(WifiCount) * deliveryGuyGain.wifi_distribute_price,
       },
-      batch,
-      AsbezaCount,
-      CardCount,
-      WifiCount,
-      WaterCount
+      session
     );
-    const totalExp = result[0];
-    const oldSalary = result[1];
-    const companyGain = await getSingleDocFromCollection("companyGain");
 
     if (!companyGain) {
       return res.status(404).json({
