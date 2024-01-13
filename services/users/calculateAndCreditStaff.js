@@ -1,10 +1,12 @@
 const { DailyCredit } = require("../../models/credit/dailyCreditSchema");
 const StaffCredit = require("../../models/credit/staffCreditSchema");
 
-const calculateAndCreditStaff = async (deliveryguyId) => {
+const calculateAndCreditStaff = async (deliveryguyId, session) => {
   try {
-    // Find all credits with the given deliveryguyId
-    const deliveryguyCredits = await DailyCredit.find({ deliveryguyId });
+    // Find all credits with the given deliveryguyId within the provided session
+    const deliveryguyCredits = await DailyCredit.find({
+      deliveryguyId,
+    }).session(session);
 
     // Calculate total credit amount
     const totalCredit = deliveryguyCredits.reduce(
@@ -28,8 +30,8 @@ const calculateAndCreditStaff = async (deliveryguyId) => {
       reason: "not completing daily credit return",
     });
 
-    // Save the new staff credit entry
-    await newStaffCredit.save();
+    // Save the new staff credit entry within the provided session
+    await newStaffCredit.save({ session });
 
     // Return the total daily credit
     return totalCredit;
