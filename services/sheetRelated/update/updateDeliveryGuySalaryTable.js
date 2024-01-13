@@ -4,9 +4,7 @@ const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchem
 const updateDeliveryGuySalaryTable = async (
   summaryId,
   deliveryGuyId,
-  fieldName,
-  valueToUpdate,
-  valueTotal,
+  incrementFields,
   session
 ) => {
   try {
@@ -42,12 +40,20 @@ const updateDeliveryGuySalaryTable = async (
       );
     }
 
-    // Update the specified field in DeliveryGuySalaryInfo and the 'total' field in DeliveryGuySalaryTable
-    deliveryGuyWork[fieldName] += valueToUpdate;
-    deliveryGuyWork.total += valueTotal;
-    await deliveryGuyWork.save({ session });
+    // Use $inc to atomically increment the specified fields in DeliveryGuySalaryInfo
+    const updateObj = {};
+    for (const [fieldName, incrementValue] of Object.entries(incrementFields)) {
+      updateObj[fieldName] = incrementValue;
+    }
 
-    // Update the 'total' field in DeliveryGuySalaryTable
+    // Update the specified fields atomically using $inc
+    await DeliveryGuyWork.findByIdAndUpdate(
+      deliveryGuyWorkId,
+      { $inc: updateObj },
+      { session }
+    );
+
+    // Increment the 'total' field in DeliveryGuySalaryTable
     summary.markModified("personWork");
     await summary.save({ session });
 
