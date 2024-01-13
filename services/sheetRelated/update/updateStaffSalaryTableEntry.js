@@ -4,9 +4,7 @@ const StaffWorkerInfo = require("../../../models/table/work/staffWorkerInfoSchem
 const updateStaffSalaryTableEntry = async (
   staffSalaryTableId,
   staffId,
-  fieldName,
-  valueToUpdate,
-  valueTotal,
+  incrementFields,
   session
 ) => {
   try {
@@ -40,12 +38,20 @@ const updateStaffSalaryTableEntry = async (
       throw new Error("StaffWorkerInfo not found for the given staff");
     }
 
-    // Update the specified field in StaffWorkerInfo and the 'total' field in StaffSalaryTable
-    staffWorkerInfo[fieldName] += valueToUpdate;
-    staffWorkerInfo.total += valueTotal;
-    await staffWorkerInfo.save({ session });
+    // Use $inc to atomically increment the specified fields in StaffWorkerInfo
+    const updateObj = {};
+    for (const [fieldName, incrementValue] of Object.entries(incrementFields)) {
+      updateObj[fieldName] = incrementValue;
+    }
 
-    // Update the 'total' field in StaffSalaryTable
+    // Update the specified fields atomically using $inc
+    await StaffWorkerInfo.findByIdAndUpdate(
+      staffWorkerInfoId,
+      { $inc: updateObj },
+      { session }
+    );
+
+    // Increment the 'total' field in StaffSalaryTable
     staffSalaryTableEntry.markModified("personWork");
     await staffSalaryTableEntry.save({ session });
 
