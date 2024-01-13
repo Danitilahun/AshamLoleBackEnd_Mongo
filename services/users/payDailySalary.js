@@ -3,8 +3,6 @@ const updateDeliveryGuySalaryTable = require("../sheetRelated/update/updateDeliv
 
 const payDailySalary = async (salaryId, deliveryguyId, session) => {
   try {
-    const Price = await getSingleDocFromCollection("prices");
-
     const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
     const cardDistributePrice = deliveryGuyGainDoc.card_distribute_price;
 
