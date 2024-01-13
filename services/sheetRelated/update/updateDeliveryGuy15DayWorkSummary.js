@@ -4,9 +4,7 @@ const CompanyWorks = require("../../../models/table/work/companyWorksSchema");
 const updateDeliveryGuy15DayWorkSummary = async (
   summaryId,
   deliveryGuyId,
-  fieldName,
-  valueToUpdate,
-  valueTotal,
+  incrementFields,
   session
 ) => {
   try {
@@ -40,12 +38,20 @@ const updateDeliveryGuy15DayWorkSummary = async (
       throw new Error("DeliveryGuyWork not found for the given delivery guy");
     }
 
-    // Update the specified field in DeliveryGuyWork and the 'total' field in DeliveryGuy15DayWorkSummary
-    deliveryGuyWork[fieldName] += valueToUpdate;
-    deliveryGuyWork.total += valueTotal;
-    await deliveryGuyWork.save({ session });
+    // Use $inc to atomically increment the specified fields in DeliveryGuyWork
+    const updateObj = {};
+    for (const [fieldName, incrementValue] of Object.entries(incrementFields)) {
+      updateObj[fieldName] = incrementValue;
+    }
 
-    // Update the 'total' field in DeliveryGuy15DayWorkSummary
+    // Update the specified fields atomically using $inc
+    await CompanyWorks.findByIdAndUpdate(
+      deliveryGuyWorkId,
+      { $inc: updateObj },
+      { session }
+    );
+
+    // Increment the 'total' field in DeliveryGuy15DayWorkSummary
     summary.markModified("personWork");
     await summary.save({ session });
 
