@@ -7,6 +7,7 @@ const Wifi = require("../../../models/service/wifiSchema");
 const updateDeliveryGuy15DayWorkSummary = require("../../../services/sheetRelated/update/updateDeliveryGuy15DayWorkSummary");
 const updateDeliveryGuySalaryTable = require("../../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
 const updateFieldInFifteenDayWorkSummary = require("../../../services/sheetRelated/update/updateFieldInFifteenDayWorkSummary");
+const updateDailyTableEntry = require("../../../services/tableRelated/updateDailyTableEntry");
 const updateDocumentsStatusByCriteria = require("../../../services/users/deleteDocumentsByCriteria");
 
 const completeTask = async (req, res) => {
@@ -139,12 +140,9 @@ const completeTask = async (req, res) => {
     );
 
     // Third update: Individual person's daily work summery
-    const newIncome = await updateTable(
-      db,
-      "tables",
-      active,
+    await updateDailyTableEntry(
+      activeTable,
       deliveryguyId,
-      "total",
       {
         asbezaNumber: parseInt(AsbezaCount),
         cardCollect: parseInt(CardCount),
@@ -153,57 +151,8 @@ const completeTask = async (req, res) => {
         asbezaProfit: parseInt(NOA) * companyGain.asbeza_profit,
         total: parseInt(NOA) * companyGain.asbeza_profit,
       },
-      batch
+      session
     );
-
-    // Check if 'newIncome' is null
-    if (!newIncome) {
-      return res.status(500).json({
-        message: "Failed to update income",
-        type: "error",
-      });
-    }
-
-    // Updating sheet status with totalDeliveryGuySalary
-    const newStatus = await updateSheetStatus(
-      db,
-      batch,
-      active,
-      "totalDeliveryGuySalary",
-      totalExp + oldSalary,
-      newIncome.total.total + parseInt(NOA) * companyGain.asbeza_profit
-    );
-
-    // Check if 'newStatus' is null
-    // console.log(newStatus);
-    if (!newStatus) {
-      return res.status(500).json({
-        message: "Failed to update sheet status",
-        type: "error",
-      });
-    }
-
-    // Updating dashboard with newIncome and newSalaryExpense details
-    await updateDashboard(
-      db,
-      batch,
-      branchId,
-      newStatus.totalIncome,
-      newStatus.totalExpense,
-      parseInt(NOA) * companyGain.asbeza_profit
-    );
-
-    // Updating dashboard branch information
-    await updateDashboardBranchInfo(
-      db,
-      batch,
-      branchId,
-      newStatus.totalIncome,
-      newStatus.totalExpense,
-      newIncome.total.asbezaProfit + parseInt(NOA) * companyGain.asbeza_profit
-    );
-
-    // await updateCalculatorAmount(db, batch, active, newStatus.totalIncome);
 
     // Commit the batch updates
     await batch.commit();
