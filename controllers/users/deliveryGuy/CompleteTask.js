@@ -2,7 +2,7 @@ const Asbeza = require("../../../models/service/asbezaSchema");
 const Card = require("../../../models/service/cardSchema");
 const Water = require("../../../models/service/waterSchema");
 const Wifi = require("../../../models/service/wifiSchema");
-const deleteDocumentsByCriteria = require("../../../services/users/deleteDocumentsByCriteria");
+const updateDocumentsStatusByCriteria = require("../../../services/users/deleteDocumentsByCriteria");
 
 const completeTask = async (req, res) => {
   const {
@@ -18,7 +18,7 @@ const completeTask = async (req, res) => {
   session.startTransaction();
 
   try {
-    const AsbezaCount = await deleteDocumentsByCriteria(
+    const AsbezaCount = await updateDocumentsStatusByCriteria(
       Asbeza,
       {
         branchId,
@@ -28,7 +28,7 @@ const completeTask = async (req, res) => {
       },
       session
     );
-    const CardCount = await deleteDocumentsByCriteria(
+    const CardCount = await updateDocumentsStatusByCriteria(
       Card,
       {
         branchId,
@@ -38,7 +38,7 @@ const completeTask = async (req, res) => {
       },
       session
     );
-    const WaterCount = await deleteDocumentsByCriteria(
+    const WaterCount = await updateDocumentsStatusByCriteria(
       Water,
       {
         branchId,
@@ -48,7 +48,7 @@ const completeTask = async (req, res) => {
       },
       session
     );
-    const WifiCount = await deleteDocumentsByCriteria(
+    const WifiCount = await updateDocumentsStatusByCriteria(
       Wifi,
       {
         branchId,
@@ -67,8 +67,6 @@ const completeTask = async (req, res) => {
           "The delivery guy does not have any assigned tasks. Any orders that were assigned to them have either been completed or are new orders that have not yet been assigned.",
       });
     }
-
-    await completeAll(db, batch, branchId, deliveryguyId, date, "Assigned");
 
     const result = await payDeliveryGuy(
       db,

@@ -1,13 +1,8 @@
-const updateDocumentsStatusByCriteria = async (
-  model,
-  criteria,
-  newStatus,
-  session
-) => {
+const updateDocumentsStatusByCriteria = async (model, criteria, session) => {
   try {
     // Update documents' status based on the provided criteria
     const updateResult = await model
-      .updateMany(criteria, { $set: { status: newStatus } })
+      .updateMany(criteria, { $set: { status: "Completed" } })
       .session(session);
 
     // Log the result (you can remove this if not needed)
