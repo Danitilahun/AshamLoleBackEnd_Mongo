@@ -1,5 +1,5 @@
-const Card = require("../models/cardSchema");
-const CompanyGain = require("../models/companyGainSchema");
+const CompanyGain = require("../../models/price/companyGainSchema");
+const Card = require("../../models/service/cardSchema");
 
 const updateCardDetails = async (branchId, session) => {
   try {
