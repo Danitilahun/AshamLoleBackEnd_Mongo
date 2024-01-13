@@ -15,13 +15,10 @@ const completeTask = async (req, res) => {
     branchId,
     deliveryguyId,
     date,
-    activeSheet,
     activeTable,
     activeDGSummery,
     activeDailySummery,
-    activeCalculator,
     activeDeliverySalaryTable,
-    activeStaffSalarySheet,
   } = req.body;
 
   const session = await mongoose.startSession();
