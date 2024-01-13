@@ -4,7 +4,9 @@ const Asbeza = require("../../../models/service/asbezaSchema");
 const Card = require("../../../models/service/cardSchema");
 const Water = require("../../../models/service/waterSchema");
 const Wifi = require("../../../models/service/wifiSchema");
+const updateDeliveryGuy15DayWorkSummary = require("../../../services/sheetRelated/update/updateDeliveryGuy15DayWorkSummary");
 const updateDeliveryGuySalaryTable = require("../../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
+const updateFieldInFifteenDayWorkSummary = require("../../../services/sheetRelated/update/updateFieldInFifteenDayWorkSummary");
 const updateDocumentsStatusByCriteria = require("../../../services/users/deleteDocumentsByCriteria");
 
 const completeTask = async (req, res) => {
@@ -107,12 +109,9 @@ const completeTask = async (req, res) => {
 
     const NOA = AsbezaCount;
     // First update: Change the daily table
-    await updateTable(
-      db,
-      "tables",
-      activeTable,
+    await updateDeliveryGuy15DayWorkSummary(
+      activeDGSummery,
       deliveryguyId,
-      "total",
       {
         asbezaNumber: parseInt(AsbezaCount),
         cardCollect: parseInt(CardCount),
@@ -121,16 +120,13 @@ const completeTask = async (req, res) => {
         asbezaProfit: parseInt(NOA) * companyGain.asbeza_profit,
         total: parseInt(NOA) * companyGain.asbeza_profit,
       },
-      batch
+      session
     );
 
     // Second update: Change the 15 days summery and daily summery tables
-    await updateTable(
-      db,
-      "tables",
+    await updateFieldInFifteenDayWorkSummary(
       activeDailySummery,
       date,
-      "total",
       {
         asbezaNumber: parseInt(AsbezaCount),
         cardCollect: parseInt(CardCount),
@@ -139,7 +135,7 @@ const completeTask = async (req, res) => {
         asbezaProfit: parseInt(NOA) * companyGain.asbeza_profit,
         total: parseInt(NOA) * companyGain.asbeza_profit,
       },
-      batch
+      session
     );
 
     // Third update: Individual person's daily work summery

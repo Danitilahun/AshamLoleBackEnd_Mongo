@@ -4,9 +4,7 @@ const DeliveryGuyWork = require("../../models/table/work/deliveryGuyWorkSchema")
 const updateDailyTableEntry = async (
   dailyTableId,
   deliveryGuyId,
-  fieldName,
-  valueToUpdate,
-  valueTotal,
+  incrementFields,
   session
 ) => {
   try {
@@ -18,6 +16,7 @@ const updateDailyTableEntry = async (
     if (!dailyTableEntry) {
       throw new Error("DailyTable entry not found for the given id");
     }
+
     // Find the PersonWorkSchema for the given deliveryGuyId
     const personWork = dailyTableEntry.personWork.find(
       (entry) => entry.person.toString() === deliveryGuyId
@@ -39,13 +38,20 @@ const updateDailyTableEntry = async (
       throw new Error("DeliveryGuyWork not found for the given delivery guy");
     }
 
-    // Update the specified field in DeliveryGuyWork and the 'total' field in DailyTable
+    // Use $inc to atomically increment the specified fields in DeliveryGuyWork
+    const updateObj = {};
+    for (const [fieldName, incrementValue] of Object.entries(incrementFields)) {
+      updateObj[fieldName] = incrementValue;
+    }
 
-    deliveryGuyWork[fieldName] += valueToUpdate;
-    deliveryGuyWork.total += valueTotal;
-    await deliveryGuyWork.save({ session });
+    // Update the specified fields atomically using $inc
+    await DeliveryGuyWork.findByIdAndUpdate(
+      deliveryGuyWorkId,
+      { $inc: updateObj },
+      { session }
+    );
 
-    // Update the 'total' field in DailyTable
+    // Increment the 'total' field in DailyTable
     dailyTableEntry.markModified("personWork");
     await dailyTableEntry.save({ session });
 
