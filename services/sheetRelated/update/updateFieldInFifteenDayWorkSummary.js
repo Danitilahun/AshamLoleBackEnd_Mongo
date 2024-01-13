@@ -5,9 +5,7 @@ async function updateFieldInFifteenDayWorkSummary(
   session,
   summaryId,
   day,
-  fieldName,
-  valueToUpdate,
-  valueTotal
+  incrementFields
 ) {
   try {
     // Find the FifteenDayWorkSummary entry by its unique identifier
@@ -31,10 +29,16 @@ async function updateFieldInFifteenDayWorkSummary(
     // Get the ID of the CompanyWorks entry associated with the day
     const companyWorksId = dailyWorkEntry.dailyWork;
 
-    // Update the specified field in the CompanyWorks entry
+    // Use $inc to atomically increment the specified fields in CompanyWorks
+    const updateObj = {};
+    for (const [fieldName, incrementValue] of Object.entries(incrementFields)) {
+      updateObj[fieldName] = incrementValue;
+    }
+
+    // Update the specified fields atomically using $inc
     await CompanyWorks.findByIdAndUpdate(
       companyWorksId,
-      { $inc: { [fieldName]: valueToUpdate, total: valueTotal } },
+      { $inc: updateObj },
       { session }
     );
 
