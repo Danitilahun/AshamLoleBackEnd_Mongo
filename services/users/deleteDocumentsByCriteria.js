@@ -1,26 +1,26 @@
-const deleteDocumentsByCriteria = async (model, criteria, session) => {
+const updateDocumentsStatusByCriteria = async (
+  model,
+  criteria,
+  newStatus,
+  session
+) => {
   try {
-    // Get the count of documents based on the provided criteria
-    const documentCount = await model.countDocuments(criteria).session(session);
+    // Update documents' status based on the provided criteria
+    const updateResult = await model
+      .updateMany(criteria, { $set: { status: newStatus } })
+      .session(session);
 
-    // Log the count (you can remove this if not needed)
-    console.log(`Found ${documentCount} documents to delete.`);
+    // Log the result (you can remove this if not needed)
+    console.log(
+      `${updateResult.modifiedCount} documents updated to ${newStatus}.`
+    );
 
-    // If there are documents, proceed with deletion
-    if (documentCount > 0) {
-      // Delete documents based on the provided criteria
-      const deleteResult = await model.deleteMany(criteria).session(session);
-
-      // Log the result (you can remove this if not needed)
-      console.log(`${deleteResult.deletedCount} documents deleted.`);
-    }
-
-    // Return the count of deleted documents
-    return documentCount;
+    // Return the count of updated documents
+    return updateResult.modifiedCount;
   } catch (error) {
-    console.error("Error deleting documents:", error);
+    console.error("Error updating documents:", error);
     throw error;
   }
 };
 
-module.exports = deleteDocumentsByCriteria;
+module.exports = updateDocumentsStatusByCriteria;
