@@ -1,3 +1,5 @@
+const CardDistribute = require("../../../models/report/cardDistributeSchema");
+
 // Controller function to fetch CardDistribute by branchId and sheetId
 const getCardDistributeByBranchAndSheet = async (req, res) => {
   try {
