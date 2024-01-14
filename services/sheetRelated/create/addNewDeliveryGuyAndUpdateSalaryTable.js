@@ -5,14 +5,10 @@ const DeliveryGuySalaryInfo = require("../../../models/table/work/deliveryGuySal
 const addNewDeliveryGuyAndUpdateSalaryTable = async (
   branchId,
   sheetId,
-  newDeliveryGuyData,
+  deliveryGuyId,
   session
 ) => {
   try {
-    // Create a new delivery guy within the provided session
-    const newDeliveryGuy = new Deliveryguy(newDeliveryGuyData);
-    await newDeliveryGuy.save({ session });
-
     // Create a DeliveryGuySalaryInfo document for the new delivery guy within the provided session
     const newDeliveryGuyWork = new DeliveryGuySalaryInfo({});
     await newDeliveryGuyWork.save({ session });
@@ -26,7 +22,7 @@ const addNewDeliveryGuyAndUpdateSalaryTable = async (
       {
         $push: {
           personWork: {
-            person: newDeliveryGuy._id,
+            person: deliveryGuyId,
             work: newDeliveryGuyWorkId,
           },
         },

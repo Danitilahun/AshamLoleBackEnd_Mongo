@@ -5,14 +5,10 @@ const StaffWorkerInfo = require("../../../models/table/work/staffWorkerInfoSchem
 const addNewStaffAndUpdateSalaryTable = async (
   branchId,
   sheetId,
-  newStaffData,
+  staffId,
   session
 ) => {
   try {
-    // Create a new staff member within the provided session
-    const newStaff = new Staff(newStaffData);
-    await newStaff.save({ session });
-
     // Create a StaffWorkerInfo document for the new staff member within the provided session
     const newStaffWork = new StaffWorkerInfo({});
     await newStaffWork.save({ session });
@@ -26,7 +22,7 @@ const addNewStaffAndUpdateSalaryTable = async (
       {
         $push: {
           personWork: {
-            person: newStaff._id,
+            person: staffId,
             work: newStaffWorkId,
           },
         },
