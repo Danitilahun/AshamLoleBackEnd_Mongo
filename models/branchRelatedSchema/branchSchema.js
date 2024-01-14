@@ -62,6 +62,10 @@ const branchSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    numberOfWorker: {
+      type: Number,
+      default: "",
+    },
     houseRentOwnerName: {
       type: String,
       required: true,
@@ -156,21 +160,6 @@ const branchSchema = new mongoose.Schema(
       type: String,
       enum: ["Pending", "Completed"],
     },
-
-    salaryTable: [
-      {
-        id: String,
-        name: String,
-      },
-    ],
-
-    worker: [
-      {
-        id: String,
-        name: String,
-        role: String,
-      },
-    ],
   },
   { timestamps: true }
 );
