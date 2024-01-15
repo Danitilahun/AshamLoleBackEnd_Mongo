@@ -36,14 +36,9 @@ const getDailyTableDetails = async (req, res) => {
         fullName: deliveryGuy.fullName,
         phone: deliveryGuy.phone,
         totalCredit: deliveryGuy.staffCredit,
-        // Add other relevant fields from Deliveryguy model
-        companyWorks: {
-          asbezaNumber: companyWorks.asbezaNumber,
-          cardCollect: companyWorks.cardCollect,
-          cardDistribute: companyWorks.cardDistribute,
-          // Add other relevant fields from CompanyWorks model
-        },
-        // Add other fields from the dailyTable if needed
+        asbezaNumber: companyWorks.asbezaNumber,
+        cardCollect: companyWorks.cardCollect,
+        cardDistribute: companyWorks.cardDistribute,
       });
     }
 
