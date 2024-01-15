@@ -36,11 +36,6 @@ const asbezaSchema = new mongoose.Schema({
     required: true,
   },
 
-  createdAt: {
-    type: Date,
-    required: true,
-  },
-
   date: {
     type: String,
     required: true,
@@ -58,7 +53,7 @@ const asbezaSchema = new mongoose.Schema({
 
   fromWhere: {
     type: String,
-    required: true,
+    required: ["branch", "callcenter"],
   },
 
   name: {
