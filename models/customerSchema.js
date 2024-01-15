@@ -8,7 +8,7 @@ const customerSchema = new mongoose.Schema(
     },
     Card: {
       type: String,
-      default: "Yes",
+      default: "No",
     },
     Water: {
       type: String,

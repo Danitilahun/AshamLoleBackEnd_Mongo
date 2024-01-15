@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Customer = require("../../models/customerSchema");
 
 const getCustomerInfo = async (req, res) => {
