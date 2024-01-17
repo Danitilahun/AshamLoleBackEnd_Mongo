@@ -6,7 +6,7 @@ const BankRoute = require("./bank/route");
 const CalculateRoute = require("./calculator/route");
 const CreditRoute = require("./credit/route");
 const CustomerRoute = require("./customer/route");
-
+const DailyTableRoute = require("./dailytable/route");
 // Use sub-routes under "/api"
 router.use("/dashboard", DashboardRoute);
 router.use("/branch", BranchRoute);
@@ -14,5 +14,6 @@ router.use("/bank", BankRoute);
 router.use("/calculator", CalculateRoute);
 router.use("/credit", CreditRoute);
 router.use("/customer", CustomerRoute);
+router.use("/dailytable", DailyTableRoute);
 
 module.exports = router;
