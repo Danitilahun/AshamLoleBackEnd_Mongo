@@ -9,7 +9,7 @@ const updateCredit = require("../../../services/creditRelated/updateCredit");
  * @param {Object} res - Express.js response object.
  * @returns {Object} JSON response indicating success or failure.
  */
-const updateCredit = async (req, res) => {
+const editCredit = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -66,4 +66,4 @@ const updateCredit = async (req, res) => {
   }
 };
 
-module.exports = updateCredit;
+module.exports = editCredit;
