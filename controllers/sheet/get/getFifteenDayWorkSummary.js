@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const FifteenDayWorkSummary = require("../models/FifteenDayWorkSummary");
-const DailyWork = require("../models/DailyWork");
+const FifteenDayWorkSummary = require("../../../models/table/FifteenDayWorkSummarySchema");
 
 const getFifteenDayWorkSummary = async (req, res) => {
   const session = await mongoose.startSession();
