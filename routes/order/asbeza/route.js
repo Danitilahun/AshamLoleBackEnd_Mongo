@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const createHolidayBonus = require("./holiday/route");
 const createCustomerAndAsbeza = require("../../../controllers/order/Asbeza/create");
 const editCustomerAndAsbeza = require("../../../controllers/order/Asbeza/update");
 const deleteAsbezaAndUpdateCustomer = require("../../../controllers/order/Asbeza/delete");
