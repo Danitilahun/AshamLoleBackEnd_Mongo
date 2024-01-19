@@ -5,11 +5,13 @@ const editBonus = require("../../../controllers/incentive/bonus/edit");
 const getAllBonusesByBranchAndSheet = require("../../../controllers/incentive/bonus/getAllBonusesByBranchAndSheet");
 const router = express.Router();
 
+const createHolidayBonus = require("./holiday/route");
+
 router.get("/", getAllBonusesByBranchAndSheet);
 
 // Create a new expense
 router.post("/", createBonus);
-router.post("holiday");
+router.post("holiday", createHolidayBonus);
 // Update an existing expense
 router.put("/:id", editBonus);
 router.delete("/:id", deleteBonus);
