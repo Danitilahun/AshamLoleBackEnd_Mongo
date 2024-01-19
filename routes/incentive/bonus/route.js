@@ -9,7 +9,7 @@ router.get("/", getAllBonusesByBranchAndSheet);
 
 // Create a new expense
 router.post("/", createBonus);
-
+router.post("holiday");
 // Update an existing expense
 router.put("/:id", editBonus);
 router.delete("/:id", deleteBonus);
