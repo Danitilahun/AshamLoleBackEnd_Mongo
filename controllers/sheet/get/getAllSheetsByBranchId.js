@@ -1,4 +1,4 @@
-const Sheet = require("../../models/sheetsSchema");
+const Sheet = require("../../../models/sheetsSchema");
 
 // Controller function to get all sheets by branchId
 const getAllSheetsByBranchId = async (req, res) => {
