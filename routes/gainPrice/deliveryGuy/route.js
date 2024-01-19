@@ -1,17 +1,21 @@
 const express = require("express");
+const {
+  createDeliveryGuyGain,
+} = require("../../../controllers/gainPrice/DeliveryGuy/create");
+const {
+  updateDeliveryGuyGainField,
+} = require("../../../controllers/gainPrice/DeliveryGuy/update");
+const getDeliveryGuyGain = require("../../../controllers/gainPrice/DeliveryGuy/getDeliveryGuyGain");
 const router = express.Router();
 
 // Define the route for creating data for an admin
 // Get all expenses
-router.get("/", getAllExpenses);
+router.get("/", getDeliveryGuyGain);
 
 // Create a new expense
-router.post("/", createExpense);
+router.post("/", createDeliveryGuyGain);
 
 // Update an existing expense
-router.put("/:id", updateExpense);
-
-// Delete an expense
-router.delete("/:id", deleteExpense);
+router.put("/:id", updateDeliveryGuyGainField);
 
 module.exports = router;
