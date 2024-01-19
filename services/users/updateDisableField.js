@@ -1,8 +1,8 @@
-const updateDisableField = async (session, userId, model) => {
+const updateDisableField = async (session, userId, model, disable) => {
   try {
     const updatedUser = await model.findOneAndUpdate(
       { _id: userId },
-      { disable: true }, // Change this to false if you want to enable the user
+      { disable: disable }, // Change this to false if you want to enable the user
       { new: true, session }
     );
 
