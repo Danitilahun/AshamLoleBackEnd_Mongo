@@ -1,17 +1,35 @@
 const WaterDistribute = require("../../../models/report/waterDistributeSchema");
 
-// Controller function to fetch WaterDistribute by branchId and sheetId
+// Controller function to fetch paginated WaterDistribute by branchId and sheetId
 const getWaterDistributeByBranchAndSheet = async (req, res) => {
   try {
-    const { branchId, sheetId } = req.body;
+    const { branchId, sheetId, page = 1, limit = 10 } = req.query;
+
+    // Convert page and limit to numbers
+    const pageNumber = parseInt(page);
+    const limitNumber = parseInt(limit);
+
+    // Calculate skip value for pagination
+    const skip = (pageNumber - 1) * limitNumber;
+
+    if (!branchId || !sheetId) {
+      return res
+        .status(400)
+        .json({ error: "Both branchId and sheetId are required." });
+    }
+
+    // Fetch paginated WaterDistribute records matching the provided branchId and sheetId
     const waterDistributeData = await WaterDistribute.find({
       branchId,
       sheetId,
-    });
-    res.json(waterDistributeData);
+    })
+      .skip(skip)
+      .limit(limitNumber);
+
+    return res.json(waterDistributeData);
   } catch (error) {
     console.error("Error in fetching WaterDistribute:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
