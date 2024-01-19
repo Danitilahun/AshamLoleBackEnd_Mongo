@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const DeliveryGuyGain = require("../../../models/price/deliveryGuyGainSchema");
 const updateDailyCredit = require("../../../services/reportRelated/updateDailyCredit");
-const updateDailyCreditForBranch = require("../../../services/reportRelated/updateDailyCreditForBranch");
 const updateTotalDeliveryGuySalary = require("../../../services/reportRelated/updateTotalDeliveryGuySalary");
 const updateField = require("../../../services/reportRelated/updateField");
 const {
