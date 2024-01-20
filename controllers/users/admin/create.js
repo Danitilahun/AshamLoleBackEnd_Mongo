@@ -7,6 +7,8 @@ const createEssential = require("../../../services/users/createEssential");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 const createStaff = require("../../../services/users/createStaff");
+const createActivationToken = require("../../../util/createActivationToken");
+const sendMail = require("../../../util/sendMail");
 
 // Create a new admin
 const createAdmin = async (req, res) => {
@@ -68,6 +70,22 @@ const createAdmin = async (req, res) => {
 
     await increaseNumberOfWorker(data.branchId, session);
 
+    const activationToken = createActivationToken({
+      id: newAdmin._id,
+      role: newAdmin.role,
+    });
+
+    const activationUrl = `http://localhost:3000/${activationToken}`;
+
+    try {
+      await sendMail({
+        email: user.email,
+        subject: "Activate your account",
+        message: `Hello ${user.username}, please click on the link to activate your account: ${activationUrl}`,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
     const savedAdmin = await newAdmin.save({ session });
 
     await session.commitTransaction();
