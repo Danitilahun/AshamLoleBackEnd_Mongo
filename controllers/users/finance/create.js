@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Finance = require("../../../models/user/financeschema");
 const createAshamStaff = require("../../../services/users/createAshamStaff");
 const createEssential = require("../../../services/users/createEssential");
+const createBranchBankTotal = require("../../../services/users/createBranchBankTotal");
 
 // Create a new finance entry
 const createFinanceEntry = async (req, res) => {
@@ -26,6 +27,10 @@ const createFinanceEntry = async (req, res) => {
       name: newFinanceEntry.name,
       role: "Admin",
       branchId: newFinanceEntry.branchId,
+    });
+
+    await createBranchBankTotal(session, {
+      branchId: newFinanceEntry._id,
     });
 
     await createEssential(session, {
