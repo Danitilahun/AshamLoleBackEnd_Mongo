@@ -4,6 +4,9 @@ const updateEssentialFields = require("../../../services/users/updateEssentialFi
 
 // Edit an existing call center employee
 const editCallCenterEmployee = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const { id } = req.params;
     const data = req.body;
@@ -12,7 +15,7 @@ const editCallCenterEmployee = async (req, res) => {
       id,
       data,
       { new: true }
-    );
+    ).session(session);
 
     await updateEssentialFields(
       updatedCallCenterEmployee.essentialId,
@@ -33,13 +36,20 @@ const editCallCenterEmployee = async (req, res) => {
     );
 
     if (!updatedCallCenterEmployee) {
+      await session.abortTransaction();
+      session.endSession();
       return res
         .status(404)
         .json({ message: "Call center employee not found" });
     }
 
+    await session.commitTransaction();
+    session.endSession();
+
     res.status(200).json(updatedCallCenterEmployee);
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     res.status(500).json({ message: error.message });
   }
 };
