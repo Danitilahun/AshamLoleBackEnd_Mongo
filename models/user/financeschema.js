@@ -13,6 +13,9 @@ const financeschema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    refreshToken: {
+      type: String,
+    },
     bank: {
       type: [String],
       required: true,

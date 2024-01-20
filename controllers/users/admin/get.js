@@ -11,7 +11,6 @@ const getAllAdmin = async (req, res) => {
       admins: allAdmins,
     });
   } catch (error) {
-    // Handle errors, if any
     console.error("Error in getAllAdmin:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
