@@ -5,7 +5,6 @@ const staffCredit = require("./staff/route");
 const financeCredit = require("./finance/route");
 const dailyCredit = require("./daily/route");
 
-// Define the route for creating data for an admin
 router.use("/customer", customerCredit);
 router.use("/staff", staffCredit);
 router.use("/finance", financeCredit);

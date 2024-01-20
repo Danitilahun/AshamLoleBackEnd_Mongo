@@ -5,16 +5,9 @@ const deleteFinanceCreditAndUpdate = require("../../../controllers/credit/financ
 const getFinanceCreditsByBranchId = require("../../../controllers/credit/financeCredit/getByBranchId");
 const router = express.Router();
 
-// Define the route for creating data for an admin
 router.get("/", getFinanceCreditsByBranchId);
-
-// Create a new expense
 router.post("/", createFinanceCreditAndUpdate);
-
-// Update an existing expense
 router.put("/:id", editFinanceCreditAndUpdate);
-
-// Delete an expense
 router.delete("/:id", deleteFinanceCreditAndUpdate);
 
 module.exports = router;

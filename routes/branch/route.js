@@ -7,7 +7,6 @@ const getAllBranches = require("../../controllers/branch/getAllbranches");
 const getSingleBranch = require("../../controllers/branch/getSingleBranch");
 const router = express.Router();
 
-// Define the route for creating data for an admin
 router.get("/", getAllBranches);
 router.get("/:id", getSingleBranch);
 router.post("/", createBranch);

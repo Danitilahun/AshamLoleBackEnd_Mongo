@@ -5,7 +5,6 @@ const getBankFromBanksByName = require("../../controllers/bank/getBankInformatio
 const getBranchBankTotalByBranchId = require("../../controllers/bank/getBranchBankInfo");
 const router = express.Router();
 
-// Define the route for creating data for an admin
 router.get("/branch/:branchId", getBranchBankTotalByBranchId);
 router.get("/:bankName", getBankFromBanksByName);
 router.post("/", createBankTransaction);
