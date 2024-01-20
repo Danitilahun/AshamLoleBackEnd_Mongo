@@ -4,6 +4,7 @@ const createAshamStaff = require("../../../services/users/createAshamStaff");
 const createEssential = require("../../../services/users/createEssential");
 const createBranchBankTotal = require("../../../services/users/createBranchBankTotal");
 const createCalculator = require("../../../services/users/createCalculator");
+const createActivationToken = require("../../../util/createActivationToken");
 
 // Create a new finance entry
 const createFinanceEntry = async (req, res) => {
@@ -47,6 +48,23 @@ const createFinanceEntry = async (req, res) => {
       phone: data.phone,
       sector: "Branch",
     });
+
+    const activationToken = createActivationToken({
+      id: newFinanceEntry._id,
+      role: newFinanceEntry.role,
+    });
+
+    const activationUrl = `http://localhost:3000/${activationToken}`;
+
+    try {
+      await sendMail({
+        email: newFinanceEntry.email,
+        subject: "Activate your account",
+        message: `Hello ${newFinanceEntry.fullName}, please click on the link to activate your account: ${activationUrl}`,
+      });
+    } catch (error) {
+      throw new Error("Email could not be sent");
+    }
     const savedFinanceEntry = await newFinanceEntry.save({ session });
 
     await session.commitTransaction();
