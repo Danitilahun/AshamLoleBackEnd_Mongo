@@ -6,13 +6,7 @@ const getAllPenaltiesByBranchAndSheet = require("../../../controllers/incentive/
 const router = express.Router();
 
 router.get("/", getAllPenaltiesByBranchAndSheet);
-
-// Create a new expense
 router.post("/", createPenalty);
-
-// Update an existing expense
 router.put("/:id", editPenalty);
-
 router.delete("/:id", deletePenalty);
-
 module.exports = router;
