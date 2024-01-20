@@ -6,6 +6,7 @@ const addNewStaffAndUpdateSalaryTable = require("../../../services/sheetRelated/
 const createEssential = require("../../../services/users/createEssential");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
+const createStaff = require("../../../services/users/createStaff");
 
 // Create a new admin
 const createAdmin = async (req, res) => {
@@ -21,6 +22,19 @@ const createAdmin = async (req, res) => {
     data.paid = true;
     data.staffCredit = 0;
 
+    const newStaff = await createStaff(session, data);
+
+    const newEssential = await createEssential(session, {
+      address: data.fullAddress,
+      company: "AshamLole",
+      name: data.fullName,
+      phone: data.phone,
+      sector: "Branch",
+    });
+
+    data.essentialId = newEssential._id;
+    data.staffId = newStaff._id;
+
     const newAdmin = new Admin.create([data], { session });
 
     await updateBranchManager(
@@ -35,14 +49,6 @@ const createAdmin = async (req, res) => {
       name: newAdmin.name,
       role: "Admin",
       branchId: newAdmin.branchId,
-    });
-
-    await createEssential(session, {
-      address: data.fullAddress,
-      company: "AshamLole",
-      name: data.fullName,
-      phone: data.phone,
-      sector: "Branch",
     });
 
     if (sheetId) {

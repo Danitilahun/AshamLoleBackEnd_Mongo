@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Admin = require("../../../models/user/adminSchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
+const updateBranchManager = require("../../../services/branchRelated/updateBranchManager");
 
 // Delete an admin
 const deleteAdmin = async (req, res) => {
@@ -17,6 +18,27 @@ const deleteAdmin = async (req, res) => {
       return res.status(404).json({ message: "Admin not found" });
     }
 
+    const deletedEssential = await Essential.findByIdAndDelete(id).session(
+      session
+    );
+
+    if (!deletedEssential) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(404).json({ message: "Essential not found" });
+    }
+
+    const deletedStaffMember = await Staff.findByIdAndDelete(id).session(
+      session
+    );
+
+    if (!deletedStaffMember) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(404).json({ message: "Staff member not found" });
+    }
+
+    await updateBranchManager(deleteAdmin.branchId, "", "", session);
     await increaseNumberOfWorker(data.branchId, session, -1);
     await session.commitTransaction();
     session.endSession();

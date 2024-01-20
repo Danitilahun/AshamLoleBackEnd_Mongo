@@ -66,6 +66,14 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    staffId: {
+      type: String,
+      required: true,
+    },
+    essentialId: {
+      type: String,
+      required: true,
+    },
     role: {
       type: String,
     },
