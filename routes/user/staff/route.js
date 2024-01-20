@@ -8,8 +8,6 @@ const deleteStaffMember = require("../../../controllers/users/staff/delete");
 
 const router = express.Router();
 
-// Define the route for creating data for an admin
-
 router.get("/", getAllStaffByBranchId);
 router.post("/", createStaffMember);
 router.put("/:id", editStaffMember);

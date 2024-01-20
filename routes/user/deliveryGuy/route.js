@@ -9,17 +9,12 @@ const completeTask = require("../../../controllers/users/deliveryGuy/CompleteTas
 
 const router = express.Router();
 
-// Define the route for creating data for an admin
-// Get all expenses
 router.get("/", getDeliveryguyById);
-// Create a new expense
 router.post("/", createDeliveryGuy);
 router.post("/complete", completeTask);
-// Update an existing expense
 router.put("/:id", editDeliveryGuy);
 router.put("/pay/:id", handlePayController);
 router.put("/activeness/:id", updateDeliveryGuyActiveness);
-// Delete an expense
 router.delete("/:id", deleteDeliveryGuy);
 
 module.exports = router;
