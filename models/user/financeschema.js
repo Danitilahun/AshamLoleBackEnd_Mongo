@@ -6,6 +6,9 @@ const financeschema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    role: {
+      type: String,
+    },
     balance: {
       type: Number,
       required: true,

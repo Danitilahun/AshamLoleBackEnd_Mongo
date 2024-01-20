@@ -6,6 +6,9 @@ const superadminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+    },
     branch: {
       type: String,
       required: true,

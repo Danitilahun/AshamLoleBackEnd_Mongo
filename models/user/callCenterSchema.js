@@ -6,6 +6,9 @@ const callCenterSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+    },
     createdAt: {
       type: Date,
       required: true,

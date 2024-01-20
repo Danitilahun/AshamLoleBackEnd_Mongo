@@ -70,6 +70,9 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
