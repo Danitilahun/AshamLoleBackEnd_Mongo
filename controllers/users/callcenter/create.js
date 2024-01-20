@@ -3,33 +3,9 @@ const CallCenter = require("../../../models/user/callCenterSchema");
 // Create a new call center employee
 const createCallCenterEmployee = async (req, res) => {
   try {
-    const {
-      bankAccount,
-      disable,
-      email,
-      fullAddress,
-      fullName,
-      phone,
-      profileImage,
-      salary,
-      securityAddress,
-      securityName,
-      securityPhone,
-    } = req.body;
+    const data = req.body;
 
-    const newCallCenterEmployee = new CallCenter({
-      bankAccount,
-      disable,
-      email,
-      fullAddress,
-      fullName,
-      phone,
-      profileImage,
-      salary,
-      securityAddress,
-      securityName,
-      securityPhone,
-    });
+    const newCallCenterEmployee = new CallCenter(data);
 
     const savedCallCenterEmployee = await newCallCenterEmployee.save();
     res.status(201).json(savedCallCenterEmployee);
