@@ -1,15 +1,16 @@
 const AshamStaff = require("../../models/ashamStaffSchema");
 
-// Delete an AshamStaff based on ID
-const deleteAshamStaff = async (id, session) => {
+// Delete an AshamStaff based on a specific field value
+const deleteAshamStaffByField = async (field, value, session) => {
   try {
     // Use the provided session to ensure data consistency
-    const deletedAshamStaff = await AshamStaff.findByIdAndDelete(id).session(
+    const query = { [field]: value };
+    const deletedAshamStaff = await AshamStaff.findOneAndDelete(query).session(
       session
     );
 
     if (!deletedAshamStaff) {
-      throw new Error("AshamStaff not found");
+      throw new Error(`AshamStaff with ${field} '${value}' not found`);
     }
 
     return deletedAshamStaff;
@@ -18,4 +19,4 @@ const deleteAshamStaff = async (id, session) => {
   }
 };
 
-module.exports = deleteAshamStaff;
+module.exports = deleteAshamStaffByField;
