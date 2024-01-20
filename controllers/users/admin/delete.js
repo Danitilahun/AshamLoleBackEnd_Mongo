@@ -4,6 +4,7 @@ const increaseNumberOfWorker = require("../../../services/branchRelated/increase
 const updateBranchManager = require("../../../services/branchRelated/updateBranchManager");
 const Essential = require("../../../models/essentialSchema");
 const Staff = require("../../../models/staffSchema");
+const deleteAshamStaffByField = require("../../../services/users/deleteAshamStaff");
 
 // Delete an admin
 const deleteAdmin = async (req, res) => {
@@ -40,6 +41,7 @@ const deleteAdmin = async (req, res) => {
       return res.status(404).json({ message: "Staff member not found" });
     }
 
+    await deleteAshamStaffByField("id", deletedAdmin._id, session);
     await updateBranchManager(deleteAdmin.branchId, "", "", session);
     await increaseNumberOfWorker(data.branchId, session, -1);
     await session.commitTransaction();
