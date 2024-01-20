@@ -8,8 +8,24 @@ const createSuperadmin = async (req, res) => {
 
   try {
     const data = req.body;
+    data.role = process.env.SUPERADMIN;
 
     const newSuperadmin = new Superadmin(data);
+
+    await createAshamStaff(session, {
+      id: newSuperadmin._id,
+      name: newSuperadmin.name,
+      role: "Admin",
+      branchId: "AshamLole",
+    });
+
+    await createEssential(session, {
+      address: data.fullAddress,
+      company: "AshamLole",
+      name: data.fullName,
+      phone: data.phone,
+      sector: "Branch",
+    });
 
     const savedSuperadmin = await newSuperadmin.save({ session });
 
