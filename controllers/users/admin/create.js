@@ -84,7 +84,7 @@ const createAdmin = async (req, res) => {
         message: `Hello ${user.username}, please click on the link to activate your account: ${activationUrl}`,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      throw new Error("Email could not be sent");
     }
     const savedAdmin = await newAdmin.save({ session });
 
