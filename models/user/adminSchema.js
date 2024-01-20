@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema(
   {
-    sheetId: {
-      type: String,
-      required: true,
-    },
     bankAccount: {
       type: String,
       required: true,
@@ -18,12 +14,12 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
     difference: {
       type: Number,
+      required: true,
+    },
+    paid: {
+      type: Boolean,
       required: true,
     },
     disable: {

@@ -4,6 +4,9 @@ const Admin = require("../../../models/user/adminSchema");
 const createAdmin = async (req, res) => {
   try {
     const data = req.body;
+    data.salary = parseInt(data.salary);
+    data.uniqueName = "admin";
+    data.role = process.env.ADMIN;
 
     const newAdmin = new Admin(data);
 
