@@ -79,9 +79,9 @@ const createAdmin = async (req, res) => {
 
     try {
       await sendMail({
-        email: user.email,
+        email: newAdmin.email,
         subject: "Activate your account",
-        message: `Hello ${user.username}, please click on the link to activate your account: ${activationUrl}`,
+        message: `Hello ${newAdmin.fullName}, please click on the link to activate your account: ${activationUrl}`,
       });
     } catch (error) {
       throw new Error("Email could not be sent");
