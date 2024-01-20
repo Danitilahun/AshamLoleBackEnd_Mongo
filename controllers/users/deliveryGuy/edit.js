@@ -1,4 +1,5 @@
 const Deliveryguy = require("../../../models/deliveryguySchema");
+const updateDeliveryGuyNameInTurnQueue = require("../../../services/users/updateDeliveryGuyNameInTurnQueue");
 
 // Edit an existing delivery guy
 const editDeliveryGuy = async (req, res) => {
@@ -19,6 +20,11 @@ const editDeliveryGuy = async (req, res) => {
       session.endSession();
       return res.status(404).json({ message: "Delivery guy not found" });
     }
+    await updateDeliveryGuyNameInTurnQueue(
+      session,
+      updatedDeliveryGuy._id,
+      updatedDeliveryGuy.fullName
+    );
 
     await session.commitTransaction();
     session.endSession();
