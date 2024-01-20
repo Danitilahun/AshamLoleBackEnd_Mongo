@@ -14,7 +14,7 @@ const activationController = async (req, res, next) => {
     const newUser = jwt.verify(activation_token, process.env.ACTIVATION_SECRET);
 
     if (!newUser) {
-      return next(new ErrorHandler("Invalid token", 400));
+      res.status(400).json({ error: "Invalid token" });
     }
 
     const { id, role, email } = newUser;
@@ -37,11 +37,11 @@ const activationController = async (req, res, next) => {
           .exec();
         break;
       default:
-        return next(new ErrorHandler("Invalid user role", 400));
+        res.status(400).json({ error: "Invalid role" });
     }
 
     if (!user) {
-      return next(new ErrorHandler("User not found", 404));
+      res.status(400).json({ error: "User does not exist" });
     }
 
     // Update the activated field to true
@@ -58,7 +58,7 @@ const activationController = async (req, res, next) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    return next(new ErrorHandler(error.message, 500));
+    res.status(500).json({ error: error.message });
   }
 };
 
