@@ -1,4 +1,4 @@
-const Admin = require("path-to-your-admin-model");
+const Admin = require("../../../models/user/adminSchema");
 
 const getAllAdmin = async (req, res) => {
   try {
