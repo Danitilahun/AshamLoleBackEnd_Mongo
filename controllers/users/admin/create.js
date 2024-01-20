@@ -20,6 +20,7 @@ const createAdmin = async (req, res) => {
     data.uniqueName = "admin";
     data.role = process.env.ADMIN;
     data.paid = true;
+    data.password = "12345678";
     data.staffCredit = 0;
 
     const newStaff = await createStaff(session, data);
