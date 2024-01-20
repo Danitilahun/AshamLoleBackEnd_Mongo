@@ -73,6 +73,28 @@ const superadminSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Pre-save middleware to hash the password before saving
+superadminSchema.pre("save", async function (next) {
+  try {
+    if (!this.isModified("password")) {
+      return next();
+    }
+
+    // Generate a salt
+    const salt = await bcrypt.genSalt(10);
+
+    // Hash the password with the salt
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+
+    // Set the hashed password
+    this.password = hashedPassword;
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 const Superadmin = mongoose.model("Superadmin", superadminSchema);
 
 module.exports = Superadmin;
