@@ -4,47 +4,9 @@ const Admin = require("../../../models/user/adminSchema");
 const editAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      sheetId,
-      bankAccount,
-      branchId,
-      branchName,
-      difference,
-      disable,
-      email,
-      fullAddress,
-      fullName,
-      phone,
-      profileImage,
-      salary,
-      securityAddress,
-      securityName,
-      securityPhone,
-      uniqueName,
-    } = req.body;
+    const data = req.body;
 
-    const updatedAdmin = await Admin.findByIdAndUpdate(
-      id,
-      {
-        sheetId,
-        bankAccount,
-        branchId,
-        branchName,
-        difference,
-        disable,
-        email,
-        fullAddress,
-        fullName,
-        phone,
-        profileImage,
-        salary,
-        securityAddress,
-        securityName,
-        securityPhone,
-        uniqueName,
-      },
-      { new: true }
-    );
+    const updatedAdmin = await Admin.findByIdAndUpdate(id, data, { new: true });
 
     if (!updatedAdmin) {
       return res.status(404).json({ message: "Admin not found" });
