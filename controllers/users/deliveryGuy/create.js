@@ -38,7 +38,7 @@ const createDeliveryGuy = async (req, res) => {
     if (activeTable) {
       await addDeliveryGuyToDailyTable(
         data.branchId,
-        sheetId,
+        activeTable,
         newDeliveryGuy._id,
         session
       );
