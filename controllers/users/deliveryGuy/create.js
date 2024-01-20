@@ -45,6 +45,7 @@ const createDeliveryGuy = async (req, res) => {
     }
 
     await increaseNumberOfWorker(data.branchId, session);
+
     const savedDeliveryGuy = await newDeliveryGuy.save({ session });
 
     await session.commitTransaction();
