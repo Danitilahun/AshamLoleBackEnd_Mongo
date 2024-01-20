@@ -1,4 +1,6 @@
 const CallCenter = require("../../../models/user/callCenterSchema");
+const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
+const updateEssentialFields = require("../../../services/users/updateEssentialFields");
 
 // Edit an existing call center employee
 const editCallCenterEmployee = async (req, res) => {
@@ -10,6 +12,24 @@ const editCallCenterEmployee = async (req, res) => {
       id,
       data,
       { new: true }
+    );
+
+    await updateEssentialFields(
+      updatedCallCenterEmployee.essentialId,
+      {
+        name: updatedCallCenterEmployee.fullName,
+        address: updatedCallCenterEmployee.fullAddress,
+        phone: updatedCallCenterEmployee.phone,
+      },
+      session
+    );
+
+    await updateAshamStaffByWorkerId(
+      id,
+      {
+        name: updatedCallCenterEmployee.fullName,
+      },
+      session
     );
 
     if (!updatedCallCenterEmployee) {
