@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const CallCenter = require("../../../models/user/callCenterSchema");
 const createAshamStaff = require("../../../services/users/createAshamStaff");
 const createEssential = require("../../../services/users/createEssential");
+const createActivationToken = require("../../../util/createActivationToken");
+const sendMail = require("../../../util/sendMail");
 
 // Create a new call center employee
 const createCallCenterEmployee = async (req, res) => {
@@ -31,6 +33,23 @@ const createCallCenterEmployee = async (req, res) => {
       role: "Admin",
       branchId: "AshamLole",
     });
+
+    const activationToken = createActivationToken({
+      id: newCallCenterEmployee._id,
+      role: newCallCenterEmployee.role,
+    });
+
+    const activationUrl = `http://localhost:3000/${activationToken}`;
+
+    try {
+      await sendMail({
+        email: newCallCenterEmployee.email,
+        subject: "Activate your account",
+        message: `Hello ${newCallCenterEmployee.fullName}, please click on the link to activate your account: ${activationUrl}`,
+      });
+    } catch (error) {
+      throw new Error("Email could not be sent");
+    }
 
     const savedCallCenterEmployee = await newCallCenterEmployee.save({
       session,
