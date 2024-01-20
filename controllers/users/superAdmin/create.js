@@ -3,35 +3,9 @@ const Superadmin = require("../../../models/user/superadminSchema");
 // Create a new superadmin
 const createSuperadmin = async (req, res) => {
   try {
-    const {
-      bankAccount,
-      branch,
-      disable,
-      email,
-      fullAddress,
-      fullName,
-      openingDate,
-      phone,
-      profileImage,
-      securityAddress,
-      securityName,
-      securityPhone,
-    } = req.body;
+    const data = req.body;
 
-    const newSuperadmin = new Superadmin({
-      bankAccount,
-      branch,
-      disable,
-      email,
-      fullAddress,
-      fullName,
-      openingDate,
-      phone,
-      profileImage,
-      securityAddress,
-      securityName,
-      securityPhone,
-    });
+    const newSuperadmin = new Superadmin(data);
 
     const savedSuperadmin = await newSuperadmin.save();
     res.status(201).json(savedSuperadmin);
