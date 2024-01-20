@@ -13,6 +13,7 @@ const createAdmin = async (req, res) => {
 
   try {
     const { active, ...data } = req.body;
+
     data.salary = parseInt(data.salary);
     data.uniqueName = "admin";
     data.role = process.env.ADMIN;
