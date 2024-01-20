@@ -1,3 +1,4 @@
+const Essential = require("../../../models/essentialSchema");
 const CallCenter = require("../../../models/user/callCenterSchema");
 
 // Delete a call center employee
@@ -18,6 +19,11 @@ const deleteCallCenterEmployee = async (req, res) => {
         .status(404)
         .json({ message: "Call center employee not found" });
     }
+    await Essential.findByIdAndDelete(
+      deletedCallCenterEmployee.essentialId
+    ).session(session);
+
+    await deleteAshamStaffByField("id", deletedCallCenterEmployee._id, session);
 
     await session.commitTransaction();
     session.endSession();
