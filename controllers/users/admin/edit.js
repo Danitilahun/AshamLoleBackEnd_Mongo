@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Admin = require("../../../models/user/adminSchema");
 const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
 const updateBranchFields = require("../../../services/branchRelated/updateBranchFields");
+const updateEssentialFields = require("../../../services/users/updateEssentialFields");
 
 // Edit an existing admin
 const editAdmin = async (req, res) => {
@@ -35,6 +36,16 @@ const editAdmin = async (req, res) => {
       updatedAdmin.branchId,
       {
         managerName: updatedAdmin.fullName,
+      },
+      session
+    );
+
+    await updateEssentialFields(
+      updatedAdmin.essentialId,
+      {
+        name: updatedAdmin.fullName,
+        address: updatedAdmin.fullAddress,
+        phone: updatedAdmin.phone,
       },
       session
     );
