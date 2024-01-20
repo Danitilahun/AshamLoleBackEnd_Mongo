@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const financeschema = new mongoose.Schema(
   {
@@ -91,6 +92,28 @@ const financeschema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Pre-save middleware to hash the password before saving
+financeschema.pre("save", async function (next) {
+  try {
+    if (!this.isModified("password")) {
+      return next();
+    }
+
+    // Generate a salt
+    const salt = await bcrypt.genSalt(10);
+
+    // Hash the password with the salt
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+
+    // Set the hashed password
+    this.password = hashedPassword;
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 const Finance = mongoose.model("Finance", financeschema);
 
