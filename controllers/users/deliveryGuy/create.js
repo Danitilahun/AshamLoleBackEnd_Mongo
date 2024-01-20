@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const Deliveryguy = require("../../../models/deliveryguySchema");
+const addNewDeliveryGuyAndUpdateSummary = require("../../../services/sheetRelated/create/addNewDeliveryGuyAndUpdateSummary");
+const addNewDeliveryGuyAndUpdateSalaryTable = require("../../../services/sheetRelated/create/addNewDeliveryGuyAndUpdateSalaryTable");
+const addDeliveryGuyToDailyTable = require("../../../services/sheetRelated/create/addDeliveryGuyToDailyTable");
 
 // Create a new delivery guy
 const createDeliveryGuy = async (req, res) => {
@@ -7,9 +10,28 @@ const createDeliveryGuy = async (req, res) => {
   session.startTransaction();
 
   try {
-    const data = req.body;
+    const { activeTable, sheetId, ...data } = req.body;
+    data.activeness = false;
+    data.paid = true;
+    data.waiting = false;
+    data.dailyCredit = 0;
 
     const newDeliveryGuy = new Deliveryguy(data);
+
+    if (sheetId) {
+      await addNewDeliveryGuyAndUpdateSalaryTable(
+        data.branchId,
+        activeTable,
+        newDeliveryGuy._id,
+        session
+      );
+
+      await addNewDeliveryGuyAndUpdateSummary();
+    }
+
+    if (activeTable) {
+      await addDeliveryGuyToDailyTable();
+    }
 
     const savedDeliveryGuy = await newDeliveryGuy.save({ session });
 

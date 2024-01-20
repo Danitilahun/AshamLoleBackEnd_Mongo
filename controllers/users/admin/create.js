@@ -12,7 +12,7 @@ const createAdmin = async (req, res) => {
   session.startTransaction();
 
   try {
-    const { active, ...data } = req.body;
+    const { sheetId, ...data } = req.body;
 
     data.salary = parseInt(data.salary);
     data.uniqueName = "admin";
@@ -44,7 +44,7 @@ const createAdmin = async (req, res) => {
       sector: "Branch",
     });
 
-    if (active) {
+    if (sheetId) {
       const branch = await Branch.findOne({ _id: data.branchId });
 
       if (!branch) {
