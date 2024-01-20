@@ -1,5 +1,9 @@
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const Admin = require("../../models/user/adminSchema");
+const Superadmin = require("../../models/user/superadminSchema");
+const Finance = require("../../models/user/financeschema");
+const CallCenter = require("../../models/user/callCenterSchema");
 
 const refreshToken = async (req, res) => {
   const session = await mongoose.startSession();
@@ -76,6 +80,7 @@ const refreshToken = async (req, res) => {
         UserInfo: {
           id: foundUser.id,
           email: foundUser.email,
+          role: foundUser.role,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
