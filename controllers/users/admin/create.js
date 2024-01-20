@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const updateBranchManager = require("../../../services/branchRelated/updateBranchManager");
 const createAshamStaff = require("../../../services/users/createAshamStaff");
 const addNewStaffAndUpdateSalaryTable = require("../../../services/sheetRelated/create/addNewStaffAndUpdateSalaryTable");
+const createEssential = require("../../../services/users/createEssential");
 
 // Create a new admin
 const createAdmin = async (req, res) => {
@@ -31,6 +32,14 @@ const createAdmin = async (req, res) => {
       name: newAdmin.name,
       role: "Admin",
       branchId: newAdmin.branchId,
+    });
+
+    await createEssential(session, {
+      address: data.fullAddress,
+      company: "AshamLole",
+      name: data.fullName,
+      phone: data.phone,
+      sector: "Branch",
     });
 
     if (active) {
