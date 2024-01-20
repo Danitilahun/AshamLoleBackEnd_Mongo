@@ -1,4 +1,4 @@
-const Staff = require("../../../models/users/staff");
+const Staff = require("../../../models/staffSchema");
 
 // Controller function to get all staff members by branchId
 const getAllStaffByBranchId = async (req, res) => {
