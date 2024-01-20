@@ -20,6 +20,7 @@ const createFinanceEntry = async (req, res) => {
     data.budgetSummery = 0;
     data.credit = 0;
     data.balance = 0;
+    data.password = "12345678";
 
     const newFinanceEntry = new Finance(data);
 

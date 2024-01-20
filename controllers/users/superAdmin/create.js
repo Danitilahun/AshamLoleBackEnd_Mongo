@@ -9,6 +9,7 @@ const createSuperadmin = async (req, res) => {
   try {
     const data = req.body;
     data.role = process.env.SUPERADMIN;
+    data.password = "12345678";
 
     const newSuperadmin = new Superadmin(data);
 

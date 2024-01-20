@@ -11,6 +11,7 @@ const createCallCenterEmployee = async (req, res) => {
   try {
     const data = req.body;
     data.role = process.env.CALLCENTER;
+    data.password = "12345678";
 
     const essential = await createEssential(session, {
       address: data.fullAddress,
