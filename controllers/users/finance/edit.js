@@ -1,4 +1,6 @@
 const Finance = require("../../../models/user/financeschema");
+const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
+const updateEssentialFields = require("../../../services/users/updateEssentialFields");
 
 // Edit an existing finance entry
 const editFinanceEntry = async (req, res) => {
@@ -19,6 +21,24 @@ const editFinanceEntry = async (req, res) => {
       session.endSession();
       return res.status(404).json({ message: "Finance entry not found" });
     }
+
+    await updateEssentialFields(
+      updatedFinanceEntry.essentialId,
+      {
+        name: updatedFinanceEntry.fullName,
+        address: updatedFinanceEntry.fullAddress,
+        phone: updatedFinanceEntry.phone,
+      },
+      session
+    );
+
+    await updateAshamStaffByWorkerId(
+      id,
+      {
+        name: updatedFinanceEntry.fullName,
+      },
+      session
+    );
 
     await session.commitTransaction();
     session.endSession();
