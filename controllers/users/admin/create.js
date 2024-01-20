@@ -2,6 +2,7 @@ const Admin = require("../../../models/user/adminSchema");
 const mongoose = require("mongoose");
 const updateBranchManager = require("../../../services/branchRelated/updateBranchManager");
 const createAshamStaff = require("../../../services/users/createAshamStaff");
+const addNewStaffAndUpdateSalaryTable = require("../../../services/sheetRelated/create/addNewStaffAndUpdateSalaryTable");
 
 // Create a new admin
 const createAdmin = async (req, res) => {
@@ -31,6 +32,20 @@ const createAdmin = async (req, res) => {
       role: "Admin",
       branchId: newAdmin.branchId,
     });
+
+    if (active) {
+      const branch = await Branch.findOne({ _id: branchId });
+
+      if (!branch) {
+        throw new Error("Branch not found");
+      }
+      await addNewStaffAndUpdateSalaryTable(
+        data.branchId,
+        branch.activeSheet,
+        newAdmin._id,
+        session
+      );
+    }
 
     const savedAdmin = await newAdmin.save({ session });
 
