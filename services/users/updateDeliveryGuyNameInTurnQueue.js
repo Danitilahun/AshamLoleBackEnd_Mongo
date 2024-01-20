@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const DeliveryTurn = require("path/to/DeliveryTurnModel"); // Update the path accordingly
+const DeliveryTurn = require("../../models/branchRelatedSchema/deliveryTurnSchema");
 
 const updateDeliveryGuyNameInTurnQueue = async (
   session,
