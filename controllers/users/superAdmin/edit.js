@@ -1,4 +1,6 @@
 const Superadmin = require("../../../models/user/superadminSchema");
+const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
+const updateEssentialFields = require("../../../services/users/updateEssentialFields");
 
 // Edit an existing superadmin
 const editSuperadmin = async (req, res) => {
@@ -19,6 +21,24 @@ const editSuperadmin = async (req, res) => {
       session.endSession();
       return res.status(404).json({ message: "Superadmin not found" });
     }
+
+    await updateEssentialFields(
+      updatedSuperadmin.essentialId,
+      {
+        name: updatedSuperadmin.fullName,
+        address: updatedSuperadmin.fullAddress,
+        phone: updatedSuperadmin.phone,
+      },
+      session
+    );
+
+    await updateAshamStaffByWorkerId(
+      id,
+      {
+        name: updatedSuperadmin.fullName,
+      },
+      session
+    );
 
     await session.commitTransaction();
     session.endSession();
