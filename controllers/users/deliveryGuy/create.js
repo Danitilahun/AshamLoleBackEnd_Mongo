@@ -3,6 +3,7 @@ const Deliveryguy = require("../../../models/deliveryguySchema");
 const addNewDeliveryGuyAndUpdateSummary = require("../../../services/sheetRelated/create/addNewDeliveryGuyAndUpdateSummary");
 const addNewDeliveryGuyAndUpdateSalaryTable = require("../../../services/sheetRelated/create/addNewDeliveryGuyAndUpdateSalaryTable");
 const addDeliveryGuyToDailyTable = require("../../../services/sheetRelated/create/addDeliveryGuyToDailyTable");
+const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 
 // Create a new delivery guy
 const createDeliveryGuy = async (req, res) => {
@@ -26,13 +27,24 @@ const createDeliveryGuy = async (req, res) => {
         session
       );
 
-      await addNewDeliveryGuyAndUpdateSummary();
+      await addNewDeliveryGuyAndUpdateSummary(
+        data.branchId,
+        sheetId,
+        newDeliveryGuy._id,
+        session
+      );
     }
 
     if (activeTable) {
-      await addDeliveryGuyToDailyTable();
+      await addDeliveryGuyToDailyTable(
+        data.branchId,
+        sheetId,
+        newDeliveryGuy._id,
+        session
+      );
     }
 
+    await increaseNumberOfWorker(data.branchId, session);
     const savedDeliveryGuy = await newDeliveryGuy.save({ session });
 
     await session.commitTransaction();
