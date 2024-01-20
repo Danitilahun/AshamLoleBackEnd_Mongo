@@ -1,6 +1,7 @@
 const Admin = require("../../../models/user/adminSchema");
 const mongoose = require("mongoose");
 const updateBranchManager = require("../../../services/branchRelated/updateBranchManager");
+const createAshamStaff = require("../../../services/users/createAshamStaff");
 
 // Create a new admin
 const createAdmin = async (req, res) => {
@@ -23,6 +24,13 @@ const createAdmin = async (req, res) => {
       newAdmin.name,
       session
     );
+
+    await createAshamStaff(session, {
+      id: newAdmin._id,
+      name: newAdmin.name,
+      role: "Admin",
+      branchId: newAdmin.branchId,
+    });
 
     const savedAdmin = await newAdmin.save({ session });
 

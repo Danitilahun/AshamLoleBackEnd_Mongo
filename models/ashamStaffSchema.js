@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ashamStaffSchema = new Schema({
-  branch: {
+  branchId: {
     type: String,
     required: true,
   },
