@@ -5,6 +5,7 @@ const createAshamStaff = require("../../../services/users/createAshamStaff");
 const addNewStaffAndUpdateSalaryTable = require("../../../services/sheetRelated/create/addNewStaffAndUpdateSalaryTable");
 const createEssential = require("../../../services/users/createEssential");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
+const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 
 // Create a new admin
 const createAdmin = async (req, res) => {
@@ -57,6 +58,8 @@ const createAdmin = async (req, res) => {
         session
       );
     }
+
+    await increaseNumberOfWorker(data.branchId, session);
 
     const savedAdmin = await newAdmin.save({ session });
 
