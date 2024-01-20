@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const financeschema = new mongoose.Schema(
   {
-    BudgetSummery: {
+    budgetSummery: {
       type: Number,
       required: true,
     },
@@ -75,10 +75,6 @@ const financeschema = new mongoose.Schema(
     },
     totalExpense: {
       type: Number,
-      required: true,
-    },
-    updatedAt: {
-      type: Date,
       required: true,
     },
   },

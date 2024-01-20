@@ -8,11 +8,11 @@ const branchBankTotalSchema = new mongoose.Schema(
       ref: "Branch",
       required: true,
     },
-    Withdraw: {
+    withdraw: {
       type: Number,
       default: 0,
     },
-    Deposit: {
+    deposit: {
       type: Number,
       default: 0,
     },
