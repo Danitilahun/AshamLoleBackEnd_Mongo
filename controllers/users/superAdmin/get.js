@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Superadmin = require("../../../models/user/superadminSchema");
 
 // Controller function to get the single superadmin
