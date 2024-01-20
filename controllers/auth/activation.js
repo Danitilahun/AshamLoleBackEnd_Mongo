@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const ErrorHandler = require("../../utils/errorHandler");
-const Admin = require("../../models/Admin"); // Import Admin model
-const CallCenter = require("../../models/CallCenter"); // Import CallCenter model
-const Finance = require("../../models/Finance"); // Import Finance model
+const Admin = require("../../models/user/adminSchema");
+const CallCenter = require("../../models/user/callCenterSchema");
+const Finance = require("../../models/user/financeschema");
 
 const activationController = async (req, res, next) => {
   const session = await mongoose.startSession();
