@@ -1,4 +1,4 @@
-const CallCenter = require("path-to-your-call-center-model");
+const CallCenter = require("../../../models/user/callCenterSchema");
 
 const getAllCallCenter = async (req, res) => {
   try {
