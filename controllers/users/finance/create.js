@@ -3,6 +3,7 @@ const Finance = require("../../../models/user/financeschema");
 const createAshamStaff = require("../../../services/users/createAshamStaff");
 const createEssential = require("../../../services/users/createEssential");
 const createBranchBankTotal = require("../../../services/users/createBranchBankTotal");
+const createCalculator = require("../../../services/users/createCalculator");
 
 // Create a new finance entry
 const createFinanceEntry = async (req, res) => {
@@ -31,6 +32,11 @@ const createFinanceEntry = async (req, res) => {
 
     await createBranchBankTotal(session, {
       branchId: newFinanceEntry._id,
+    });
+
+    await createCalculator(session, {
+      branchId: newFinanceEntry._id,
+      sheetId: newFinanceEntry._id,
     });
 
     await createEssential(session, {
