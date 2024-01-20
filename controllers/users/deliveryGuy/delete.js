@@ -1,4 +1,5 @@
 const Deliveryguy = require("../../../models/deliveryguySchema");
+const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 
 // Delete a delivery guy
 const deleteDeliveryGuy = async (req, res) => {
@@ -17,6 +18,7 @@ const deleteDeliveryGuy = async (req, res) => {
       return res.status(404).json({ message: "Delivery guy not found" });
     }
 
+    await increaseNumberOfWorker(data.branchId, session, -1);
     await session.commitTransaction();
     session.endSession();
 
