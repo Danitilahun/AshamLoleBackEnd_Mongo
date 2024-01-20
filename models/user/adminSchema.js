@@ -7,6 +7,10 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    activated: {
+      type: Boolean,
+      required: true,
+    },
     branchId: {
       type: String,
       required: true,

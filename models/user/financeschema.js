@@ -10,6 +10,10 @@ const financeschema = new mongoose.Schema(
     role: {
       type: String,
     },
+    activated: {
+      type: Boolean,
+      required: true,
+    },
     essentialId: {
       type: String,
       required: true,

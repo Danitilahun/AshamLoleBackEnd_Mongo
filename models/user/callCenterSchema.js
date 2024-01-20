@@ -10,6 +10,10 @@ const callCenterSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
+    activated: {
+      type: Boolean,
+      required: true,
+    },
     role: {
       type: String,
     },
