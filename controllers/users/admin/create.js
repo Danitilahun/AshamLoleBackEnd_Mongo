@@ -3,43 +3,9 @@ const Admin = require("../../../models/user/adminSchema");
 // Create a new admin
 const createAdmin = async (req, res) => {
   try {
-    const {
-      sheetId,
-      bankAccount,
-      branchId,
-      branchName,
-      difference,
-      disable,
-      email,
-      fullAddress,
-      fullName,
-      phone,
-      profileImage,
-      salary,
-      securityAddress,
-      securityName,
-      securityPhone,
-      uniqueName,
-    } = req.body;
+    const data = req.body;
 
-    const newAdmin = new Admin({
-      sheetId,
-      bankAccount,
-      branchId,
-      branchName,
-      difference,
-      disable,
-      email,
-      fullAddress,
-      fullName,
-      phone,
-      profileImage,
-      salary,
-      securityAddress,
-      securityName,
-      securityPhone,
-      uniqueName,
-    });
+    const newAdmin = new Admin(data);
 
     const savedAdmin = await newAdmin.save();
     res.status(201).json(savedAdmin);
