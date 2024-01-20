@@ -12,6 +12,10 @@ const callCenterSchema = new mongoose.Schema(
     role: {
       type: String,
     },
+    essentialId: {
+      type: String,
+      required: true,
+    },
     createdAt: {
       type: Date,
       required: true,

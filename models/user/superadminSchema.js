@@ -13,6 +13,10 @@ const superadminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    essentialId: {
+      type: String,
+      required: true,
+    },
     refreshToken: {
       type: String,
     },

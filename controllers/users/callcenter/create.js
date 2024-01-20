@@ -12,6 +12,16 @@ const createCallCenterEmployee = async (req, res) => {
     const data = req.body;
     data.role = process.env.CALLCENTER;
 
+    const essential = await createEssential(session, {
+      address: data.fullAddress,
+      company: "AshamLole",
+      name: data.fullName,
+      phone: data.phone,
+      sector: "Branch",
+    });
+
+    data.essentialId = essential._id;
+
     const newCallCenterEmployee = new CallCenter(data);
 
     await createAshamStaff(session, {
@@ -19,14 +29,6 @@ const createCallCenterEmployee = async (req, res) => {
       name: newCallCenterEmployee.name,
       role: "Admin",
       branchId: "AshamLole",
-    });
-
-    await createEssential(session, {
-      address: data.fullAddress,
-      company: "AshamLole",
-      name: data.fullName,
-      phone: data.phone,
-      sector: "Branch",
     });
 
     const savedCallCenterEmployee = await newCallCenterEmployee.save({

@@ -9,6 +9,10 @@ const financeschema = new mongoose.Schema(
     role: {
       type: String,
     },
+    essentialId: {
+      type: String,
+      required: true,
+    },
     balance: {
       type: Number,
       required: true,
