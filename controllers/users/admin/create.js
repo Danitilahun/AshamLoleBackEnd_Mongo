@@ -4,6 +4,7 @@ const updateBranchManager = require("../../../services/branchRelated/updateBranc
 const createAshamStaff = require("../../../services/users/createAshamStaff");
 const addNewStaffAndUpdateSalaryTable = require("../../../services/sheetRelated/create/addNewStaffAndUpdateSalaryTable");
 const createEssential = require("../../../services/users/createEssential");
+const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 
 // Create a new admin
 const createAdmin = async (req, res) => {
@@ -43,7 +44,7 @@ const createAdmin = async (req, res) => {
     });
 
     if (active) {
-      const branch = await Branch.findOne({ _id: branchId });
+      const branch = await Branch.findOne({ _id: data.branchId });
 
       if (!branch) {
         throw new Error("Branch not found");
