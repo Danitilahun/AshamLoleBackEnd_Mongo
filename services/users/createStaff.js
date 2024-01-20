@@ -5,7 +5,7 @@ async function createStaff(session, data) {
     // Create the Staff document within the provided session
     const staff = await Staff.create([data], { session });
 
-    return staff[0]; // Assuming create returns an array, return the first element
+    return staff[0];
   } catch (error) {
     // Handle the error, you might want to log or rethrow it
     throw error;
