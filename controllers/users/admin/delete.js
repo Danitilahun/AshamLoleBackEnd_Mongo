@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Admin = require("../../../models/user/adminSchema");
+const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 
 // Delete an admin
 const deleteAdmin = async (req, res) => {
@@ -16,6 +17,7 @@ const deleteAdmin = async (req, res) => {
       return res.status(404).json({ message: "Admin not found" });
     }
 
+    await increaseNumberOfWorker(data.branchId, session, -1);
     await session.commitTransaction();
     session.endSession();
 
