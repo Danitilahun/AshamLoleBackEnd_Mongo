@@ -1,4 +1,5 @@
 const Staff = require("../../../models/staffSchema");
+const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 
 // Delete a staff member
 const deleteStaffMember = async (req, res) => {
@@ -16,7 +17,7 @@ const deleteStaffMember = async (req, res) => {
       session.endSession();
       return res.status(404).json({ message: "Staff member not found" });
     }
-
+    await increaseNumberOfWorker(deletedStaffMember.branchId, session, -1);
     await session.commitTransaction();
     session.endSession();
 
