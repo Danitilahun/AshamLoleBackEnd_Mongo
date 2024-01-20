@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Admin = require("../../../models/user/adminSchema");
+const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
 
 // Edit an existing admin
 const editAdmin = async (req, res) => {
@@ -21,6 +22,13 @@ const editAdmin = async (req, res) => {
       return res.status(404).json({ message: "Admin not found" });
     }
 
+    await updateAshamStaffByWorkerId(
+      id,
+      {
+        name: updatedAdmin.fullName,
+      },
+      session
+    );
     await session.commitTransaction();
     session.endSession();
 
