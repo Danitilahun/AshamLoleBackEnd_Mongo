@@ -17,6 +17,10 @@ const financeschema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     refreshToken: {
       type: String,
     },
