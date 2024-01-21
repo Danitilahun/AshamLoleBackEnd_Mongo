@@ -98,13 +98,8 @@ callCenterSchema.pre("save", async function (next) {
       return next();
     }
 
-    // Generate a salt
     const salt = await bcrypt.genSalt(10);
-
-    // Hash the password with the salt
     const hashedPassword = await bcrypt.hash(this.password, salt);
-
-    // Set the hashed password
     this.password = hashedPassword;
 
     next();
