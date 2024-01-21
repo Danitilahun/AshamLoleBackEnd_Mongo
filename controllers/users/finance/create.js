@@ -13,7 +13,6 @@ const createFinanceEntry = async (req, res) => {
 
   try {
     const data = req.body;
-    data.role = process.env.FINANCE;
     data.disable = false;
     data.totalExpense = 0;
     data.salary = parseInt(data.salary);
