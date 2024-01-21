@@ -15,14 +15,6 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    branchName: {
-      type: String,
-      required: true,
-    },
-    difference: {
-      type: Number,
-      required: true,
-    },
     paid: {
       type: Boolean,
       required: true,
@@ -88,6 +80,7 @@ const adminSchema = new mongoose.Schema(
     },
     role: {
       type: String,
+      default: process.env.ADMIN,
     },
   },
   { timestamps: true }

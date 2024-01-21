@@ -9,6 +9,7 @@ const financeschema = new mongoose.Schema(
     },
     role: {
       type: String,
+      default: process.env.FINANCE,
     },
     activated: {
       type: Boolean,

@@ -11,6 +11,7 @@ const superadminSchema = new mongoose.Schema(
     },
     role: {
       type: String,
+      default: process.env.SUPERADMIN,
     },
     essentialId: {
       type: String,

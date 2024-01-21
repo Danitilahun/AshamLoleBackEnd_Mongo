@@ -11,7 +11,7 @@ const getSuperAdmin = async (req, res) => {
       return res.status(404).json({ message: "Superadmin not found" });
     }
 
-    res.status(200).json({ superadmin });
+    res.status(200).json({ data: superadmin });
   } catch (error) {
     console.error("Error in getSuperAdmin:", error);
     res.status(500).json({ error: "Internal Server Error" });

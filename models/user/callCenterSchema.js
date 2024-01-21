@@ -16,6 +16,7 @@ const callCenterSchema = new mongoose.Schema(
     },
     role: {
       type: String,
+      default: process.env.CALLCENTER,
     },
     essentialId: {
       type: String,
