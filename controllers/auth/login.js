@@ -4,6 +4,7 @@ const Admin = require("../../models/user/adminSchema");
 const Superadmin = require("../../models/user/superadminSchema");
 const Finance = require("../../models/user/financeschema");
 const CallCenter = require("../../models/user/callCenterSchema");
+const { default: mongoose } = require("mongoose");
 
 const login = async (req, res) => {
   const session = await mongoose.startSession();
@@ -14,21 +15,26 @@ const login = async (req, res) => {
     let potentialUser;
     let User;
 
-    if (process.env.ADMIN === req.body.role) {
+    if (!potentialUser) {
       potentialUser = await Admin.findOne({ email }).session(session);
-      User = Admin; // Set User to Admin model
-    } else if (process.env.SUPERADMIN === req.body.role) {
-      potentialUser = await Superadmin.findOne({ email }).session(session);
-      User = Superadmin; // Set User to Superadmin model
-    } else if (process.env.FINANCE === req.body.role) {
-      potentialUser = await Finance.findOne({ email }).session(session);
-      User = Finance; // Set User to Finance model
-    } else if (process.env.CALLCENTER === req.body.role) {
-      potentialUser = await CallCenter.findOne({ email }).session(session);
-      User = CallCenter; // Set User to CallCenter model
-    } else {
-      throw new Error("Invalid role");
+      User = Admin;
     }
+
+    if (!potentialUser) {
+      potentialUser = await Superadmin.findOne({ email }).session(session);
+      User = Superadmin;
+    }
+
+    if (!potentialUser) {
+      potentialUser = await Finance.findOne({ email }).session(session);
+      User = Finance;
+    }
+
+    if (!potentialUser) {
+      potentialUser = await CallCenter.findOne({ email }).session(session);
+      User = CallCenter;
+    }
+
     if (!potentialUser) {
       throw new Error("User not found");
     }

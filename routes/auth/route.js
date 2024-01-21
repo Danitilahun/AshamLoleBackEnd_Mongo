@@ -5,9 +5,10 @@ const activationController = require("../../controllers/auth/activation");
 const refreshToken = require("../../controllers/auth/refreshToken");
 const resetPassword = require("../../controllers/auth/resetPassword");
 const forgetPassword = require("../../controllers/auth/forgotPassword");
+const validateLoginInput = require("../../middlewares/validateLoginInput");
 const router = express.Router();
 
-router.post("/login", login);
+router.post("/login", validateLoginInput, login);
 router.post("/logout", logout);
 router.post("/activate", activationController);
 router.post("/refreshToken", refreshToken);
