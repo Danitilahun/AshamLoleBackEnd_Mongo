@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const DeliveryGuySalaryTable = require("../models/DeliveryGuySalaryTable");
-const DeliveryGuyWork = require("../models/DeliveryGuyWork");
-const Deliveryguy = require("../models/Deliveryguy");
+const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
+const Deliveryguy = require("../../../models/deliveryguySchema");
+const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 
 const getDeliveryGuySalaryDetails = async (req, res) => {
   const session = await mongoose.startSession();
@@ -40,8 +40,6 @@ const getDeliveryGuySalaryDetails = async (req, res) => {
         fullName: deliveryGuy.fullName,
         phone: deliveryGuy.phone,
         totalCredit: deliveryGuyWork.totalCredit,
-        // Add other relevant fields from Deliveryguy and DeliveryGuyWork models
-        // Add other fields from the salaryTable if needed
       });
     }
 
