@@ -10,19 +10,9 @@ const login = async (req, res) => {
   session.startTransaction();
 
   try {
-    let potentialUser;
-
-    if (!req.body.email || !req.body.password) {
-      await session.abortTransaction();
-      session.endSession();
-      return res
-        .status(400)
-        .json({ message: "Email and password are required" });
-    }
-
     const { email, password } = req.body;
-
-    let User; // Declare User variable
+    let potentialUser;
+    let User;
 
     if (process.env.ADMIN === req.body.role) {
       potentialUser = await Admin.findOne({ email }).session(session);
@@ -37,34 +27,16 @@ const login = async (req, res) => {
       potentialUser = await CallCenter.findOne({ email }).session(session);
       User = CallCenter; // Set User to CallCenter model
     } else {
-      await session.abortTransaction();
-      session.endSession();
-      return res.status(403).json({ message: "Invalid user role" });
+      throw new Error("Invalid role");
     }
     if (!potentialUser) {
-      await session.abortTransaction();
-      session.endSession();
-      res.json({
-        loggedIn: false,
-        status: "Wrong username or password!",
-        message: "Username not found",
-      });
-      console.log("Username not found");
-      return;
+      throw new Error("User not found");
     }
 
     const isSamePass = await bcrypt.compare(password, potentialUser.password);
 
     if (!isSamePass) {
-      await session.abortTransaction();
-      session.endSession();
-      res.json({
-        loggedIn: false,
-        status: "Wrong username or password!",
-        message: "Invalid password or username",
-      });
-      console.log("Invalid password");
-      return;
+      throw new Error("Incorrect password");
     }
 
     const accessToken = jwt.sign(
@@ -113,10 +85,9 @@ const login = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    console.error("Error logging in:", error);
     res.status(500).json({
       loggedIn: false,
-      message: "Internal Server Error",
+      message: error.message,
     });
   }
 };
