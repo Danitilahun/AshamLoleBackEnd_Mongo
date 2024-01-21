@@ -8,7 +8,6 @@ const CreditRoute = require("./credit/route");
 const CustomerRoute = require("./customer/route");
 const DailyTableRoute = require("./dailytable/route");
 const UserRoute = require("./user/route");
-const AuthRoute = require("./auth/route");
 const EssentialRoute = require("./essential/route");
 const ExpenseRoute = require("./expense/route");
 const OrderRoute = require("./order/route");
