@@ -1,4 +1,4 @@
-const FinanceCreditSchema = require("../../../models/FinanceCreditSchema");
+const FinanceCreditSchema = require("../../../models/credit/financeCreditSchema");
 
 const getFinanceCreditsByBranchId = async (req, res) => {
   try {
