@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const HotelProfit = require("../models/HotelProfit"); // Update the path to your HotelProfit model
 const { DailyGainCredit } = require("../../models/credit/dailyCreditSchema");
 const updateDailyCredit = require("../../services/reportRelated/updateDailyCredit");
+const HotelProfit = require("../../models/report/hotelProfitSchema");
 
 const createHotelProfitAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();

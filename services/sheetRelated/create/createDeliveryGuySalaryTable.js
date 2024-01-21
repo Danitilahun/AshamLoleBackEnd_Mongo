@@ -1,6 +1,6 @@
 const Deliveryguy = require("../../../models/deliveryguySchema");
 const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
-const DeliveryGuySalaryInfo = require("../../../models/table/work/deliveryGuySalaryInfoSchema");
+const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 
 const createDeliveryGuySalaryTable = async (branchId, sheetId, session) => {
   try {
@@ -19,7 +19,7 @@ const createDeliveryGuySalaryTable = async (branchId, sheetId, session) => {
     // Iterate through each delivery guy found within the session
     for (const deliveryGuy of deliveryGuys) {
       // Create a DeliveryGuyWork document with default values within the provided session
-      const deliveryGuyWork = new DeliveryGuySalaryInfo({});
+      const deliveryGuyWork = new DeliveryGuyWork({});
 
       // Save the DeliveryGuyWork document within the provided session
       await deliveryGuyWork.save({ session });
