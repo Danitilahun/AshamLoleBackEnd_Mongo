@@ -14,6 +14,7 @@ const createSuperadmin = async (req, res) => {
     data.password = "12345678";
 
     const existingSuperadmin = await Superadmin.findOne({ email: data.email });
+
     if (existingSuperadmin) {
       throw new Error("User with the same email already exists");
     }
