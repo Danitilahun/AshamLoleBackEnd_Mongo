@@ -77,6 +77,35 @@ const callCenterSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: [8, "Password must be at least 8 characters long"],
       maxlength: [20, "Password cannot exceed 20 characters"],
+      validate: {
+        validator: function (value) {
+          const lowercaseRegex = /^(?=.*[a-z])/.test(value);
+          const uppercaseRegex = /^(?=.*[A-Z])/.test(value);
+          const numberRegex = /^(?=.*[0-9])/.test(value);
+          const specialCharRegex = /^(?=.*[!@#$%^&*])/.test(value);
+
+          if (!lowercaseRegex) {
+            throw new Error(
+              "Password must contain at least one lowercase letter"
+            );
+          }
+          if (!uppercaseRegex) {
+            throw new Error(
+              "Password must contain at least one uppercase letter"
+            );
+          }
+          if (!numberRegex) {
+            throw new Error("Password must contain at least one number");
+          }
+          if (!specialCharRegex) {
+            throw new Error(
+              "Password must contain at least one special character (!@#$%^&*)"
+            );
+          }
+
+          return true;
+        },
+      },
     },
     securityPhone: {
       type: String,
