@@ -16,10 +16,9 @@ const getDeliveryGuyWorkSummary = async (req, res) => {
     }).session(session);
 
     if (!workSummary) {
-      return res.status(404).json({
-        message:
-          "DeliveryGuy15DayWorkSummary not found for the provided sheetId.",
-      });
+      throw new Error(
+        "DeliveryGuy15DayWorkSummary not found for the provided sheetId."
+      );
     }
 
     const result = [];
