@@ -6,6 +6,7 @@ const morgan = require("morgan");
 require("dotenv").config();
 const connectToDB = require("./config/database");
 const apiRoutes = require("./routes/api");
+const verifyJWT = require("./middlewares/verifyJWT");
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.get("/", (req, res) => {
   res.send("GET request received!");
 });
 
-app.use("/api", apiRoutes);
+app.use("/api", verifyJWT, apiRoutes);
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => console.log(`Server Port: ${PORT}`));

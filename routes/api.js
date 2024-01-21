@@ -16,10 +16,11 @@ const ReportRoute = require("./report/route");
 const IncentiveRoute = require("./incentive/route");
 const SheetRoute = require("./sheet/route");
 const GainPriceRoute = require("./gainprice/route");
+const verifyRoles = require("../middlewares/verifyRoles");
 
 // Use sub-routes under "/api"
 router.use("/dashboard", DashboardRoute);
-router.use("/branch", BranchRoute);
+router.use("/branch", verifyRoles(process.env.ADMIN), BranchRoute);
 router.use("/bank", BankRoute);
 router.use("/calculator", CalculateRoute);
 router.use("/credit", CreditRoute);

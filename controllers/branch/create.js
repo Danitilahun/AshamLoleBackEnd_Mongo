@@ -24,21 +24,21 @@ const createBranch = async (req, res) => {
     });
     await BranchTotalCredit.create([{ branchId }], { session });
     await DeliveryTurn.create([{ branchId }], { session });
-    await BranchIncomeFromSource.create([{ branchId }], { session });
-    await BranchDashboardData.create(
-      [{ branchId, BranchName: req.body.name }],
-      { session }
-    );
-    await BranchMoneyInformation.create(
-      [
-        {
-          branchId,
-          uniqueName: newBranch[0].uniqueName,
-          BranchName: req.body.name,
-        },
-      ],
-      { session }
-    );
+    // await BranchIncomeFromSource.create([{ branchId }], { session });
+    // await BranchDashboardData.create(
+    //   [{ branchId, BranchName: req.body.name }],
+    //   { session }
+    // );
+    // await BranchMoneyInformation.create(
+    //   [
+    //     {
+    //       branchId,
+    //       uniqueName: newBranch[0].uniqueName,
+    //       BranchName: req.body.name,
+    //     },
+    //   ],
+    //   { session }
+    // );
 
     const allDocs = await Dashboard.find({}).session(session);
     const firstDoc = allDocs.length > 0 ? allDocs[0] : null;
