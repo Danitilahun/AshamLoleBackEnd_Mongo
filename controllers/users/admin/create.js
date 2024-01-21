@@ -21,7 +21,7 @@ const createAdmin = async (req, res) => {
     data.salary = parseInt(data.salary);
     data.uniqueName = "admin";
     data.paid = true;
-    data.password = "12345678";
+    data.password = "Asham123!";
     data.staffCredit = 0;
 
     const newStaff = await createStaff(session, data);

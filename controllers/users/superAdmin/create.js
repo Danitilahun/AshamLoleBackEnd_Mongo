@@ -10,7 +10,7 @@ const createSuperadmin = async (req, res) => {
 
   try {
     const data = req.body;
-    data.password = "12345678";
+    data.password = "Asham123!";
 
     const existingSuperadmin = await Superadmin.findOne({ email: data.email });
 

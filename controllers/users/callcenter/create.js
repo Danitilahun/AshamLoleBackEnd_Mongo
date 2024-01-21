@@ -12,7 +12,7 @@ const createCallCenterEmployee = async (req, res) => {
 
   try {
     const data = req.body;
-    data.password = "12345678";
+    data.password = "Asham123!";
 
     const essential = await createEssential(session, {
       address: data.fullAddress,
