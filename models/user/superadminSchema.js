@@ -10,10 +10,6 @@ const superadminSchema = new mongoose.Schema(
     role: {
       type: String,
     },
-    branch: {
-      type: String,
-      required: true,
-    },
     essentialId: {
       type: String,
       required: true,
@@ -25,14 +21,6 @@ const superadminSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
-    disable: {
-      type: Boolean,
-      default: false,
-    },
     email: {
       type: String,
       required: true,
@@ -43,10 +31,6 @@ const superadminSchema = new mongoose.Schema(
     },
     fullName: {
       type: String,
-      required: true,
-    },
-    openingDate: {
-      type: Date,
       required: true,
     },
     phone: {
@@ -73,7 +57,6 @@ const superadminSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Pre-save middleware to hash the password before saving
 superadminSchema.pre("save", async function (next) {
   try {
     if (!this.isModified("password")) {
