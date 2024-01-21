@@ -1,5 +1,6 @@
 const verifyRoles = (...allowedRoles) => {
   return (req, res, next) => {
+    console.log("Verifying user role", req.user);
     if (!req.user || !req.user.role) {
       return res
         .status(401)
