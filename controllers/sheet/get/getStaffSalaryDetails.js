@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const StaffSalaryTable = require("../models/StaffSalaryTable");
-const StaffWorkerInfo = require("../models/StaffWorkerInfo");
-const Staff = require("../models/Staff");
+const StaffSalaryTable = require("../../../models/table/salary/StaffSalaryTable");
+const Staff = require("../../../models/staffSchema");
+const StaffWorkerInfo = require("../../../models/table/work/staffWorkerInfoSchema");
 
 const getStaffSalaryDetails = async (req, res) => {
   const session = await mongoose.startSession();
