@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const Deliveryguy = require("../../models/deliveryguySchema");
-const DeliveryGuyWork = require("../../models/deliveryGuyWorkSchema");
-const DailyTable = require("../../models/DailyTable");
 const updateBranchWithSession = require("../../services/sheetRelated/updateBranchWithSession");
 const Branch = require("../../models/branchRelatedSchema/branchSchema");
+const DailyTable = require("../../models/table/DailyTable");
+const CompanyWorks = require("../../models/table/work/companyWorksSchema");
 
 const createDailyTable = async (req, res) => {
   const session = await mongoose.startSession();
@@ -23,7 +23,7 @@ const createDailyTable = async (req, res) => {
     // Create delivery guy work for each delivery guy
     const createdDeliveryGuyWorks = await Promise.all(
       deliveryGuys.map(async (deliveryGuy) => {
-        const deliveryGuyWork = new DeliveryGuyWork({});
+        const deliveryGuyWork = new CompanyWorks({});
         return deliveryGuyWork.save({ session });
       })
     );
