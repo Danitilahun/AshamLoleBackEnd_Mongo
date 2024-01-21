@@ -5,7 +5,7 @@ const financeschema = new mongoose.Schema(
   {
     budgetSummery: {
       type: Number,
-      required: true,
+      required: [true, "Budget summary is required"],
     },
     role: {
       type: String,
@@ -13,42 +13,40 @@ const financeschema = new mongoose.Schema(
     },
     activated: {
       type: Boolean,
-      required: true,
+      required: [true, "Activation status is required"],
     },
     essentialId: {
       type: String,
-      required: true,
+      required: [true, "Essential ID is required"],
     },
     balance: {
       type: Number,
-      required: true,
+      required: [true, "Balance is required"],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Password is required"],
+      minlength: [8, "Password must be at least 8 characters long"],
+      maxlength: [20, "Password cannot exceed 20 characters"],
     },
     refreshToken: {
       type: String,
     },
     bank: {
       type: [String],
-      required: true,
+      required: [true, "Bank details are required"],
     },
     bankAccount: {
       type: String,
-      required: true,
+      required: [true, "Bank account is required"],
     },
     budget: {
       type: String,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      required: true,
+      required: [true, "Budget details are required"],
     },
     credit: {
       type: Number,
-      required: true,
+      required: [true, "Credit details are required"],
     },
     disable: {
       type: Boolean,
@@ -56,19 +54,25 @@ const financeschema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
     },
     fullAddress: {
       type: String,
-      required: true,
+      required: [true, "Full address is required"],
+      minlength: [5, "Full address must be at least 5 characters long"],
+      maxlength: [100, "Full address cannot exceed 100 characters"],
     },
     fullName: {
       type: String,
-      required: true,
+      required: [true, "Full name is required"],
+      minlength: [2, "Full name must be at least 2 characters long"],
+      maxlength: [50, "Full name cannot exceed 50 characters"],
     },
     phone: {
       type: String,
-      required: true,
+      required: [true, "Phone number is required"],
+      minlength: [10, "Phone number must be at least 10 characters long"],
+      maxlength: [15, "Phone number cannot exceed 15 characters"],
     },
     profileImage: {
       type: String,
@@ -76,23 +80,32 @@ const financeschema = new mongoose.Schema(
     },
     salary: {
       type: Number,
-      required: true,
+      required: [true, "Salary is required"],
     },
     securityAddress: {
       type: String,
-      required: true,
+      required: [true, "Security address is required"],
+      minlength: [5, "Security address must be at least 5 characters long"],
+      maxlength: [100, "Security address cannot exceed 100 characters"],
     },
     securityName: {
       type: String,
-      required: true,
+      required: [true, "Security name is required"],
+      minlength: [2, "Security name must be at least 2 characters long"],
+      maxlength: [50, "Security name cannot exceed 50 characters"],
     },
     securityPhone: {
       type: String,
-      required: true,
+      required: [true, "Security phone number is required"],
+      minlength: [
+        10,
+        "Security phone number must be at least 10 characters long",
+      ],
+      maxlength: [15, "Security phone number cannot exceed 15 characters"],
     },
     totalExpense: {
       type: Number,
-      required: true,
+      required: [true, "Total expense is required"],
     },
   },
   { timestamps: true }
@@ -105,13 +118,8 @@ financeschema.pre("save", async function (next) {
       return next();
     }
 
-    // Generate a salt
     const salt = await bcrypt.genSalt(10);
-
-    // Hash the password with the salt
     const hashedPassword = await bcrypt.hash(this.password, salt);
-
-    // Set the hashed password
     this.password = hashedPassword;
 
     next();
