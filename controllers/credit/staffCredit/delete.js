@@ -1,5 +1,5 @@
 const { startSession } = require("mongoose");
-const updateCredit = require("../../../service/credit/totalCredit/DailyCreditUpdate");
+const updateCredit = require("../../../services/creditRelated/updateCredit");
 const StaffCredit = require("../../../models/credit/staffCreditSchema");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 

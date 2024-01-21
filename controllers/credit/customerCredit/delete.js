@@ -1,6 +1,6 @@
 const { startSession } = require("mongoose");
-const updateCredit = require("../../../service/credit/totalCredit/DailyCreditUpdate");
 const CustomerCredit = require("../../../models/credit/customerCreditSchema");
+const updateCredit = require("../../../services/creditRelated/updateCredit");
 
 const deleteCredit = async (req, res) => {
   const session = await startSession();

@@ -24,16 +24,6 @@ app.get("/", (req, res) => {
   res.send("GET request received!");
 });
 
-// const adminKey = process.env.ADMIN;
-// const superAdminKey = process.env.SUPERADMIN;
-// const callCenterKey = process.env.CALLCENTER;
-// const financeKey = process.env.FINANCE;
-
-// console.log("adminKey", adminKey);
-// console.log("superAdminKey", superAdminKey);
-// console.log("callCenterKey", callCenterKey);
-// console.log("financeKey", financeKey);
-
 app.use("/api", apiRoutes);
 
 const PORT = process.env.PORT || 9000;
