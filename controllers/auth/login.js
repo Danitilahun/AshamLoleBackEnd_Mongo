@@ -45,13 +45,14 @@ const login = async (req, res) => {
       throw new Error("Incorrect password");
     }
 
+    let user = {
+      id: potentialUser.id,
+      email: potentialUser.email,
+      role: potentialUser.role,
+    };
     const accessToken = jwt.sign(
       {
-        UserInfo: {
-          id: potentialUser.id,
-          email: potentialUser.email,
-          role: potentialUser.role,
-        },
+        User: user,
       },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1d" }
@@ -59,9 +60,7 @@ const login = async (req, res) => {
 
     const newRefreshToken = jwt.sign(
       {
-        id: potentialUser.id,
-        username: potentialUser.username,
-        role: potentialUser.role,
+        User: user,
       },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "1d" }
