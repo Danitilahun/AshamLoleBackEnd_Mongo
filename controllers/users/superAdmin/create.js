@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Superadmin = require("../../../models/user/superadminSchema");
+const createAshamStaff = require("../../../services/users/createAshamStaff");
+const createEssential = require("../../../services/users/createEssential");
 
 // Create a new superadmin
 const createSuperadmin = async (req, res) => {
@@ -11,21 +13,28 @@ const createSuperadmin = async (req, res) => {
     data.role = process.env.SUPERADMIN;
     data.password = "12345678";
 
-    const newSuperadmin = new Superadmin(data);
+    const existingSuperadmin = await Superadmin.findOne({ email: data.email });
+    if (existingSuperadmin) {
+      return res.status(400).json({ message: "Email is already in use." });
+    }
 
-    await createAshamStaff(session, {
-      id: newSuperadmin._id,
-      name: newSuperadmin.name,
-      role: "Admin",
-      branchId: "AshamLole",
-    });
-
-    await createEssential(session, {
+    const essential = await createEssential(session, {
       address: data.fullAddress,
       company: "AshamLole",
       name: data.fullName,
       phone: data.phone,
       sector: "Branch",
+    });
+
+    data.essentialId = essential._id;
+
+    const newSuperadmin = new Superadmin(data);
+
+    await createAshamStaff(session, {
+      id: newSuperadmin._id,
+      name: newSuperadmin.fullName,
+      role: "Admin",
+      branchId: "AshamLole",
     });
 
     const savedSuperadmin = await newSuperadmin.save({ session });
