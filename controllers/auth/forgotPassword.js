@@ -46,6 +46,7 @@ const forgotPassword = async (req, res) => {
     const forgetPasswordToken = createActivationToken({
       id: foundUser._id,
       role: foundUser.role,
+      email: foundUser.email,
     });
 
     const resetPasswordUrl = `http://localhost:3000/reset-password/${forgetPasswordToken}`;
