@@ -1,17 +1,14 @@
 const mongoose = require("mongoose");
 const Branch = require("../../models/branchRelatedSchema/branchSchema");
 const BranchSheetSummary = require("../../models/branchRelatedSchema/branchSheetSummarySchema");
-const BranchDashboardData = require("../../models/branchRelatedSchema/branchDashboardDataSchema");
-const BranchMoneyInformation = require("../../models/branchRelatedSchema/branchMoneyInformationSchema");
-const Dashboard = require("../../models/dashboardSchema");
 
 const editBranch = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const branchId = req.params.id; // Get branch ID from request params
-    const updatedData = req.body; // Updated branch data from request body
+    const branchId = req.params.id;
+    const updatedData = req.body;
 
     const branch = await Branch.findById(branchId).session(session);
     if (!branch) {
@@ -19,7 +16,6 @@ const editBranch = async (req, res) => {
     }
 
     const prevBudget = branch.budget;
-    const prevBranchName = branch.name;
 
     // Update the branch if there are changes
     if (updatedData.budget && updatedData.budget !== prevBudget) {
@@ -27,25 +23,6 @@ const editBranch = async (req, res) => {
       await BranchSheetSummary.findOneAndUpdate(
         { branchId },
         { budget: updatedData.budget },
-        { session }
-      );
-      await Dashboard.findOneAndUpdate(
-        {},
-        { $inc: { totalBudget: updatedData.budget - prevBudget } },
-        { session }
-      );
-    }
-
-    if (updatedData.name && updatedData.name !== prevBranchName) {
-      // Update related documents based on branchId
-      await BranchDashboardData.findOneAndUpdate(
-        { branchId },
-        { BranchName: updatedData.name },
-        { session }
-      );
-      await BranchMoneyInformation.findOneAndUpdate(
-        { branchId },
-        { BranchName: updatedData.name },
         { session }
       );
     }
