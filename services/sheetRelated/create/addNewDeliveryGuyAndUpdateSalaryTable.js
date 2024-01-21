@@ -1,6 +1,5 @@
-const Deliveryguy = require("../../../models/deliveryguySchema");
 const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
-const DeliveryGuySalaryInfo = require("../../../models/table/work/deliveryGuySalaryInfoSchema");
+const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 
 const addNewDeliveryGuyAndUpdateSalaryTable = async (
   branchId,
@@ -10,7 +9,7 @@ const addNewDeliveryGuyAndUpdateSalaryTable = async (
 ) => {
   try {
     // Create a DeliveryGuySalaryInfo document for the new delivery guy within the provided session
-    const newDeliveryGuyWork = new DeliveryGuySalaryInfo({});
+    const newDeliveryGuyWork = new DeliveryGuyWork({});
     await newDeliveryGuyWork.save({ session });
 
     // Get the ID of the created DeliveryGuySalaryInfo document
