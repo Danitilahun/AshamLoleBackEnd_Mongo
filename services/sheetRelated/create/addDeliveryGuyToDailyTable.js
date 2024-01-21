@@ -1,6 +1,6 @@
-const Deliveryguy = require("../../models/deliveryguySchema");
-const DailyTable = require("../../models/table/DailyTable");
-const DeliveryGuyWork = require("../../models/table/work/deliveryGuyWorkSchema");
+const Deliveryguy = require("../../../models/deliveryguySchema");
+const DailyTable = require("../../../models/table/DailyTable");
+const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 
 const addDeliveryGuyToDailyTable = async (
   branchId,
@@ -41,7 +41,7 @@ const addDeliveryGuyToDailyTable = async (
       { new: true, session }
     );
 
-    return updatedSummary; // Return the updated document with the new personWork entry
+    return updatedSummary;
   } catch (error) {
     console.error("Error in updating DailyTable:", error);
     throw error;
