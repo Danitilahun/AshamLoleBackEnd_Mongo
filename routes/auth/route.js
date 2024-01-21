@@ -1,4 +1,3 @@
-// Import required modules
 const express = require("express");
 const login = require("../../controllers/auth/login");
 const logout = require("../../controllers/auth/logout");
@@ -14,4 +13,5 @@ router.post("/activate", activationController);
 router.post("/refreshToken", refreshToken);
 router.post("/forgetPassword", forgetPassword);
 router.post("/resetPassword", resetPassword);
+
 module.exports = router;
