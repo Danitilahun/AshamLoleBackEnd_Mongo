@@ -5,78 +5,98 @@ const adminSchema = new mongoose.Schema(
   {
     bankAccount: {
       type: String,
-      required: true,
+      required: [true, "Bank account is required"],
+      minlength: [5, "Bank account must be at least 5 characters long"],
+      maxlength: [20, "Bank account cannot exceed 20 characters"],
     },
     activated: {
       type: Boolean,
-      required: true,
+      required: [true, "Activation status is required"],
     },
     branchId: {
       type: String,
-      required: true,
+      required: [true, "Branch ID is required"],
+      minlength: [3, "Branch ID must be at least 3 characters long"],
+      maxlength: [15, "Branch ID cannot exceed 15 characters"],
     },
     paid: {
       type: Boolean,
-      required: true,
     },
     disable: {
       type: Boolean,
-      required: true,
+      default: true,
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
+      minlength: [5, "Email must be at least 5 characters long"],
+      maxlength: [50, "Email cannot exceed 50 characters"],
     },
     fullAddress: {
       type: String,
-      required: true,
+      required: [true, "Full address is required"],
+      minlength: [5, "Full address must be at least 5 characters long"],
+      maxlength: [100, "Full address cannot exceed 100 characters"],
     },
     fullName: {
       type: String,
-      required: true,
+      required: [true, "Full name is required"],
+      minlength: [2, "Full name must be at least 2 characters long"],
+      maxlength: [50, "Full name cannot exceed 50 characters"],
     },
     phone: {
       type: String,
-      required: true,
+      required: [true, "Phone number is required"],
+      minlength: [10, "Phone number must be at least 10 characters long"],
+      maxlength: [15, "Phone number cannot exceed 15 characters"],
     },
     profileImage: {
       type: String,
-      required: true,
+      required: [true, "Profile image is required"],
     },
     salary: {
-      type: String,
-      required: true,
+      type: Number,
+      required: [true, "Salary is required"],
     },
     securityAddress: {
       type: String,
-      required: true,
+      required: [true, "Security address is required"],
+      minlength: [5, "Security address must be at least 5 characters long"],
+      maxlength: [100, "Security address cannot exceed 100 characters"],
     },
     securityName: {
       type: String,
-      required: true,
+      required: [true, "Security name is required"],
+      minlength: [2, "Security name must be at least 2 characters long"],
+      maxlength: [50, "Security name cannot exceed 50 characters"],
     },
     securityPhone: {
       type: String,
-      required: true,
+      required: [true, "Security phone number is required"],
+      minlength: [
+        10,
+        "Security phone number must be at least 10 characters long",
+      ],
+      maxlength: [15, "Security phone number cannot exceed 15 characters"],
     },
     refreshToken: {
       type: String,
     },
-    uniqueName: {
-      type: String,
-      required: true,
-    },
     staffId: {
       type: String,
-      required: true,
+      required: [true, "Staff ID is required"],
+      minlength: [5, "Staff ID must be at least 5 characters long"],
+      maxlength: [15, "Staff ID cannot exceed 15 characters"],
     },
     essentialId: {
       type: String,
-      required: true,
+      required: [true, "Essential ID is required"],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Password is required"],
+      minlength: [8, "Password must be at least 8 characters long"],
+      maxlength: [20, "Password cannot exceed 20 characters"],
     },
     role: {
       type: String,
@@ -92,14 +112,8 @@ adminSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
       return next();
     }
-
-    // Generate a salt
     const salt = await bcrypt.genSalt(10);
-
-    // Hash the password with the salt
     const hashedPassword = await bcrypt.hash(this.password, salt);
-
-    // Set the hashed password
     this.password = hashedPassword;
 
     next();
