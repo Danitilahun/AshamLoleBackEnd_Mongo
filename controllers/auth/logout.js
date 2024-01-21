@@ -33,7 +33,6 @@ const logout = async (req, res) => {
       return res.status(403).json({ message: "Invalid user role" });
     }
 
-    // Delete refreshToken in the database
     foundUser.refreshToken = null;
     await foundUser.save();
 

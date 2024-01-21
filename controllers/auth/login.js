@@ -22,20 +22,25 @@ const login = async (req, res) => {
 
     const { email, password } = req.body;
 
+    let User; // Declare User variable
+
     if (process.env.ADMIN === req.body.role) {
       potentialUser = await Admin.findOne({ email }).session(session);
+      User = Admin; // Set User to Admin model
     } else if (process.env.SUPERADMIN === req.body.role) {
       potentialUser = await Superadmin.findOne({ email }).session(session);
+      User = Superadmin; // Set User to Superadmin model
     } else if (process.env.FINANCE === req.body.role) {
       potentialUser = await Finance.findOne({ email }).session(session);
+      User = Finance; // Set User to Finance model
     } else if (process.env.CALLCENTER === req.body.role) {
       potentialUser = await CallCenter.findOne({ email }).session(session);
+      User = CallCenter; // Set User to CallCenter model
     } else {
       await session.abortTransaction();
       session.endSession();
       return res.status(403).json({ message: "Invalid user role" });
     }
-
     if (!potentialUser) {
       await session.abortTransaction();
       session.endSession();
@@ -48,10 +53,7 @@ const login = async (req, res) => {
       return;
     }
 
-    const isSamePass = await bcrypt.compare(
-      req.body.password,
-      potentialUser.password
-    );
+    const isSamePass = await bcrypt.compare(password, potentialUser.password);
 
     if (!isSamePass) {
       await session.abortTransaction();
@@ -74,7 +76,7 @@ const login = async (req, res) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "5m" }
+      { expiresIn: "1d" }
     );
 
     const newRefreshToken = jwt.sign(
@@ -114,7 +116,6 @@ const login = async (req, res) => {
     console.error("Error logging in:", error);
     res.status(500).json({
       loggedIn: false,
-      status: "Internal Server Error",
       message: "Internal Server Error",
     });
   }
