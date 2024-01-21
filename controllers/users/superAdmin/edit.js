@@ -18,9 +18,7 @@ const editSuperadmin = async (req, res) => {
     ).session(session);
 
     if (!updatedSuperadmin) {
-      await session.abortTransaction();
-      session.endSession();
-      return res.status(404).json({ message: "Superadmin not found" });
+      throw new Error("Superadmin not found");
     }
 
     await updateEssentialFields(

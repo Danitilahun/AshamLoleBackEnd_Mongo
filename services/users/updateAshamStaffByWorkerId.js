@@ -5,7 +5,7 @@ const updateAshamStaffByWorkerId = async (workerId, data, session) => {
   try {
     // Use the provided session to ensure data consistency
     const updatedAshamStaff = await AshamStaff.findOneAndUpdate(
-      { workerId: workerId },
+      { id: workerId },
       { $set: data },
       { new: true, session }
     );
