@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Superadmin = require("../../../models/user/superadminSchema");
 const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
 const updateEssentialFields = require("../../../services/users/updateEssentialFields");
@@ -9,7 +10,7 @@ const editSuperadmin = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const updateData = { ...req.body };
+    const updateData = req.body;
     const updatedSuperadmin = await Superadmin.findByIdAndUpdate(
       id,
       updateData,
