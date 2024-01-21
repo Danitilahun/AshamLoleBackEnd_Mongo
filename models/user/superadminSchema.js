@@ -12,7 +12,6 @@ const superadminSchema = new mongoose.Schema(
     },
     essentialId: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
