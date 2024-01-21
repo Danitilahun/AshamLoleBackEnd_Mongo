@@ -5,10 +5,6 @@ const BranchBankTotal = require("../../models/branchRelatedSchema/branchBankTota
 const BranchSheetSummary = require("../../models/branchRelatedSchema/branchSheetSummarySchema");
 const BranchTotalCredit = require("../../models/branchRelatedSchema/branchTotalCredit");
 const DeliveryTurn = require("../../models/branchRelatedSchema/deliveryTurnSchema");
-const BranchIncomeFromSource = require("../../models/branchRelatedSchema/branchIncomeFromSourceSchema");
-const BranchDashboardData = require("../../models/branchRelatedSchema/branchDashboardDataSchema");
-const BranchMoneyInformation = require("../../models/branchRelatedSchema/branchMoneyInformationSchema");
-const Dashboard = require("../../models/dashboardSchema");
 
 const deleteBranch = async (req, res) => {
   const session = await mongoose.startSession();
@@ -23,25 +19,7 @@ const deleteBranch = async (req, res) => {
       BranchSheetSummary.deleteOne({ branchId }, { session }),
       BranchTotalCredit.deleteOne({ branchId }, { session }),
       DeliveryTurn.deleteOne({ branchId }, { session }),
-      BranchIncomeFromSource.deleteOne({ branchId }, { session }),
-      BranchDashboardData.deleteOne({ branchId }, { session }),
-      BranchMoneyInformation.deleteOne({ branchId }, { session }),
     ]);
-
-    // Find the dashboard and decrease the totalBudget
-    const dashboard = await Dashboard.findOne({}).session(session);
-    if (dashboard) {
-      const branch = await Branch.findById(branchId).session(session);
-      if (branch) {
-        await Dashboard.findByIdAndUpdate(
-          dashboard._id,
-          { $inc: { totalBudget: -branch.budget } },
-          { new: true, session }
-        );
-      }
-    } else {
-      throw new Error("Dashboard not found");
-    }
 
     // Delete the branch
     await Branch.findByIdAndDelete(branchId).session(session);

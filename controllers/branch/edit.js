@@ -10,16 +10,19 @@ const editBranch = async (req, res) => {
     const branchId = req.params.id;
     const updatedData = req.body;
 
-    const branch = await Branch.findById(branchId).session(session);
-    if (!branch) {
+    // Update related documents based on branchId
+    const prevBudget = await Branch.findByIdAndUpdate(
+      branchId,
+      { $set: updatedData },
+      { session, new: true }
+    );
+
+    if (!prevBudget) {
       throw new Error("Branch not found");
     }
 
-    const prevBudget = branch.budget;
-
-    // Update the branch if there are changes
-    if (updatedData.budget && updatedData.budget !== prevBudget) {
-      // Update related documents based on branchId
+    // Check if budget has changed
+    if (updatedData.budget && updatedData.budget !== prevBudget.budget) {
       await BranchSheetSummary.findOneAndUpdate(
         { branchId },
         { budget: updatedData.budget },
@@ -28,14 +31,6 @@ const editBranch = async (req, res) => {
     }
 
     await session.commitTransaction();
-
-    Object.keys(updatedData).forEach((key) => {
-      if (branch[key] !== undefined) {
-        branch[key] = updatedData[key];
-      }
-    });
-
-    await branch.save();
 
     res.status(200).json({
       success: true,
