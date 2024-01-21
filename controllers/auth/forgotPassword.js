@@ -6,7 +6,7 @@ const createActivationToken = require("../../util/createActivationToken");
 const sendMail = require("../../util/sendMail");
 const mongoose = require("mongoose");
 
-const forgotPassword = async (req, res) => {
+const forgetPassword = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -76,4 +76,4 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-module.exports = forgotPassword;
+module.exports = forgetPassword;
