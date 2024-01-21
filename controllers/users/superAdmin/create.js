@@ -15,7 +15,7 @@ const createSuperadmin = async (req, res) => {
 
     const existingSuperadmin = await Superadmin.findOne({ email: data.email });
     if (existingSuperadmin) {
-      return res.status(400).json({ message: "Email is already in use." });
+      throw new Error("User with the same email already exists");
     }
 
     const essential = await createEssential(session, {
