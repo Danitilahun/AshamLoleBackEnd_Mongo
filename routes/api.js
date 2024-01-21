@@ -16,6 +16,7 @@ const ReportRoute = require("./report/route");
 const IncentiveRoute = require("./incentive/route");
 const SheetRoute = require("./sheet/route");
 const GainPriceRoute = require("./gainprice/route");
+
 // Use sub-routes under "/api"
 router.use("/dashboard", DashboardRoute);
 router.use("/branch", BranchRoute);
