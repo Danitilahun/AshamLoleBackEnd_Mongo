@@ -1,6 +1,5 @@
 const express = require("express");
 
-const deleteFinanceEntry = require("../../../controllers/users/finance/delete");
 const createStaffMember = require("../../../controllers/users/staff/create");
 const editStaffMember = require("../../../controllers/users/staff/edit");
 const getAllStaffByBranchId = require("../../../controllers/users/staff/get");
