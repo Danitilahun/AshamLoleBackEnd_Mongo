@@ -1,4 +1,4 @@
-const DeliveryGuyGain = require("./path_to_your_DeliveryGuyGain_model");
+const DeliveryGuyGain = require("../../../models/price/deliveryGuyGainSchema");
 
 const updateDeliveryGuyGainField = async (req, res) => {
   try {
@@ -25,12 +25,10 @@ const updateDeliveryGuyGainField = async (req, res) => {
     existingGain[fieldName] = fieldValue;
     await existingGain.save();
 
-    res
-      .status(200)
-      .json({
-        message: `Field '${fieldName}' updated successfully`,
-        existingGain,
-      });
+    res.status(200).json({
+      message: `Field '${fieldName}' updated successfully`,
+      existingGain,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
