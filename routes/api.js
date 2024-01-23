@@ -20,7 +20,11 @@ const verifyRoles = require("../middlewares/verifyRoles");
 // Use sub-routes under "/api"
 router.use("/dashboard", verifyRoles(process.env.SUPERADMIN), DashboardRoute);
 router.use("/branch", verifyRoles(process.env.SUPERADMIN), BranchRoute);
-router.use("/bank", BankRoute);
+router.use(
+  "/bank",
+  verifyRoles(process.env.FINANCE, process.env.ADMIN),
+  BankRoute
+);
 router.use("/calculator", CalculateRoute);
 router.use("/credit", CreditRoute);
 router.use("/customer", CustomerRoute);
