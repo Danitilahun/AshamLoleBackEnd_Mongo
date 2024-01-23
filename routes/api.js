@@ -50,7 +50,16 @@ router.use(
   verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
   UserRoute
 );
-router.use("/essential", EssentialRoute);
+router.use(
+  "/essential",
+  verifyRoles(
+    process.env.FINANCE,
+    process.env.SUPERADMIN,
+    process.env.ADMIN,
+    process.env.CALLCENTER
+  ),
+  EssentialRoute
+);
 router.use("/expense", ExpenseRoute);
 router.use("/order", OrderRoute);
 router.use("/report", ReportRoute);
