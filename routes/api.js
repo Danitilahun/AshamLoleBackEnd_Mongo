@@ -60,7 +60,7 @@ router.use(
   ),
   EssentialRoute
 );
-router.use("/expense", ExpenseRoute);
+router.use("/expense", verifyRoles(process.env.FINANCE), ExpenseRoute);
 router.use("/order", OrderRoute);
 router.use("/report", ReportRoute);
 router.use("/incentive", IncentiveRoute);
