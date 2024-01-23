@@ -35,7 +35,11 @@ router.use(
   verifyRoles(process.env.FINANCE, process.env.ADMIN),
   CreditRoute
 );
-router.use("/customer", CustomerRoute);
+router.use(
+  "/customer",
+  verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
+  CustomerRoute
+);
 router.use("/dailytable", DailyTableRoute);
 router.use("/user", UserRoute);
 router.use("/essential", EssentialRoute);
