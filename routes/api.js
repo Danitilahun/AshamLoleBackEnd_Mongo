@@ -25,7 +25,11 @@ router.use(
   verifyRoles(process.env.FINANCE, process.env.ADMIN),
   BankRoute
 );
-router.use("/calculator", CalculateRoute);
+router.use(
+  "/calculator",
+  verifyRoles(process.env.FINANCE, process.env.ADMIN),
+  CalculateRoute
+);
 router.use("/credit", CreditRoute);
 router.use("/customer", CustomerRoute);
 router.use("/dailytable", DailyTableRoute);
