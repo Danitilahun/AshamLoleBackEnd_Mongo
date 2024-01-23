@@ -61,7 +61,11 @@ router.use(
   EssentialRoute
 );
 router.use("/expense", verifyRoles(process.env.FINANCE), ExpenseRoute);
-router.use("/order", OrderRoute);
+router.use(
+  "/order",
+  verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
+  OrderRoute
+);
 router.use("/report", ReportRoute);
 router.use("/incentive", IncentiveRoute);
 router.use("/sheet", SheetRoute);
