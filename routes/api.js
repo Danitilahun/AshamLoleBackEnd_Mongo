@@ -66,7 +66,11 @@ router.use(
   verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
   OrderRoute
 );
-router.use("/report", ReportRoute);
+router.use(
+  "/report",
+  verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
+  ReportRoute
+);
 router.use("/incentive", IncentiveRoute);
 router.use("/sheet", SheetRoute);
 router.use("/gainprice", GainPriceRoute);
