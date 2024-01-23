@@ -71,7 +71,11 @@ router.use(
   verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
   ReportRoute
 );
-router.use("/incentive", IncentiveRoute);
+router.use(
+  "/incentive",
+  verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
+  IncentiveRoute
+);
 router.use("/sheet", SheetRoute);
 router.use("/gainprice", GainPriceRoute);
 
