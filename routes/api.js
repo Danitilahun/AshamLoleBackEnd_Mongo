@@ -40,8 +40,16 @@ router.use(
   verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
   CustomerRoute
 );
-router.use("/dailytable", DailyTableRoute);
-router.use("/user", UserRoute);
+router.use(
+  "/dailytable",
+  verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
+  DailyTableRoute
+);
+router.use(
+  "/user",
+  verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
+  UserRoute
+);
 router.use("/essential", EssentialRoute);
 router.use("/expense", ExpenseRoute);
 router.use("/order", OrderRoute);
