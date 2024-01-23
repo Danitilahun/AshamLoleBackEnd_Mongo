@@ -30,7 +30,11 @@ router.use(
   verifyRoles(process.env.FINANCE, process.env.ADMIN),
   CalculateRoute
 );
-router.use("/credit", CreditRoute);
+router.use(
+  "/credit",
+  verifyRoles(process.env.FINANCE, process.env.ADMIN),
+  CreditRoute
+);
 router.use("/customer", CustomerRoute);
 router.use("/dailytable", DailyTableRoute);
 router.use("/user", UserRoute);
