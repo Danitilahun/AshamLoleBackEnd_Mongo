@@ -18,7 +18,7 @@ const GainPriceRoute = require("./gainprice/route");
 const verifyRoles = require("../middlewares/verifyRoles");
 
 // Use sub-routes under "/api"
-router.use("/dashboard", DashboardRoute);
+router.use("/dashboard", verifyRoles(process.env.SUPERADMIN), DashboardRoute);
 router.use("/branch", verifyRoles(process.env.SUPERADMIN), BranchRoute);
 router.use("/bank", BankRoute);
 router.use("/calculator", CalculateRoute);
