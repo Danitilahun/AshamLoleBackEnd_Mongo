@@ -10,7 +10,7 @@ const staffRoute = require("./staff/route");
 const verifyRoles = require("../../middlewares/verifyRoles");
 
 router.use("/admin", verifyRoles(process.env.SUPERADMIN), adminRoute);
-router.use("/callCenter", callCenterRoute);
+router.use("/callCenter", verifyRoles(process.env.SUPERADMIN), callCenterRoute);
 router.use("/finance", financeRoute);
 router.use("/deliveryGuy", deliveryGuyRoute);
 router.use("/superAdmin", superAdminRoute);
