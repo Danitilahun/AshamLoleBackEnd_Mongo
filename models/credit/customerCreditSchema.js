@@ -43,7 +43,7 @@ const customerCreditSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const CustomerCredit = mongoose.model("CustomerCredit", customerCreditSchema);

@@ -42,7 +42,7 @@ const bonusSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const Bonus = mongoose.model("Bonus", bonusSchema);

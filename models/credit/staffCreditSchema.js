@@ -35,7 +35,7 @@ const staffCreditSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const StaffCredit = mongoose.model("StaffCredit", staffCreditSchema);

@@ -37,7 +37,7 @@ const DailyCreditSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 // DailyCredit model without 'type'
