@@ -5,11 +5,13 @@ const updateBranchManager = require("../../../services/branchRelated/updateBranc
 const Essential = require("../../../models/essentialSchema");
 const Staff = require("../../../models/staffSchema");
 const deleteAshamStaffByField = require("../../../services/users/deleteAshamStaff");
+const { getIoInstance } = require("../../../socket");
 
 // Delete an admin
 const deleteAdmin = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const { id } = req.params;
@@ -44,6 +46,8 @@ const deleteAdmin = async (req, res) => {
     await deleteAshamStaffByField("id", deletedAdmin._id, session);
     await updateBranchManager(deleteAdmin.branchId, "", "", session);
     await increaseNumberOfWorker(data.branchId, session, -1);
+
+    io.emit("adminDeleted", id);
     await session.commitTransaction();
     session.endSession();
 
