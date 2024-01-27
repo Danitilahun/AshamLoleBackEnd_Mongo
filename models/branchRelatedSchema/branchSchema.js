@@ -175,7 +175,7 @@ const branchSchema = new mongoose.Schema(
       default: "Completed",
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 // Pre-save middleware to generate the unique name based on existing branches count
