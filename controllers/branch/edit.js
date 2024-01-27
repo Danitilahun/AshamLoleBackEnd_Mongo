@@ -11,6 +11,8 @@ const editBranch = async (req, res) => {
   try {
     const branchId = req.params.id;
     const updatedData = req.body;
+    console.log(updatedData);
+    console.log(branchId);
 
     // Update related documents based on branchId
     const newBranch = await Branch.findByIdAndUpdate(
@@ -30,6 +32,7 @@ const editBranch = async (req, res) => {
     );
 
     io.emit("branchUpdated", newBranch);
+    console.log(newBranch);
     await session.commitTransaction();
 
     res.status(200).json({

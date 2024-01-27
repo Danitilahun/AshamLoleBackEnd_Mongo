@@ -22,9 +22,9 @@ const branchSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    taxPercentage: {
+    taxPersentage: {
       type: Number,
-      required: true,
+      default: 0,
     },
     ethioTelBill: {
       type: Number,
@@ -35,6 +35,10 @@ const branchSchema = new mongoose.Schema(
       required: true,
     },
     ethioTelOwnerName: {
+      type: String,
+      required: true,
+    },
+    openingDate: {
       type: String,
       required: true,
     },
@@ -64,7 +68,7 @@ const branchSchema = new mongoose.Schema(
     },
     numberOfWorker: {
       type: Number,
-      default: "",
+      default: 0,
     },
     houseRentOwnerName: {
       type: String,
@@ -118,6 +122,7 @@ const branchSchema = new mongoose.Schema(
 
     managerName: {
       type: String,
+      default: "",
     },
 
     date: {
@@ -127,38 +132,47 @@ const branchSchema = new mongoose.Schema(
     managerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",
+      default: null,
     },
 
     activeDailySummery: {
       type: String,
+      default: "",
     },
     activeDGSummery: {
       type: String,
+      default: "",
     },
 
     activeSheet: {
       type: String,
+      default: "",
     },
 
     activeTable: {
       type: String,
+      default: "",
     },
 
     activeCalculator: {
       type: String,
+      default: "",
     },
 
     activeDeliverySalaryTable: {
       type: String,
+      default: "",
     },
 
     activeStaffSalarySheet: {
       type: String,
+      default: "",
     },
 
     sheetStatus: {
       type: String,
       enum: ["Pending", "Completed"],
+      default: "Completed",
     },
   },
   { timestamps: true }
