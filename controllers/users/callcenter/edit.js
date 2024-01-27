@@ -1,11 +1,13 @@
 const CallCenter = require("../../../models/user/callCenterSchema");
 const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
 const updateEssentialFields = require("../../../services/users/updateEssentialFields");
+const { getIoInstance } = require("../../../socket");
 
 // Edit an existing call center employee
 const editCallCenterEmployee = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const { id } = req.params;
@@ -43,6 +45,8 @@ const editCallCenterEmployee = async (req, res) => {
         .json({ message: "Call center employee not found" });
     }
 
+    console.log(updatedCallCenterEmployee);
+    io.emit("callCenterEmployeeUpdated", updatedCallCenterEmployee);
     await session.commitTransaction();
     session.endSession();
 
