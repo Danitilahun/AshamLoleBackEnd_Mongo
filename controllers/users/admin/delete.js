@@ -48,6 +48,7 @@ const deleteAdmin = async (req, res) => {
     await increaseNumberOfWorker(data.branchId, session, -1);
 
     io.emit("adminDeleted", id);
+
     await session.commitTransaction();
     session.endSession();
 
