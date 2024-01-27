@@ -5,11 +5,13 @@ const createEssential = require("../../../services/users/createEssential");
 const createBranchBankTotal = require("../../../services/users/createBranchBankTotal");
 const createCalculator = require("../../../services/users/createCalculator");
 const createActivationToken = require("../../../util/createActivationToken");
+const { getIoInstance } = require("../../../socket");
 
 // Create a new finance entry
 const createFinanceEntry = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const data = req.body;
@@ -66,6 +68,8 @@ const createFinanceEntry = async (req, res) => {
     }
     const savedFinanceEntry = await newFinanceEntry.save({ session });
 
+    console.log(savedFinanceEntry);
+    io.emit("financeEntryCreated", savedFinanceEntry);
     await session.commitTransaction();
     session.endSession();
 

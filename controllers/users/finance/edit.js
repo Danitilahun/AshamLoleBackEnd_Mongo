@@ -1,11 +1,13 @@
 const Finance = require("../../../models/user/financeschema");
 const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
 const updateEssentialFields = require("../../../services/users/updateEssentialFields");
+const { getIoInstance } = require("../../../socket");
 
 // Edit an existing finance entry
 const editFinanceEntry = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const { id } = req.params;
@@ -40,6 +42,8 @@ const editFinanceEntry = async (req, res) => {
       session
     );
 
+    console.log(updatedFinanceEntry);
+    io.emit("financeEntryUpdated", updatedFinanceEntry);
     await session.commitTransaction();
     session.endSession();
 
