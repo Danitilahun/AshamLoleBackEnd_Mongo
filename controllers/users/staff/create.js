@@ -3,12 +3,13 @@ const Staff = require("../../../models/staffSchema");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 const addNewStaffAndUpdateSalaryTable = require("../../../services/sheetRelated/create/addNewStaffAndUpdateSalaryTable");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
+const { getIoInstance } = require("../../../socket");
 
 // Create a new staff member
 const createStaffMember = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
-
+  const io = getIoInstance();
   try {
     const { sheetId, ...data } = req.body;
     data.paid = true;
@@ -34,6 +35,8 @@ const createStaffMember = async (req, res) => {
     await increaseNumberOfWorker(data.branchId, session);
     const savedStaffMember = await newStaffMember.save({ session });
 
+    console.log(savedStaffMember);
+    io.emit("staffMemberCreated", savedStaffMember);
     await session.commitTransaction();
     session.endSession();
 
