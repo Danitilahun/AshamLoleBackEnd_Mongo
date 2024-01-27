@@ -3,11 +3,13 @@ const Admin = require("../../../models/user/adminSchema");
 const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
 const updateBranchFields = require("../../../services/branchRelated/updateBranchFields");
 const updateEssentialFields = require("../../../services/users/updateEssentialFields");
+const { getIoInstance } = require("../../../socket");
 
 // Edit an existing admin
 const editAdmin = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const { id } = req.params;
@@ -49,6 +51,9 @@ const editAdmin = async (req, res) => {
       },
       session
     );
+
+    console.log(updatedAdmin);
+    io.emit("adminUpdated", updatedAdmin);
     await session.commitTransaction();
     session.endSession();
 
