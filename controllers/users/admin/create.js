@@ -9,11 +9,13 @@ const increaseNumberOfWorker = require("../../../services/branchRelated/increase
 const createStaff = require("../../../services/users/createStaff");
 const createActivationToken = require("../../../util/createActivationToken");
 const sendMail = require("../../../util/sendMail");
+const { getIoInstance } = require("../../../socket");
 
 // Create a new admin
 const createAdmin = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const { sheetId, ...data } = req.body;
@@ -86,11 +88,15 @@ const createAdmin = async (req, res) => {
       throw new Error("Email could not be sent");
     }
     const savedAdmin = await newAdmin.save({ session });
-
+    console.log(savedAdmin);
+    io.emit("adminCreated", savedAdmin);
     await session.commitTransaction();
     session.endSession();
 
-    res.status(201).json(savedAdmin);
+    res.status(201).json({
+      success: true,
+      message: "Admin created successfully",
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
