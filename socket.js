@@ -1,7 +1,4 @@
-// setupSocketIO.js
-
 const { Server } = require("socket.io");
-const getSingleBranch = require("./events/getSingleBranch");
 const getAllBranches = require("./events/getAllBranches");
 
 let io;
@@ -17,9 +14,6 @@ const setupSocketIO = (server) => {
   io.on("connection", (socket) => {
     console.log("a user connected");
 
-    socket.on("getSingleBranch", (branchId) =>
-      getSingleBranch(socket, branchId)
-    );
     socket.on("getAllBranches", () => getAllBranches(socket));
 
     socket.on("disconnect", () => {

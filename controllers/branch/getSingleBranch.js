@@ -2,7 +2,7 @@ const Branch = require("../../models/branchRelatedSchema/branchSchema");
 
 const getSingleBranch = async (req, res) => {
   try {
-    const branchId = req.params.id; // Get branch ID from request params
+    const branchId = req.params.id;
     const branch = await Branch.findById(branchId);
 
     if (!branch) {
