@@ -4,11 +4,13 @@ const addNewDeliveryGuyAndUpdateSummary = require("../../../services/sheetRelate
 const addNewDeliveryGuyAndUpdateSalaryTable = require("../../../services/sheetRelated/create/addNewDeliveryGuyAndUpdateSalaryTable");
 const addDeliveryGuyToDailyTable = require("../../../services/sheetRelated/create/addDeliveryGuyToDailyTable");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
+const { getIoInstance } = require("../../../socket");
 
 // Create a new delivery guy
 const createDeliveryGuy = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const { activeTable, sheetId, ...data } = req.body;
@@ -48,6 +50,8 @@ const createDeliveryGuy = async (req, res) => {
 
     const savedDeliveryGuy = await newDeliveryGuy.save({ session });
 
+    console.log(savedDeliveryGuy);
+    io.emit("deliveryGuyCreated", savedDeliveryGuy);
     await session.commitTransaction();
     session.endSession();
 
