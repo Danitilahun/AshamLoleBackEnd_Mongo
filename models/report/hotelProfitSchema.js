@@ -27,7 +27,7 @@ const hotelProfitSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const HotelProfit = mongoose.model("HotelProfit", hotelProfitSchema);

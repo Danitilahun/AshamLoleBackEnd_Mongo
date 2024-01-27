@@ -23,7 +23,7 @@ const essentialSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const Essential = mongoose.model("Essential", essentialSchema);

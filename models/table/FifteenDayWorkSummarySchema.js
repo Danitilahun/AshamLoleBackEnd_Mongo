@@ -7,11 +7,14 @@ const DailyWorkSchema = new mongoose.Schema({
 });
 
 // Define 15-Day Work Summary schema
-const FifteenDayWorkSummarySchema = new mongoose.Schema({
-  dailyWorkSummary: [DailyWorkSchema], // Array of objects containing day and daily work
-  branchId: { type: String, required: true }, // Branch ID
-  sheetId: { type: String, required: true }, // Sheet ID
-});
+const FifteenDayWorkSummarySchema = new mongoose.Schema(
+  {
+    dailyWorkSummary: [DailyWorkSchema], // Array of objects containing day and daily work
+    branchId: { type: String, required: true }, // Branch ID
+    sheetId: { type: String, required: true }, // Sheet ID
+  },
+  { strict: true, timestamps: true }
+);
 
 // Create model using the schema
 const FifteenDayWorkSummary = mongoose.model(

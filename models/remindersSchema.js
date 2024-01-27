@@ -1,20 +1,23 @@
 const mongoose = require("mongoose");
 
-const remindersSchema = new mongoose.Schema({
-  callcenterId: {
-    type: String,
-    required: true,
+const remindersSchema = new mongoose.Schema(
+  {
+    callcenterId: {
+      type: String,
+      required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: ["water", "card", "wifi", "asbeza", "other"],
+      required: true,
+    },
   },
-  date: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    enum: ["water", "card", "wifi", "asbeza", "other"],
-    required: true,
-  },
-});
+  { strict: true, timestamps: true }
+);
 
 const Reminders = mongoose.model("Reminders", remindersSchema);
 

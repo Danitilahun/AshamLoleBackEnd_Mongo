@@ -137,7 +137,7 @@ const financeschema = new mongoose.Schema(
       required: [true, "Total expense is required"],
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 // Pre-save middleware to hash the password before saving

@@ -64,7 +64,7 @@ const cardSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const Card = mongoose.model("Card", cardSchema);

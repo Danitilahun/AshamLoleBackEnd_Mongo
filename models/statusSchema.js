@@ -62,7 +62,7 @@ const statusSchema = new mongoose.Schema(
     },
     others: [othersSchema],
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 // Pre-save middleware to populate some fields from the Branch model

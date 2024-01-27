@@ -63,7 +63,7 @@ const waterSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const Water = mongoose.model("Water", waterSchema);

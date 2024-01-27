@@ -15,7 +15,7 @@ const SheetsSchema = new Schema(
     sheetStatus: String,
     tableCount: Number,
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const Sheet = mongoose.model("Sheets", SheetsSchema);

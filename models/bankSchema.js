@@ -42,7 +42,7 @@ const bankSchema = new mongoose.Schema(
       enum: ["Withdrawal", "Deposit"],
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const Bank = mongoose.model("Bank", bankSchema);

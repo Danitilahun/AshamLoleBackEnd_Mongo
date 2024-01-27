@@ -117,7 +117,7 @@ const callCenterSchema = new mongoose.Schema(
       maxlength: [15, "Security phone number cannot exceed 15 characters"],
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 // Pre-save middleware to hash the password before saving

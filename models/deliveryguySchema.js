@@ -67,7 +67,7 @@ const deliveryguySchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 // Pre-save middleware to generate the unique name based on existing delivery guys count

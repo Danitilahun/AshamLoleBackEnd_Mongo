@@ -7,11 +7,14 @@ const PersonWorkSchema = new mongoose.Schema({
 });
 
 // Define SalaryTable schema (similar to DeliveryGuy15DayWorkSummary)
-const SalaryTableSchema = new mongoose.Schema({
-  personWork: [PersonWorkSchema], // Array of objects containing person and work
-  branchId: { type: String, required: true }, // Branch ID
-  sheetId: { type: String, required: true }, // Sheet ID
-});
+const SalaryTableSchema = new mongoose.Schema(
+  {
+    personWork: [PersonWorkSchema], // Array of objects containing person and work
+    branchId: { type: String, required: true }, // Branch ID
+    sheetId: { type: String, required: true }, // Sheet ID
+  },
+  { strict: true, timestamps: true }
+);
 
 // Create model using the schema
 const SalaryTable = mongoose.model("SalaryTable", SalaryTableSchema);

@@ -100,7 +100,7 @@ const superadminSchema = new mongoose.Schema(
       maxlength: [15, "Security phone number cannot exceed 15 characters"],
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 superadminSchema.pre("save", async function (next) {

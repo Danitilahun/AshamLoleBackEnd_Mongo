@@ -43,7 +43,7 @@ const cardDistributeSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const CardDistribute = mongoose.model("CardDistribute", cardDistributeSchema);

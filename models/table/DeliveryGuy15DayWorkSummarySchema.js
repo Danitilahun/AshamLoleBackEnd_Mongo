@@ -7,11 +7,14 @@ const PersonWorkSchema = new mongoose.Schema({
 });
 
 // Define DeliveryGuy15DayWorkSummary schema
-const DeliveryGuy15DayWorkSummarySchema = new mongoose.Schema({
-  personWork: [PersonWorkSchema], // Array of objects containing person and work
-  branchId: { type: String, required: true }, // Branch ID
-  sheetId: { type: String, required: true }, // Sheet ID
-});
+const DeliveryGuy15DayWorkSummarySchema = new mongoose.Schema(
+  {
+    personWork: [PersonWorkSchema], // Array of objects containing person and work
+    branchId: { type: String, required: true }, // Branch ID
+    sheetId: { type: String, required: true }, // Sheet ID
+  },
+  { strict: true, timestamps: true }
+);
 
 // Create model using the schema
 const DeliveryGuy15DayWorkSummary = mongoose.model(

@@ -39,7 +39,7 @@ const cardFeeSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const CardFee = mongoose.model("CardFee", cardFeeSchema);

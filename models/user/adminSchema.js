@@ -132,7 +132,7 @@ const adminSchema = new mongoose.Schema(
       default: process.env.ADMIN,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 // Pre-save middleware to hash the password before saving

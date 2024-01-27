@@ -16,7 +16,7 @@ const StaffSchema = new Schema(
     securityPhone: String,
     uniqueName: String,
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 // Pre-save middleware to generate uniqueName based on the count of staff with the same branchId
