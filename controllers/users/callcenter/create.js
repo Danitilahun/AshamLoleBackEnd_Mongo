@@ -4,11 +4,13 @@ const createAshamStaff = require("../../../services/users/createAshamStaff");
 const createEssential = require("../../../services/users/createEssential");
 const createActivationToken = require("../../../util/createActivationToken");
 const sendMail = require("../../../util/sendMail");
+const { getIoInstance } = require("../../../socket");
 
 // Create a new call center employee
 const createCallCenterEmployee = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const data = req.body;
@@ -54,6 +56,8 @@ const createCallCenterEmployee = async (req, res) => {
       session,
     });
 
+    console.log(savedCallCenterEmployee);
+    io.emit("callCenterEmployeeCreated", savedCallCenterEmployee);
     await session.commitTransaction();
     session.endSession();
 
