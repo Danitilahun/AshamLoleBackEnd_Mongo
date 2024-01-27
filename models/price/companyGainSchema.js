@@ -23,7 +23,7 @@ const companyGainSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { strict: true, timestamps: true }
 );
 
 const CompanyGain = mongoose.model("CompanyGain", companyGainSchema);
