@@ -1,10 +1,12 @@
 const Deliveryguy = require("../../../models/deliveryguySchema");
 const updateDeliveryGuyNameInTurnQueue = require("../../../services/users/updateDeliveryGuyNameInTurnQueue");
+const { getIoInstance } = require("../../../socket");
 
 // Edit an existing delivery guy
 const editDeliveryGuy = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const { id } = req.params;
@@ -26,6 +28,8 @@ const editDeliveryGuy = async (req, res) => {
       updatedDeliveryGuy.fullName
     );
 
+    console.log(updatedDeliveryGuy);
+    io.emit("deliveryGuyUpdated", updatedDeliveryGuy);
     await session.commitTransaction();
     session.endSession();
 

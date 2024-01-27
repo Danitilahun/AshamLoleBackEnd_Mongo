@@ -1,10 +1,12 @@
 const Deliveryguy = require("../../../models/deliveryguySchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
+const { getIoInstance } = require("../../../socket");
 
 // Delete a delivery guy
 const deleteDeliveryGuy = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+  const io = getIoInstance();
 
   try {
     const { id } = req.params;
@@ -19,6 +21,9 @@ const deleteDeliveryGuy = async (req, res) => {
     }
 
     await increaseNumberOfWorker(data.branchId, session, -1);
+
+    console.log(deletedDeliveryGuy);
+    io.emit("deliveryGuyDeleted", id);
     await session.commitTransaction();
     session.endSession();
 
