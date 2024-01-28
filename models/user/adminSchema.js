@@ -11,7 +11,7 @@ const adminSchema = new mongoose.Schema(
     },
     activated: {
       type: Boolean,
-      required: [true, "Activation status is required"],
+      default: false,
     },
     branchId: {
       type: String,

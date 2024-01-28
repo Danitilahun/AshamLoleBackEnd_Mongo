@@ -107,6 +107,7 @@ const callCenterSchema = new mongoose.Schema(
         },
       },
     },
+
     securityPhone: {
       type: String,
       required: [true, "Security phone number is required"],
@@ -120,7 +121,6 @@ const callCenterSchema = new mongoose.Schema(
   { strict: true, timestamps: true }
 );
 
-// Pre-save middleware to hash the password before saving
 callCenterSchema.pre("save", async function (next) {
   try {
     if (!this.isModified("password")) {
