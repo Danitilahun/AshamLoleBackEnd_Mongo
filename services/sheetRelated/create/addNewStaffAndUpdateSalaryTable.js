@@ -1,13 +1,7 @@
-const Staff = require("../../../models/staffSchema");
 const StaffSalaryTable = require("../../../models/table/salary/StaffSalaryTable");
 const StaffWorkerInfo = require("../../../models/table/work/staffWorkerInfoSchema");
 
-const addNewStaffAndUpdateSalaryTable = async (
-  branchId,
-  sheetId,
-  staffId,
-  session
-) => {
+const addNewStaffAndUpdateSalaryTable = async (tableId, staffId, session) => {
   try {
     // Create a StaffWorkerInfo document for the new staff member within the provided session
     const newStaffWork = new StaffWorkerInfo({});
@@ -16,9 +10,9 @@ const addNewStaffAndUpdateSalaryTable = async (
     // Get the ID of the created StaffWorkerInfo document
     const newStaffWorkId = newStaffWork._id;
 
-    // Update the StaffSalaryTable with the new personWork entry
-    const updatedSalaryTable = await StaffSalaryTable.findOneAndUpdate(
-      { branchId, sheetID: sheetId },
+    // Update the StaffSalaryTable with the new personWork entry using findByIdAndUpdate
+    const updatedSalaryTable = await StaffSalaryTable.findByIdAndUpdate(
+      tableId, // Find StaffSalaryTable based on the provided `tableId`
       {
         $push: {
           personWork: {
@@ -37,7 +31,7 @@ const addNewStaffAndUpdateSalaryTable = async (
     return updatedSalaryTable; // Return the updated StaffSalaryTable
   } catch (error) {
     console.error(
-      "Error in adding new staff member and updating salary table:",
+      "Error in adding a new staff member and updating the salary table:",
       error
     );
     throw error;
