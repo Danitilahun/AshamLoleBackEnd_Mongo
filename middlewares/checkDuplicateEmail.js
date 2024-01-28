@@ -7,6 +7,10 @@ const Admin = require("../models/user/adminSchema");
 const checkDuplicateEmail = async function (req, res, next) {
   const { email } = req.body;
 
+  // If email is null or undefined, move to the next middleware
+  if (!email) {
+    return next();
+  }
   const session = await mongoose.startSession();
   session.startTransaction();
 
