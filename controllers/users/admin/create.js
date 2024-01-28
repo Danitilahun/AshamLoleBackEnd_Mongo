@@ -18,7 +18,7 @@ const createAdmin = async (req, res) => {
   const io = getIoInstance();
 
   try {
-    const { sheetId, ...data } = req.body;
+    const { tableId, ...data } = req.body;
 
     data.salary = parseInt(data.salary);
     data.uniqueName = "admin";
@@ -61,12 +61,7 @@ const createAdmin = async (req, res) => {
       if (!branch) {
         throw new Error("Branch not found");
       }
-      await addNewStaffAndUpdateSalaryTable(
-        data.branchId,
-        branch.activeSheet,
-        newAdmin._id,
-        session
-      );
+      await addNewStaffAndUpdateSalaryTable(tableId, newAdmin._id, session);
     }
 
     await increaseNumberOfWorker(data.branchId, session);
