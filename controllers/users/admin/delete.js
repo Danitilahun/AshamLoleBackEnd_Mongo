@@ -16,7 +16,7 @@ const deleteAdmin = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedAdmin = await Admin.findByIdAndDelete(id).session(session);
-
+    console.log("deletedAdmin", deletedAdmin);
     if (!deletedAdmin) {
       await session.abortTransaction();
       session.endSession();
@@ -43,9 +43,11 @@ const deleteAdmin = async (req, res) => {
       return res.status(404).json({ message: "Staff member not found" });
     }
 
-    await deleteAshamStaffByField("id", deletedAdmin._id, session);
-    await updateBranchManager(deleteAdmin.branchId, "", "", session);
-    await increaseNumberOfWorker(data.branchId, session, -1);
+    branchId = deletedAdmin.branchId;
+
+    await deleteAshamStaffByField("id", id, session);
+    await updateBranchManager(branchId, null, session);
+    await increaseNumberOfWorker(branchId, session, -1);
 
     io.emit("adminDeleted", id);
 
@@ -56,6 +58,7 @@ const deleteAdmin = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log(error);
 
     res.status(500).json({ message: error.message });
   }

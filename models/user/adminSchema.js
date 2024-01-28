@@ -14,10 +14,9 @@ const adminSchema = new mongoose.Schema(
       default: false,
     },
     branchId: {
-      type: String,
-      required: [true, "Branch ID is required"],
-      minlength: [3, "Branch ID must be at least 3 characters long"],
-      maxlength: [15, "Branch ID cannot exceed 15 characters"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Branch",
+      required: true,
     },
     paid: {
       type: Boolean,
@@ -47,12 +46,10 @@ const adminSchema = new mongoose.Schema(
     phone: {
       type: String,
       required: [true, "Phone number is required"],
-      minlength: [10, "Phone number must be at least 10 characters long"],
-      maxlength: [15, "Phone number cannot exceed 15 characters"],
     },
     profileImage: {
       type: String,
-      required: [true, "Profile image is required"],
+      default: "",
     },
     salary: {
       type: Number,
@@ -83,14 +80,14 @@ const adminSchema = new mongoose.Schema(
       type: String,
     },
     staffId: {
-      type: String,
-      required: [true, "Staff ID is required"],
-      minlength: [5, "Staff ID must be at least 5 characters long"],
-      maxlength: [15, "Staff ID cannot exceed 15 characters"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff",
+      required: true,
     },
     essentialId: {
-      type: String,
-      required: [true, "Essential ID is required"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Essential",
+      required: true,
     },
     password: {
       type: String,

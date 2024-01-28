@@ -10,18 +10,8 @@ const staffRoute = require("./staff/route");
 const verifyRoles = require("../../middlewares/verifyRoles");
 const checkDuplicateEmail = require("../../middlewares/checkDuplicateEmail");
 
-router.use(
-  "/admin",
-  verifyRoles(process.env.SUPERADMIN),
-  checkDuplicateEmail,
-  adminRoute
-);
-router.use(
-  "/callCenter",
-  verifyRoles(process.env.SUPERADMIN),
-  checkDuplicateEmail,
-  callCenterRoute
-);
+router.use("/admin", verifyRoles(process.env.SUPERADMIN), adminRoute);
+router.use("/callCenter", verifyRoles(process.env.SUPERADMIN), callCenterRoute);
 router.use("/finance", financeRoute);
 router.use("/deliveryGuy", deliveryGuyRoute);
 router.use("/superAdmin", superAdminRoute);

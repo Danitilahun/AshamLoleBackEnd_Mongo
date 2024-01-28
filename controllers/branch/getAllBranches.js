@@ -5,7 +5,6 @@ const getAllBranches = async (req, res) => {
     const branches = await Branch.find(
       {
         managerId: null,
-        managerName: "",
       },
       "name _id activeStaffSalarySheet"
     );

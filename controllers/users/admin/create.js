@@ -19,6 +19,7 @@ const createAdmin = async (req, res) => {
 
   try {
     const { tableId, ...data } = req.body;
+    console.log("data", data);
 
     data.salary = parseInt(data.salary);
     data.uniqueName = "admin";
@@ -39,52 +40,31 @@ const createAdmin = async (req, res) => {
     data.essentialId = newEssential._id;
     data.staffId = newStaff._id;
 
-    const newAdmin = new Admin.create([data], { session });
+    const newAdmin = new Admin(data);
 
-    await updateBranchManager(
-      data.branchId,
-      newAdmin._id,
-      newAdmin.name,
-      session
-    );
+    const id = newAdmin._id;
+    const name = newAdmin.fullName;
+    const branchId = newAdmin.branchId;
+
+    await updateBranchManager(data.branchId, id, session);
 
     await createAshamStaff(session, {
-      id: newAdmin._id,
-      name: newAdmin.name,
+      id: id,
+      name: name,
       role: "Admin",
-      branchId: newAdmin.branchId,
+      branchId: branchId,
     });
 
-    if (sheetId) {
-      const branch = await Branch.findOne({ _id: data.branchId });
-
-      if (!branch) {
-        throw new Error("Branch not found");
-      }
-      await addNewStaffAndUpdateSalaryTable(tableId, newAdmin._id, session);
+    if (tableId) {
+      await addNewStaffAndUpdateSalaryTable(tableId, id, session);
     }
 
-    await increaseNumberOfWorker(data.branchId, session);
+    await increaseNumberOfWorker(branchId, session);
 
-    const activationToken = createActivationToken({
-      id: newAdmin._id,
-      role: newAdmin.role,
-    });
-
-    const activationUrl = `http://localhost:3000/${activationToken}`;
-
-    try {
-      await sendMail({
-        email: newAdmin.email,
-        subject: "Activate your account",
-        message: `Hello ${newAdmin.fullName}, please click on the link to activate your account: ${activationUrl}`,
-      });
-    } catch (error) {
-      throw new Error("Email could not be sent");
-    }
     const savedAdmin = await newAdmin.save({ session });
-    console.log(savedAdmin);
-    io.emit("adminCreated", savedAdmin);
+    console.log("newAdmin", savedAdmin);
+    const branch = await Branch.findById(data.branchId);
+    io.emit("adminCreated", { branchName: branch.name, ...savedAdmin._doc });
     await session.commitTransaction();
     session.endSession();
 
@@ -95,6 +75,7 @@ const createAdmin = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log(error);
 
     res.status(500).json({ message: error.message });
   }

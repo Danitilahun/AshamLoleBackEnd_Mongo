@@ -120,11 +120,6 @@ const branchSchema = new mongoose.Schema(
       default: Date.now,
     },
 
-    managerName: {
-      type: String,
-      default: "",
-    },
-
     date: {
       type: String,
     },
