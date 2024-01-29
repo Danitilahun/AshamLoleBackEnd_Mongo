@@ -18,9 +18,7 @@ const editDeliveryGuy = async (req, res) => {
     ).session(session);
 
     if (!updatedDeliveryGuy) {
-      await session.abortTransaction();
-      session.endSession();
-      return res.status(404).json({ message: "Delivery guy not found" });
+      throw new Error("Delivery guy not found");
     }
     await updateDeliveryGuyNameInTurnQueue(
       session,

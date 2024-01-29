@@ -3,7 +3,7 @@ const Admin = require("../models/user/adminSchema");
 
 const getAllAdmins = async (socket) => {
   try {
-    const admins = await Admin.find();
+    const admins = await Admin.find().sort({ updatedAt: -1 });
     const adminData = await Promise.all(
       admins.map(async (admin) => {
         const branch = await Branch.findById(admin.branchId);

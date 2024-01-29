@@ -5,6 +5,7 @@ const addNewDeliveryGuyAndUpdateSalaryTable = require("../../../services/sheetRe
 const addDeliveryGuyToDailyTable = require("../../../services/sheetRelated/create/addDeliveryGuyToDailyTable");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 const { getIoInstance } = require("../../../socket");
+const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 
 // Create a new delivery guy
 const createDeliveryGuy = async (req, res) => {
@@ -13,7 +14,7 @@ const createDeliveryGuy = async (req, res) => {
   const io = getIoInstance();
 
   try {
-    const { activeTable, sheetId, ...data } = req.body;
+    const { sheetId, ...data } = req.body;
     data.activeness = false;
     data.paid = true;
     data.waiting = false;
@@ -22,35 +23,33 @@ const createDeliveryGuy = async (req, res) => {
     const newDeliveryGuy = new Deliveryguy(data);
 
     if (sheetId) {
+      const branch = await Branch.findById(data.branchId).session(session);
       await addNewDeliveryGuyAndUpdateSalaryTable(
-        data.branchId,
-        activeTable,
+        branch.activeDeliverySalaryTable,
         newDeliveryGuy._id,
         session
       );
 
       await addNewDeliveryGuyAndUpdateSummary(
-        data.branchId,
-        sheetId,
+        branch.activeDGSummery,
         newDeliveryGuy._id,
         session
       );
+
+      if (branch.activeTable) {
+        await addDeliveryGuyToDailyTable(
+          branch.activeTable,
+          newDeliveryGuy._id,
+          session
+        );
+      }
     }
 
-    if (activeTable) {
-      await addDeliveryGuyToDailyTable(
-        data.branchId,
-        activeTable,
-        newDeliveryGuy._id,
-        session
-      );
-    }
-
-    await increaseNumberOfWorker(data.branchId, session);
-
+    const branch = await increaseNumberOfWorker(data.branchId, session);
     const savedDeliveryGuy = await newDeliveryGuy.save({ session });
 
-    console.log(savedDeliveryGuy);
+    console.log(savedDeliveryGuy, branch);
+    io.emit("branchUpdated", branch);
     io.emit("deliveryGuyCreated", savedDeliveryGuy);
     await session.commitTransaction();
     session.endSession();

@@ -2,7 +2,6 @@ const Deliveryguy = require("../../../models/deliveryguySchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 const { getIoInstance } = require("../../../socket");
 
-// Delete a delivery guy
 const deleteDeliveryGuy = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -20,10 +19,10 @@ const deleteDeliveryGuy = async (req, res) => {
       return res.status(404).json({ message: "Delivery guy not found" });
     }
 
-    await increaseNumberOfWorker(data.branchId, session, -1);
-
+    const branch = await increaseNumberOfWorker(data.branchId, session, -1);
     console.log(deletedDeliveryGuy);
     io.emit("deliveryGuyDeleted", id);
+    io.emit("branchUpdated", branch);
     await session.commitTransaction();
     session.endSession();
 

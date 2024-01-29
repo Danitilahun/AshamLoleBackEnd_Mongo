@@ -5,6 +5,7 @@ const Superadmin = require("../../models/user/superadminSchema");
 const Finance = require("../../models/user/financeschema");
 const CallCenter = require("../../models/user/callCenterSchema");
 const { default: mongoose } = require("mongoose");
+const Branch = require("../../models/branchRelatedSchema/branchSchema");
 
 const login = async (req, res) => {
   const session = await mongoose.startSession();
@@ -72,6 +73,11 @@ const login = async (req, res) => {
       { $set: { refreshToken: newRefreshToken } }
     ).session(session);
 
+    let branch = {};
+    if (User === Admin) {
+      branch = await Branch.findById(potentialUser.branchId).session(session);
+    }
+
     await session.commitTransaction();
     session.endSession();
 
@@ -86,6 +92,7 @@ const login = async (req, res) => {
       loggedIn: true,
       accessToken: accessToken,
       user: potentialUser,
+      info: branch,
       message: "Login successful",
     });
   } catch (error) {

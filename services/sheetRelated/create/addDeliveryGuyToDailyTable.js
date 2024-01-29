@@ -2,12 +2,7 @@ const Deliveryguy = require("../../../models/deliveryguySchema");
 const DailyTable = require("../../../models/table/DailyTable");
 const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 
-const addDeliveryGuyToDailyTable = async (
-  branchId,
-  sheetId,
-  deliveryGuyId,
-  session
-) => {
+const addDeliveryGuyToDailyTable = async (tableId, deliveryGuyId, session) => {
   try {
     // Find the specific delivery guy within the provided session
     const deliveryGuy = await Deliveryguy.findById(deliveryGuyId).session(
@@ -28,8 +23,8 @@ const addDeliveryGuyToDailyTable = async (
     const newDeliveryGuyWorkId = newDeliveryGuyWork._id;
 
     // Add a new personWork entry for the current delivery guy to the DailyTable
-    const updatedSummary = await DailyTable.findOneAndUpdate(
-      { branchId: branchId, sheetID: sheetId },
+    const updatedSummary = await DailyTable.findByIdAndUpdate(
+      tableId,
       {
         $push: {
           personWork: {

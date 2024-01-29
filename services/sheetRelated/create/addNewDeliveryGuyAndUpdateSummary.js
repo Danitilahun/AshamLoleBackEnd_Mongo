@@ -2,8 +2,7 @@ const DeliveryGuy15DayWorkSummary = require("../../../models/table/DeliveryGuy15
 const CompanyWorks = require("../../../models/table/work/companyWorksSchema");
 
 const addNewDeliveryGuyAndUpdateSummary = async (
-  branchId,
-  sheetId,
+  tableId,
   deliveryGuyId,
   session
 ) => {
@@ -16,8 +15,8 @@ const addNewDeliveryGuyAndUpdateSummary = async (
     const newDeliveryGuyWorkId = newDeliveryGuyWork._id;
 
     // Update the DeliveryGuy15DayWorkSummary with the new personWork entry
-    const updatedSummary = await DeliveryGuy15DayWorkSummary.findOneAndUpdate(
-      { branchId, sheetID: sheetId },
+    const updatedSummary = await DeliveryGuy15DayWorkSummary.findByIdAndUpdate(
+      tableId,
       {
         $push: {
           personWork: {

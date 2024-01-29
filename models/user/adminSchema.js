@@ -27,8 +27,6 @@ const adminSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: [true, "Email is required"],
-      minlength: [5, "Email must be at least 5 characters long"],
-      maxlength: [50, "Email cannot exceed 50 characters"],
     },
     fullAddress: {
       type: String,
@@ -57,8 +55,6 @@ const adminSchema = new mongoose.Schema(
     securityName: {
       type: String,
       required: [true, "Security name is required"],
-      minlength: [2, "Security name must be at least 2 characters long"],
-      maxlength: [50, "Security name cannot exceed 50 characters"],
     },
     securityPhone: {
       type: String,

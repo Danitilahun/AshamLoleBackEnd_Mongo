@@ -2,8 +2,7 @@ const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuy
 const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
 
 const addNewDeliveryGuyAndUpdateSalaryTable = async (
-  branchId,
-  sheetId,
+  tableId,
   deliveryGuyId,
   session
 ) => {
@@ -11,13 +10,11 @@ const addNewDeliveryGuyAndUpdateSalaryTable = async (
     // Create a DeliveryGuySalaryInfo document for the new delivery guy within the provided session
     const newDeliveryGuyWork = new DeliveryGuyWork({});
     await newDeliveryGuyWork.save({ session });
-
-    // Get the ID of the created DeliveryGuySalaryInfo document
     const newDeliveryGuyWorkId = newDeliveryGuyWork._id;
 
     // Update the DeliveryGuySalaryTable with the new personWork entry
-    const updatedSalaryTable = await DeliveryGuySalaryTable.findOneAndUpdate(
-      { branchId, sheetID: sheetId },
+    const updatedSalaryTable = await DeliveryGuySalaryTable.findByIdAndUpdate(
+      tableId,
       {
         $push: {
           personWork: {

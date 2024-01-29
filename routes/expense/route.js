@@ -3,7 +3,9 @@ const createExpense = require("../../controllers/expense/create");
 const deleteExpense = require("../../controllers/expense/delete");
 const updateExpense = require("../../controllers/expense/edit");
 const getAllExpenses = require("../../controllers/expense/get");
+
 const router = express.Router();
+console.log("here");
 
 router.get("/", getAllExpenses);
 

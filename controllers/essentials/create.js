@@ -1,7 +1,9 @@
 const Essential = require("../../models/essentialSchema");
+const { getIoInstance } = require("../../socket");
 
 const createEssentials = async (req, res) => {
   try {
+    const io = getIoInstance();
     const data = req.body;
     if (!data) {
       return res.status(400).json({
@@ -22,6 +24,7 @@ const createEssentials = async (req, res) => {
     // Save the new essential document to MongoDB
     await newEssential.save();
 
+    io.emit("essentialCreated", newEssential);
     // Respond with a success message
     res
       .status(200)

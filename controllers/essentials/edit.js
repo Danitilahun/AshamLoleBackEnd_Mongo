@@ -1,15 +1,16 @@
 const Essential = require("../../models/essentialSchema");
+const { getIoInstance } = require("../../socket");
 
 const editEssentials = async (req, res) => {
+  const io = getIoInstance();
   try {
-    const { id } = req.params; // Assuming the document ID is passed in the URL parameters
+    const { id } = req.params;
     const data = req.body;
 
     if (!data) {
-      return res.status(400).json({
-        message:
-          "Request body is missing or empty. Please refresh your browser and try again.",
-      });
+      throw new Error(
+        "Request body is missing or empty. Please refresh your browser and try again."
+      );
     }
 
     // Find the document by ID and update it
@@ -18,15 +19,15 @@ const editEssentials = async (req, res) => {
     });
 
     if (!updatedEssential) {
-      return res.status(404).json({ message: "Essential document not found." });
+      throw new Error("Essential document not found");
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Essential document updated successfully.",
-        updatedEssential,
-      });
+    io.emit("essentialUpdated", updatedEssential);
+
+    res.status(200).json({
+      message: "Essential document updated successfully.",
+      updatedEssential,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
