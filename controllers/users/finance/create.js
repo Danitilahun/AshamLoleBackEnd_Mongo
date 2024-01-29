@@ -24,13 +24,23 @@ const createFinanceEntry = async (req, res) => {
     data.balance = 0;
     data.password = "Asham123!";
 
+    const essential = await createEssential(session, {
+      address: data.fullAddress,
+      company: "AshamLole",
+      name: data.fullName,
+      phone: data.phone,
+      sector: "Branch",
+    });
+
+    data.essentialId = essential._id;
+
     const newFinanceEntry = new Finance(data);
 
     await createAshamStaff(session, {
       id: newFinanceEntry._id,
-      name: newFinanceEntry.name,
+      name: newFinanceEntry.fullName,
       role: "Admin",
-      branchId: newFinanceEntry.branchId,
+      branchId: newFinanceEntry._id,
     });
 
     await createBranchBankTotal(session, {
@@ -42,38 +52,16 @@ const createFinanceEntry = async (req, res) => {
       sheetId: newFinanceEntry._id,
     });
 
-    await createEssential(session, {
-      address: data.fullAddress,
-      company: "AshamLole",
-      name: data.fullName,
-      phone: data.phone,
-      sector: "Branch",
-    });
-
-    const activationToken = createActivationToken({
-      id: newFinanceEntry._id,
-      role: newFinanceEntry.role,
-    });
-
-    const activationUrl = `http://localhost:3000/${activationToken}`;
-
-    try {
-      await sendMail({
-        email: newFinanceEntry.email,
-        subject: "Activate your account",
-        message: `Hello ${newFinanceEntry.fullName}, please click on the link to activate your account: ${activationUrl}`,
-      });
-    } catch (error) {
-      throw new Error("Email could not be sent");
-    }
     const savedFinanceEntry = await newFinanceEntry.save({ session });
 
     console.log(savedFinanceEntry);
-    io.emit("financeEntryCreated", savedFinanceEntry);
+    io.emit("financeCreated", savedFinanceEntry);
     await session.commitTransaction();
     session.endSession();
 
-    res.status(201).json(savedFinanceEntry);
+    res.status(201).json({
+      message: "Finance entry created successfully",
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

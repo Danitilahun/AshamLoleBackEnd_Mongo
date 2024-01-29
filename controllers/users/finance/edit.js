@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Finance = require("../../../models/user/financeschema");
 const updateAshamStaffByWorkerId = require("../../../services/users/updateAshamStaffByWorkerId");
 const updateEssentialFields = require("../../../services/users/updateEssentialFields");
@@ -43,11 +44,13 @@ const editFinanceEntry = async (req, res) => {
     );
 
     console.log(updatedFinanceEntry);
-    io.emit("financeEntryUpdated", updatedFinanceEntry);
+    io.emit("financeUpdated", updatedFinanceEntry);
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json(updatedFinanceEntry);
+    res.status(200).json({
+      message: "Finance entry updated successfully",
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

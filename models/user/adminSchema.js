@@ -21,7 +21,7 @@ const adminSchema = new mongoose.Schema(
     },
     disable: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     email: {
       type: String,

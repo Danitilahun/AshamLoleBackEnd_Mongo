@@ -6,15 +6,13 @@ const callCenterSchema = new mongoose.Schema(
     bankAccount: {
       type: String,
       required: [true, "Bank account is required"],
-      minlength: [5, "Bank account must be at least 5 characters long"],
-      maxlength: [20, "Bank account cannot exceed 20 characters"],
     },
     refreshToken: {
       type: String,
     },
     activated: {
       type: Boolean,
-      required: [true, "Activation status is required"],
+      default: false,
     },
     role: {
       type: String,
@@ -26,35 +24,27 @@ const callCenterSchema = new mongoose.Schema(
     },
     disable: {
       type: Boolean,
-      required: [true, "Disable status is required"],
+      default: false,
     },
     email: {
       type: String,
       required: [true, "Email is required"],
-      minlength: [5, "Email must be at least 5 characters long"],
-      maxlength: [50, "Email cannot exceed 50 characters"],
     },
     fullAddress: {
       type: String,
       required: [true, "Full address is required"],
-      minlength: [5, "Full address must be at least 5 characters long"],
-      maxlength: [100, "Full address cannot exceed 100 characters"],
     },
     fullName: {
       type: String,
       required: [true, "Full name is required"],
-      minlength: [2, "Full name must be at least 2 characters long"],
-      maxlength: [50, "Full name cannot exceed 50 characters"],
     },
     phone: {
       type: String,
       required: [true, "Phone number is required"],
-      minlength: [10, "Phone number must be at least 10 characters long"],
-      maxlength: [15, "Phone number cannot exceed 15 characters"],
     },
     profileImage: {
       type: String,
-      required: [true, "Profile image is required"],
+      default: "",
     },
     salary: {
       type: Number,
@@ -63,14 +53,10 @@ const callCenterSchema = new mongoose.Schema(
     securityAddress: {
       type: String,
       required: [true, "Security address is required"],
-      minlength: [5, "Security address must be at least 5 characters long"],
-      maxlength: [100, "Security address cannot exceed 100 characters"],
     },
     securityName: {
       type: String,
       required: [true, "Security name is required"],
-      minlength: [2, "Security name must be at least 2 characters long"],
-      maxlength: [50, "Security name cannot exceed 50 characters"],
     },
     password: {
       type: String,
@@ -111,11 +97,6 @@ const callCenterSchema = new mongoose.Schema(
     securityPhone: {
       type: String,
       required: [true, "Security phone number is required"],
-      minlength: [
-        10,
-        "Security phone number must be at least 10 characters long",
-      ],
-      maxlength: [15, "Security phone number cannot exceed 15 characters"],
     },
   },
   { strict: true, timestamps: true }
