@@ -4,48 +4,42 @@ const Finance = require("../models/user/financeschema");
 const CallCenter = require("../models/user/callCenterSchema");
 const Admin = require("../models/user/adminSchema");
 
-const checkDuplicateEmail = async function (req, res, next, allowedRoles) {
+const checkDuplicateEmailExceptCurrent = async function (req, res, next) {
   const { email } = req.body;
+  const userId = req.params.id;
 
   if (!email) {
     return next();
   }
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    // Check user role against allowedRoles
-    if (!allowedRoles.includes(req.user.role)) {
-      return res
-        .status(403)
-        .json({ message: "Forbidden: User role not permitted" });
-    }
-
     // Check in Superadmin
     let superadmin = await Superadmin.findOne({ email }).session(session);
-    if (superadmin) {
+    if (superadmin && superadmin._id.toString() !== userId) {
       throw new Error("Email is already in use");
     }
 
     // Check in Finance
     let finance = await Finance.findOne({ email }).session(session);
-    if (finance) {
+    if (finance && finance._id.toString() !== userId) {
       throw new Error("Email is already in use");
     }
 
     // Check in CallCenter
     let callCenter = await CallCenter.findOne({ email }).session(session);
-    if (callCenter) {
+    if (callCenter && callCenter._id.toString() !== userId) {
       throw new Error("Email is already in use");
     }
 
     // Check in Admin
     let admin = await Admin.findOne({ email }).session(session);
-    if (admin) {
+    if (admin && admin._id.toString() !== userId) {
       throw new Error("Email is already in use");
     }
 
-    // If email is not found in any schema, commit the transaction and move to the next middleware
     await session.commitTransaction();
     session.endSession();
     next();
@@ -56,4 +50,4 @@ const checkDuplicateEmail = async function (req, res, next, allowedRoles) {
   }
 };
 
-module.exports = checkDuplicateEmail;
+module.exports = checkDuplicateEmailExceptCurrent;
