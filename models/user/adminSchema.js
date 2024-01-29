@@ -6,8 +6,6 @@ const adminSchema = new mongoose.Schema(
     bankAccount: {
       type: String,
       required: [true, "Bank account is required"],
-      minlength: [5, "Bank account must be at least 5 characters long"],
-      maxlength: [20, "Bank account cannot exceed 20 characters"],
     },
     activated: {
       type: Boolean,
@@ -27,6 +25,7 @@ const adminSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      unique: true,
       required: [true, "Email is required"],
       minlength: [5, "Email must be at least 5 characters long"],
       maxlength: [50, "Email cannot exceed 50 characters"],
@@ -34,14 +33,10 @@ const adminSchema = new mongoose.Schema(
     fullAddress: {
       type: String,
       required: [true, "Full address is required"],
-      minlength: [5, "Full address must be at least 5 characters long"],
-      maxlength: [100, "Full address cannot exceed 100 characters"],
     },
     fullName: {
       type: String,
       required: [true, "Full name is required"],
-      minlength: [2, "Full name must be at least 2 characters long"],
-      maxlength: [50, "Full name cannot exceed 50 characters"],
     },
     phone: {
       type: String,
@@ -58,8 +53,6 @@ const adminSchema = new mongoose.Schema(
     securityAddress: {
       type: String,
       required: [true, "Security address is required"],
-      minlength: [5, "Security address must be at least 5 characters long"],
-      maxlength: [100, "Security address cannot exceed 100 characters"],
     },
     securityName: {
       type: String,
@@ -70,11 +63,6 @@ const adminSchema = new mongoose.Schema(
     securityPhone: {
       type: String,
       required: [true, "Security phone number is required"],
-      minlength: [
-        10,
-        "Security phone number must be at least 10 characters long",
-      ],
-      maxlength: [15, "Security phone number cannot exceed 15 characters"],
     },
     refreshToken: {
       type: String,

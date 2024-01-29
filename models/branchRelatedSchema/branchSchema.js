@@ -125,9 +125,7 @@ const branchSchema = new mongoose.Schema(
     },
 
     managerId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Admin",
-      default: null,
+      type: String,
     },
 
     activeDailySummery: {

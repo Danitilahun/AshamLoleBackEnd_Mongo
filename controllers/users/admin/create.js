@@ -7,8 +7,6 @@ const createEssential = require("../../../services/users/createEssential");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 const createStaff = require("../../../services/users/createStaff");
-const createActivationToken = require("../../../util/createActivationToken");
-const sendMail = require("../../../util/sendMail");
 const { getIoInstance } = require("../../../socket");
 
 // Create a new admin
@@ -46,6 +44,7 @@ const createAdmin = async (req, res) => {
     const name = newAdmin.fullName;
     const branchId = newAdmin.branchId;
 
+    console.log("n", data.branchId, id);
     await updateBranchManager(data.branchId, id, session);
 
     await createAshamStaff(session, {
