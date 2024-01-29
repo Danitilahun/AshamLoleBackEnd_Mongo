@@ -12,7 +12,7 @@ const getCardDistributeByBranchAndSheet = async (req, res) => {
     // Calculate skip value for pagination
     const skip = (pageNumber - 1) * limitNumber;
 
-    const cardDistributeData = await CardDistribute.find({ branchId, sheetId })
+    const cardDistributeData = await CardDistribute.find({ branchId })
       .skip(skip)
       .limit(limitNumber)
       .sort({ updatedAt: -1 });

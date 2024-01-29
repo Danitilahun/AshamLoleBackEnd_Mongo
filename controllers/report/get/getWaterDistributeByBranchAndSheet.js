@@ -3,7 +3,7 @@ const WaterDistribute = require("../../../models/report/waterDistributeSchema");
 // Controller function to fetch paginated WaterDistribute by branchId and sheetId
 const getWaterDistributeByBranchAndSheet = async (req, res) => {
   try {
-    const { branchId, sheetId, page = 1, limit = 10 } = req.query;
+    const { branchId, page = 1, limit = 10 } = req.query;
 
     // Convert page and limit to numbers
     const pageNumber = parseInt(page);
@@ -12,7 +12,7 @@ const getWaterDistributeByBranchAndSheet = async (req, res) => {
     // Calculate skip value for pagination
     const skip = (pageNumber - 1) * limitNumber;
 
-    if (!branchId || !sheetId) {
+    if (!branchId) {
       return res
         .status(400)
         .json({ error: "Both branchId and sheetId are required." });
@@ -21,7 +21,6 @@ const getWaterDistributeByBranchAndSheet = async (req, res) => {
     // Fetch paginated WaterDistribute records matching the provided branchId and sheetId
     const waterDistributeData = await WaterDistribute.find({
       branchId,
-      sheetId,
     })
       .skip(skip)
       .limit(limitNumber)
