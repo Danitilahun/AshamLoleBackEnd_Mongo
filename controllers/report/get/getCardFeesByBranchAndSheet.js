@@ -21,7 +21,8 @@ const getCardFeesByBranchAndSheet = async (req, res) => {
     // Fetch paginated CardFee documents matching the provided branchId and sheetId
     const cardFees = await CardFee.find({ branchId, sheetId })
       .skip(skip)
-      .limit(limitNumber);
+      .limit(limitNumber)
+      .sort({ updatedAt: -1 });
 
     return res.status(200).json({ cardFees });
   } catch (error) {

@@ -21,7 +21,8 @@ const getHotelProfitByBranchAndSheet = async (req, res) => {
     // Fetch paginated HotelProfit records matching the provided branchId and sheetId
     const hotelProfitData = await HotelProfit.find({ branchId, sheetId })
       .skip(skip)
-      .limit(limitNumber);
+      .limit(limitNumber)
+      .sort({ updatedAt: -1 });
 
     return res.json(hotelProfitData);
   } catch (error) {

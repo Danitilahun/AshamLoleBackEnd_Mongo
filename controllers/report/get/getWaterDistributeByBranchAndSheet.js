@@ -24,7 +24,8 @@ const getWaterDistributeByBranchAndSheet = async (req, res) => {
       sheetId,
     })
       .skip(skip)
-      .limit(limitNumber);
+      .limit(limitNumber)
+      .sort({ updatedAt: -1 });
 
     return res.json(waterDistributeData);
   } catch (error) {

@@ -21,7 +21,8 @@ const getWifiDistributeByBranchAndSheet = async (req, res) => {
     // Fetch paginated WifiDistribute records matching the provided branchId and sheetId
     const wifiDistributeData = await WifiDistribute.find({ branchId, sheetId })
       .skip(skip)
-      .limit(limitNumber);
+      .limit(limitNumber)
+      .sort({ updatedAt: -1 });
 
     return res.json(wifiDistributeData);
   } catch (error) {

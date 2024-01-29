@@ -3,8 +3,6 @@ const Essential = require("../../models/essentialSchema");
 const searchEssentials = async (req, res) => {
   try {
     const { param, value } = req.query;
-    console.log("param", param);
-    console.log("value", value);
     if (!value) {
       return;
     }

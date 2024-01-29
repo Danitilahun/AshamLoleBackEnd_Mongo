@@ -3,7 +3,7 @@ const CardDistribute = require("../../../models/report/cardDistributeSchema");
 // Controller function to fetch CardDistribute by branchId and sheetId with pagination
 const getCardDistributeByBranchAndSheet = async (req, res) => {
   try {
-    const { branchId, sheetId, page = 1, limit = 10 } = req.query;
+    const { branchId, page = 1, limit = 10 } = req.query;
 
     // Convert page and limit to numbers
     const pageNumber = parseInt(page);
@@ -14,7 +14,8 @@ const getCardDistributeByBranchAndSheet = async (req, res) => {
 
     const cardDistributeData = await CardDistribute.find({ branchId, sheetId })
       .skip(skip)
-      .limit(limitNumber);
+      .limit(limitNumber)
+      .sort({ updatedAt: -1 });
 
     res.json(cardDistributeData);
   } catch (error) {
