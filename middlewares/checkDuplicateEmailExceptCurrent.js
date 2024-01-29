@@ -46,6 +46,7 @@ const checkDuplicateEmailExceptCurrent = async function (req, res, next) {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log("error", error);
     return res.status(400).json({ error: error.message });
   }
 };

@@ -4,7 +4,7 @@ const Finance = require("../models/user/financeschema");
 const CallCenter = require("../models/user/callCenterSchema");
 const Admin = require("../models/user/adminSchema");
 
-const checkDuplicateEmail = async function (req, res, next, allowedRoles) {
+const checkDuplicateEmail = async function (req, res, next) {
   const { email } = req.body;
 
   if (!email) {
@@ -14,13 +14,6 @@ const checkDuplicateEmail = async function (req, res, next, allowedRoles) {
   session.startTransaction();
 
   try {
-    // Check user role against allowedRoles
-    if (!allowedRoles.includes(req.user.role)) {
-      return res
-        .status(403)
-        .json({ message: "Forbidden: User role not permitted" });
-    }
-
     // Check in Superadmin
     let superadmin = await Superadmin.findOne({ email }).session(session);
     if (superadmin) {
@@ -52,6 +45,7 @@ const checkDuplicateEmail = async function (req, res, next, allowedRoles) {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log("error", error);
     return res.status(400).json({ error: error.message });
   }
 };
