@@ -6,9 +6,11 @@ const getDeliveryguyById = require("../../../controllers/users/deliveryGuy/get")
 const handlePayController = require("../../../controllers/users/deliveryGuy/handlePayController");
 const updateDeliveryGuyActiveness = require("../../../controllers/users/deliveryGuy/updateDeliveryGuyActiveness");
 const completeTask = require("../../../controllers/users/deliveryGuy/CompleteTask");
+const getDeliveryGuysByBranchId = require("../../../controllers/users/deliveryGuy/getDeliveryGuysByBranchId");
 
 const router = express.Router();
 
+router.get("/deliveryguys/:branchId", getDeliveryGuysByBranchId);
 router.get("/", getDeliveryguyById);
 router.post("/", createDeliveryGuy);
 router.post("/complete", completeTask);
