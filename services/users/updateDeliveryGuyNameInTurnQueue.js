@@ -10,19 +10,15 @@ const updateDeliveryGuyNameInTurnQueue = async (
       "deliveryGuyTurnQueue.deliveryGuyId": deliveryGuyId,
     }).session(session);
 
-    if (!deliveryTurn) {
-      throw new Error(
-        "Delivery turn not found for the specified delivery guy id"
-      );
-    }
+    // if (!deliveryTurn) {
+    //   throw new Error(
+    //     "Delivery turn not found for the specified delivery guy id"
+    //   );
+    // }
 
     const queueItem = deliveryTurn.deliveryGuyTurnQueue.find(
       (item) => item.deliveryGuyId.toString() === deliveryGuyId.toString()
     );
-
-    if (!queueItem) {
-      throw new Error("Delivery guy not found in the turn queue");
-    }
 
     queueItem.name = newName;
 

@@ -1,5 +1,6 @@
 const Deliveryguy = require("../../../models/deliveryguySchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
+const removeDeliveryGuyByIdFromQueue = require("../../../services/branchRelated/removeDeliveryGuyFromQueue");
 const { getIoInstance } = require("../../../socket");
 
 const deleteDeliveryGuy = async (req, res) => {
@@ -19,10 +20,14 @@ const deleteDeliveryGuy = async (req, res) => {
       return res.status(404).json({ message: "Delivery guy not found" });
     }
 
+    await removeDeliveryGuyByIdFromQueue(data.branchId, id, session);
     const branch = await increaseNumberOfWorker(data.branchId, session, -1);
+
     console.log(deletedDeliveryGuy);
+
     io.emit("deliveryGuyDeleted", id);
     io.emit("branchUpdated", branch);
+
     await session.commitTransaction();
     session.endSession();
 
