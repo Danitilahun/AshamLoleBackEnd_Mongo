@@ -56,8 +56,10 @@ const createDeliveryGuy = async (req, res) => {
     const savedDeliveryGuy = await newDeliveryGuy.save({ session });
 
     console.log(savedDeliveryGuy, branch);
+
     io.emit("branchUpdated", branch);
     io.emit("deliveryGuyCreated", savedDeliveryGuy);
+
     await session.commitTransaction();
     session.endSession();
 

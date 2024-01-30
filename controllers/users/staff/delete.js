@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Staff = require("../../../models/staffSchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 const { getIoInstance } = require("../../../socket");
@@ -22,7 +23,7 @@ const deleteStaffMember = async (req, res) => {
     await increaseNumberOfWorker(deletedStaffMember.branchId, session, -1);
 
     console.log(deletedStaffMember);
-    io.emit("staffMemberDeleted", id);
+    io.emit("staffDeleted", id);
     await session.commitTransaction();
     session.endSession();
 

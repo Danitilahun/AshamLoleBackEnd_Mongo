@@ -36,11 +36,14 @@ const createStaffMember = async (req, res) => {
     const savedStaffMember = await newStaffMember.save({ session });
 
     console.log(savedStaffMember);
-    io.emit("staffMemberCreated", savedStaffMember);
+    io.emit("staffCreated", savedStaffMember);
     await session.commitTransaction();
     session.endSession();
 
-    res.status(201).json(savedStaffMember);
+    res.status(201).json({
+      message: "Staff member created successfully",
+      staffMember: savedStaffMember,
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

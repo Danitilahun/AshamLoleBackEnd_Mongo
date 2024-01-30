@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Deliveryguy = require("../../../models/deliveryguySchema");
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 const removeDeliveryGuyByIdFromQueue = require("../../../services/branchRelated/removeDeliveryGuyFromQueue");
@@ -20,8 +21,16 @@ const deleteDeliveryGuy = async (req, res) => {
       return res.status(404).json({ message: "Delivery guy not found" });
     }
 
-    await removeDeliveryGuyByIdFromQueue(data.branchId, id, session);
-    const branch = await increaseNumberOfWorker(data.branchId, session, -1);
+    await removeDeliveryGuyByIdFromQueue(
+      deletedDeliveryGuy.branchId,
+      id,
+      session
+    );
+    const branch = await increaseNumberOfWorker(
+      deletedDeliveryGuy.branchId,
+      session,
+      -1
+    );
 
     console.log(deletedDeliveryGuy);
 

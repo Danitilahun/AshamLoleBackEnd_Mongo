@@ -3,18 +3,60 @@ const Schema = mongoose.Schema;
 
 const StaffSchema = new Schema(
   {
-    bankAccount: String,
-    branchId: String,
-    fullAddress: String,
-    fullName: String,
-    paid: Boolean,
-    phone: String,
-    profileImage: String,
-    salary: String,
-    securityAddress: String,
-    securityName: String,
-    securityPhone: String,
-    uniqueName: String,
+    bankAccount: {
+      type: String,
+      required: [true, "Bank account is required"],
+    },
+    branchId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Branch",
+      required: true,
+    },
+
+    fullAddress: {
+      type: String,
+      required: [true, "Full address is required"],
+    },
+    fullName: {
+      type: String,
+      required: [true, "Full name is required"],
+    },
+    paid: {
+      type: Boolean,
+      default: true,
+    },
+    phone: {
+      type: String,
+      required: [true, "Phone number is required"],
+    },
+    profileImage: {
+      type: String,
+      default: "",
+    },
+    salary: {
+      type: Number,
+      required: [true, "Salary is required"],
+    },
+    role: {
+      type: String,
+      default: "staff",
+    },
+    securityAddress: {
+      type: String,
+      required: [true, "Security address is required"],
+    },
+    securityName: {
+      type: String,
+      required: [true, "Security name is required"],
+    },
+    securityPhone: {
+      type: String,
+      required: [true, "Security phone is required"],
+    },
+    uniqueName: {
+      type: String,
+      required: [true, "Unique name is required"],
+    },
   },
   { strict: true, timestamps: true }
 );

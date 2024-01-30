@@ -22,9 +22,14 @@ const setupSocketIO = (server) => {
     socket.on("getAllBranches", () => getAllBranches(socket));
     socket.on("getAllAdmins", () => getAllAdmins(socket));
     socket.on("getAllCallCenters", () => getAllCallCenters(socket));
-    socket.on("getAllDeliveryGuys", () => getAllDeliveryGuys(socket));
     socket.on("getAllFinances", () => getAllFinances(socket));
-    socket.on("getAllStaffMembers", () => getAllStaffMembers(socket));
+
+    socket.on("getAllDeliveryGuys", (branchId) =>
+      getAllDeliveryGuys(socket, branchId)
+    );
+    socket.on("getAllStaffMembers", (branchId) =>
+      getAllStaffMembers(socket, branchId)
+    );
 
     socket.on("disconnect", () => {
       console.log("user disconnected");

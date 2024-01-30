@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Deliveryguy = require("../../../models/deliveryguySchema");
-const updateDeliveryGuyNameInTurnQueue = require("../../../services/users/updateDeliveryGuyNameInTurnQueue");
 const { getIoInstance } = require("../../../socket");
+const updateDeliveryGuyInQueue = require("../../../services/branchRelated/updateDeliveryGuyInQueue");
 
 // Edit an existing delivery guy
 const editDeliveryGuy = async (req, res) => {
@@ -21,10 +21,14 @@ const editDeliveryGuy = async (req, res) => {
     if (!updatedDeliveryGuy) {
       throw new Error("Delivery guy not found");
     }
-    await updateDeliveryGuyNameInTurnQueue(
-      session,
+
+    await updateDeliveryGuyInQueue(
+      updatedDeliveryGuy.branchId,
       updatedDeliveryGuy._id,
-      updatedDeliveryGuy.fullName
+      {
+        name: updatedDeliveryGuy.fullName,
+      },
+      session
     );
 
     console.log(updatedDeliveryGuy);

@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Staff = require("../../../models/staffSchema");
 const { getIoInstance } = require("../../../socket");
 
@@ -21,11 +22,13 @@ const editStaffMember = async (req, res) => {
     }
 
     console.log(updatedStaffMember);
-    io.emit("staffMemberUpdated", updatedStaffMember);
+    io.emit("staffUpdated", updatedStaffMember);
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json(updatedStaffMember);
+    res.status(200).json({
+      message: "Staff member updated successfully",
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
