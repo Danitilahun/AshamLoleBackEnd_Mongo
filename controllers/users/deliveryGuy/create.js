@@ -44,8 +44,14 @@ const createDeliveryGuy = async (req, res) => {
           session
         );
       }
+    }
 
-    await addDeliveryGuyToQueue(branch.activeQueue, newDeliveryGuy._id, session);
+    await addDeliveryGuyToQueue(
+      data.branchId,
+      newDeliveryGuy._id,
+      newDeliveryGuy.fullName,
+      session
+    );
     const branch = await increaseNumberOfWorker(data.branchId, session);
     const savedDeliveryGuy = await newDeliveryGuy.save({ session });
 
