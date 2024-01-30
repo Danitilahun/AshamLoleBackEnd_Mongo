@@ -5,6 +5,7 @@ const getAllCallCenters = require("./events/getAllCallCenters");
 const getAllDeliveryGuys = require("./events/getAllDeliveryGuys");
 const getAllFinances = require("./events/getAllFinances");
 const getAllStaffMembers = require("./events/getAllStaffMembers");
+const getAllSheets = require("./events/getAllSheets");
 
 let io;
 
@@ -27,6 +28,7 @@ const setupSocketIO = (server) => {
     socket.on("getAllDeliveryGuys", (branchId) =>
       getAllDeliveryGuys(socket, branchId)
     );
+    socket.on("getAllSheets", (branchId) => getAllSheets(socket, branchId));
     socket.on("getAllStaffMembers", (branchId) =>
       getAllStaffMembers(socket, branchId)
     );

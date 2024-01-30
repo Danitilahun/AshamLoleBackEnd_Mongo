@@ -8,6 +8,7 @@ const createDeliveryGuy15DayWorkSummary = async (
   session
 ) => {
   try {
+    console.log("createDeliveryGuy15DayWorkSummary called", sheetId);
     // Find multiple delivery guys within the provided session
     const deliveryGuys = await Deliveryguy.find({ branchId: branchId }).session(
       session
@@ -42,7 +43,7 @@ const createDeliveryGuy15DayWorkSummary = async (
     const summary = new DeliveryGuy15DayWorkSummary({
       personWork: personWorkEntries,
       branchId: branchId,
-      sheetID: sheetId,
+      sheetId: sheetId,
     });
 
     // Save the single DeliveryGuy15DayWorkSummary document within the provided session

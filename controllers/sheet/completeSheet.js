@@ -1,3 +1,5 @@
+const Branch = require("../../models/branchRelatedSchema/branchSchema");
+const Sheet = require("../../models/sheetsSchema");
 const Status = require("../../models/statusSchema");
 const updateAndCalculateBranchTotalCredit = require("../../services/creditRelated/updateAndCalculateBranchTotalCredit");
 const checkPreviousSheet = require("../../services/sheetRelated/checkPreviousSheet");
@@ -6,10 +8,12 @@ const updateBranchWithSession = require("../../services/sheetRelated/updateBranc
 const calculateAndUpdateTotalDeliveryGuySalaryTable = require("../../services/total/calculateAndUpdateTotalDeliveryGuySalaryTable");
 const calculateAndUpdateTotalStaffSalaryTable = require("../../services/total/calculateAndUpdateTotalStaffSalaryTable");
 const calculateCompanyWorkTotal = require("../../services/total/calculateCompanyWorkTotal");
+const { getIoInstance } = require("../../socket");
 
 const ChangeSheetStatus = async (req, res) => {
   const session = await startSession();
   session.startTransaction();
+  const io = getIoInstance();
   try {
     const data = req.body;
 
@@ -18,6 +22,15 @@ const ChangeSheetStatus = async (req, res) => {
       return res.status(400).json(prevSheetCheckResult);
     }
 
+    const branch = await Branch.findById(data.branchId).session(session);
+
+    const sheet = await Sheet.findByIdAndUpdate(
+      branch.activeSheet,
+      {
+        sheetStatus: "Completed",
+      },
+      { session }
+    );
     await updateBranchWithSession(
       data.branchId,
       {
@@ -71,9 +84,10 @@ const ChangeSheetStatus = async (req, res) => {
       { session }
     );
 
-    // Commit the transaction if successful
+    io.emit("sheetUpdated", sheet);
     await session.commitTransaction();
     session.endSession();
+
     res.status(200).json({
       message: `Sheet status successfully changed to Completed.`,
     });

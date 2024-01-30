@@ -5,14 +5,8 @@ const StaffWorkerInfo = require("../../../models/table/work/staffWorkerInfoSchem
 const createStaffSalaryTable = async (branchId, sheetId, session) => {
   try {
     // Find multiple delivery guys within the provided session
-    const deliveryGuys = await Staff.find({ branchId: branchId }).session(
-      session
-    );
-
-    if (!deliveryGuys || deliveryGuys.length === 0) {
-      throw new Error("No delivery guys found for the given branch ID.");
-    }
-
+    const deliveryGuys = await Staff.find({ branchId }).session(session);
+    console.log("deliveryGuys", deliveryGuys, branchId);
     // Array to store personWork entries for all delivery guys
     const personWorkEntries = [];
 
@@ -38,7 +32,7 @@ const createStaffSalaryTable = async (branchId, sheetId, session) => {
     const summary = new StaffSalaryTable({
       personWork: personWorkEntries,
       branchId: branchId,
-      sheetID: sheetId,
+      sheetId: sheetId,
     });
 
     // Save the single DeliveryGuy15DayWorkSummary document within the provided session

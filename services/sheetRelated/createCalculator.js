@@ -8,7 +8,7 @@ async function createCalculator(branchId, sheetId, session) {
     };
 
     // Create the Calculator document
-    let newCalculator = await Calculator.create(calculatorData, { session });
+    let newCalculator = await Calculator.create([calculatorData], { session });
     console.log("Calculator created:", newCalculator);
     return newCalculator;
   } catch (error) {

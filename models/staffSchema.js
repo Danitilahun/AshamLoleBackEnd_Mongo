@@ -8,8 +8,7 @@ const StaffSchema = new Schema(
       required: [true, "Bank account is required"],
     },
     branchId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Branch",
+      type: String,
       required: true,
     },
 

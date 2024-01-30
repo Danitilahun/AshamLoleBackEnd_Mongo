@@ -8,10 +8,12 @@ const createDeliveryGuySalaryTable = require("../../services/sheetRelated/create
 const createFifteenDayWorkSummary = require("../../services/sheetRelated/create/createFifteenDayWorkSummary");
 const createStaffSalaryTable = require("../../services/sheetRelated/create/createStaffSalaryTable");
 const updateBranchWithSession = require("../../services/sheetRelated/updateBranchWithSession");
+const { getIoInstance } = require("../../socket");
 
 const createSheet = async (req, res) => {
   const session = await startSession();
   session.startTransaction();
+  const io = getIoInstance();
   try {
     const data = req.body;
 
@@ -26,7 +28,6 @@ const createSheet = async (req, res) => {
     }
 
     const newSheet = new Sheet(data);
-    const savedSheet = await newSheet.save({ session });
 
     const newCalculator = await createCalculator(
       data.branchId,
@@ -41,9 +42,9 @@ const createSheet = async (req, res) => {
     );
 
     const dailyWorkSummary = await createFifteenDayWorkSummary(
+      session,
       data.branchId,
-      newSheet._id,
-      session
+      newSheet._id
     );
 
     const deliveryGuySalary = await createDeliveryGuySalaryTable(
@@ -72,13 +73,24 @@ const createSheet = async (req, res) => {
       session
     );
 
+    console.log(dailyWorkSummary);
+    newSheet.activeDailySummery = dailyWorkSummary[0]._id;
+    newSheet.activeDGSummery = summary15Day._id;
+
+    console.log("newSheet", newSheet);
+    const savedSheet = await newSheet.save({ session });
     // Commit the transaction if successful
     await session.commitTransaction();
+    io.emit("sheetCreated", savedSheet);
     session.endSession();
-    res.status(201).json(savedSheet);
+    res.status(201).json({
+      success: true,
+      message: "Sheet created successfully",
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log(error);
 
     res.status(500).json({ message: error.message });
   }

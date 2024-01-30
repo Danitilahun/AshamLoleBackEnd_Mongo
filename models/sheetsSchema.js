@@ -3,18 +3,22 @@ const Schema = mongoose.Schema;
 
 const SheetsSchema = new Schema(
   {
-    Tables: [String],
+    Tables: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "DailyTable",
+      },
+    ],
     activeDailySummery: {
       type: String,
-      default: "",
+      required: true,
     },
     activeDGSummery: {
       type: String,
-      default: "",
+      required: true,
     },
     branchId: {
-      type: Schema.Types.ObjectId,
-      ref: "Branch",
+      type: String,
       required: true,
     },
     date: {

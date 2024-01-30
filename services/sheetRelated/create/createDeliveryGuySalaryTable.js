@@ -38,7 +38,7 @@ const createDeliveryGuySalaryTable = async (branchId, sheetId, session) => {
     const summary = new DeliveryGuySalaryTable({
       personWork: personWorkEntries,
       branchId: branchId,
-      sheetID: sheetId,
+      sheetId: sheetId,
     });
 
     // Save the single DeliveryGuy15DayWorkSummary document within the provided session

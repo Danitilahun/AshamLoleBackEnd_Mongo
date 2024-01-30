@@ -2,6 +2,7 @@ const FifteenDayWorkSummary = require("../../../models/table/FifteenDayWorkSumma
 
 async function createFifteenDayWorkSummary(session, branchId, sheetId) {
   try {
+    console.log("createFifteenDayWorkSummary called", sheetId);
     const summary = await FifteenDayWorkSummary.create(
       [
         {
