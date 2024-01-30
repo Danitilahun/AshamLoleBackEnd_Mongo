@@ -8,7 +8,7 @@ const createDeliveryGuySalaryTable = require("../../services/sheetRelated/create
 const createFifteenDayWorkSummary = require("../../services/sheetRelated/create/createFifteenDayWorkSummary");
 const createStaffSalaryTable = require("../../services/sheetRelated/create/createStaffSalaryTable");
 const updateBranchWithSession = require("../../services/sheetRelated/updateBranchWithSession");
-// Create a new sheet
+
 const createSheet = async (req, res) => {
   const session = await startSession();
   session.startTransaction();

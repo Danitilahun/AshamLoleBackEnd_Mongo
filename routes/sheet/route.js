@@ -13,7 +13,7 @@ router.get("staffSalary", getStaffSalaryDetails);
 router.get("daySummary", getFifteenDayWorkSummary);
 router.get("/deliveryGuySummary", getDeliveryGuyWorkSummary);
 router.get("/deliveryGuySalary", getDeliveryGuySalaryDetails);
-router.get("/sheet", getAllSheetsByBranchId);
+router.get("/", getAllSheetsByBranchId);
 router.post("/", createSheet);
 router.post("/changeStatus", ChangeSheetStatus);
 router.delete("/:id", deleteSheet);
