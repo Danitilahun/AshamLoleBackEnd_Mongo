@@ -14,10 +14,6 @@ const deliveryguySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
     dailyCredit: {
       type: Number,
       default: 0,
@@ -60,7 +56,6 @@ const deliveryguySchema = new mongoose.Schema(
     },
     uniqueName: {
       type: String,
-      required: true,
     },
     waiting: {
       type: Boolean,

@@ -6,6 +6,7 @@ const addDeliveryGuyToDailyTable = require("../../../services/sheetRelated/creat
 const increaseNumberOfWorker = require("../../../services/branchRelated/increaseNumberOfWorker");
 const { getIoInstance } = require("../../../socket");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
+const addDeliveryGuyToQueue = require("../../../services/branchRelated/addDeliveryGuyToQueue");
 
 // Create a new delivery guy
 const createDeliveryGuy = async (req, res) => {
@@ -43,8 +44,8 @@ const createDeliveryGuy = async (req, res) => {
           session
         );
       }
-    }
 
+    await addDeliveryGuyToQueue(branch.activeQueue, newDeliveryGuy._id, session);
     const branch = await increaseNumberOfWorker(data.branchId, session);
     const savedDeliveryGuy = await newDeliveryGuy.save({ session });
 
@@ -54,7 +55,10 @@ const createDeliveryGuy = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    res.status(201).json(savedDeliveryGuy);
+    res.status(201).json({
+      message: "Delivery guy created successfully",
+      deliveryGuy: savedDeliveryGuy,
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

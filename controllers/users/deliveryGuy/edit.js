@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Deliveryguy = require("../../../models/deliveryguySchema");
 const updateDeliveryGuyNameInTurnQueue = require("../../../services/users/updateDeliveryGuyNameInTurnQueue");
 const { getIoInstance } = require("../../../socket");
@@ -31,7 +32,10 @@ const editDeliveryGuy = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json(updatedDeliveryGuy);
+    res.status(200).json({
+      message: "Delivery guy updated successfully",
+      deliveryGuy: updatedDeliveryGuy,
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
