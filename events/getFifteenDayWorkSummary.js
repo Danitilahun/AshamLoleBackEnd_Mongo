@@ -1,24 +1,24 @@
 const mongoose = require("mongoose");
-const FifteenDayWorkSummary = require("../../../models/table/FifteenDayWorkSummarySchema");
-const CompanyWorks = require("../../../models/table/work/companyWorksSchema");
+const FifteenDayWorkSummary = require("../models/table/FifteenDayWorkSummarySchema");
+const CompanyWorks = require("../models/table/work/companyWorksSchema");
 
-const getFifteenDayWorkSummary = async (req, res) => {
+const getFifteenDayWorkSummary = async (socket, tableId) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const { tableId } = req.params;
-
     // Retrieve FifteenDayWorkSummary by Branch ID and Sheet ID within the session
     const workSummary = await FifteenDayWorkSummary.findById(tableId).session(
       session
     );
 
     if (!workSummary) {
-      return res.status(404).json({
+      socket.emit("fifteenDayWorkSummaryData", {
+        success: false,
         message:
           "FifteenDayWorkSummary not found for the provided Branch ID and Sheet ID.",
       });
+      return;
     }
 
     const result = [];
@@ -53,7 +53,8 @@ const getFifteenDayWorkSummary = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({
+    socket.emit("fifteenDayWorkSummaryData", {
+      success: true,
       data: result,
       message: `FifteenDayWorkSummary details retrieved successfully.`,
     });
@@ -62,7 +63,10 @@ const getFifteenDayWorkSummary = async (req, res) => {
     session.endSession();
 
     console.error(error);
-    res.status(500).json({ message: error.message });
+    socket.emit("fifteenDayWorkSummaryData", {
+      success: false,
+      message: error.message,
+    });
   }
 };
 
