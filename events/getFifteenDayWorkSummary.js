@@ -7,6 +7,7 @@ const getFifteenDayWorkSummary = async (socket, tableId) => {
   session.startTransaction();
 
   try {
+    console.log("tableId", tableId);
     // Retrieve FifteenDayWorkSummary by Branch ID and Sheet ID within the session
     const workSummary = await FifteenDayWorkSummary.findById(tableId).session(
       session
@@ -26,15 +27,18 @@ const getFifteenDayWorkSummary = async (socket, tableId) => {
     // Iterate over dailyWorkSummary array and fetch additional details
     for (const item of workSummary.dailyWorkSummary) {
       const { day, dailyWork } = item;
+      console.log("daily work", dailyWork);
 
       // Fetch details from DailyWork model within the session
-      const companyWorks = await CompanyWorks.findOne({ dailyWork }).session(
+      const companyWorks = await CompanyWorks.findById(dailyWork).session(
         session
       );
 
+      console.log("companyWorks", companyWorks);
+
       // Add relevant details to the result array
       result.push({
-        day: day,
+        name: day,
         asbezaNumber: companyWorks.asbezaNumber,
         asbezaProfit: companyWorks.asbezaProfit,
         cardCollect: companyWorks.cardCollect,
@@ -46,9 +50,11 @@ const getFifteenDayWorkSummary = async (socket, tableId) => {
         wifiCollect: companyWorks.wifiCollect,
         wifiDistribute: companyWorks.wifiDistribute,
         total: companyWorks.total,
-        workId: dailyWork,
+        id: dailyWork,
       });
     }
+
+    console.log("result from fdw", result);
 
     await session.commitTransaction();
     session.endSession();

@@ -8,6 +8,7 @@ const getDeliveryGuyWorkSummary = async (socket, tableId) => {
   session.startTransaction();
 
   try {
+    console.log("tableId", tableId);
     // Retrieve DeliveryGuy15DayWorkSummary by tableId within the session
     const workSummary = await DeliveryGuy15DayWorkSummary.findById(
       tableId
@@ -46,7 +47,7 @@ const getDeliveryGuyWorkSummary = async (socket, tableId) => {
         wifiCollect: companyWorks.wifiCollect,
         wifiDistribute: companyWorks.wifiDistribute,
         total: companyWorks.total,
-        workId: work,
+        id: work,
       };
 
       result.push(workDetails);
@@ -54,6 +55,8 @@ const getDeliveryGuyWorkSummary = async (socket, tableId) => {
 
     await session.commitTransaction();
     session.endSession();
+
+    console.log("result from dgw", result);
 
     // Emit the result to the socket
     socket.emit("deliveryGuyWorkSummary", { success: true, data: result });

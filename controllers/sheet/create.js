@@ -59,19 +59,7 @@ const createSheet = async (req, res) => {
       session
     );
 
-    await updateBranchWithSession(
-      data.branchId,
-      {
-        activeSheet: newSheet._id,
-        activeCalculator: newCalculator._id,
-        activeDailySummery: dailyWorkSummary._id,
-        activeDGSummery: summary15Day._id,
-        activeDeliverySalaryTable: deliveryGuySalary._id,
-        activeStaffSalarySheet: staffSalary._id,
-        sheetStatus: "Pending",
-      },
-      session
-    );
+    console.log(newSheet);
 
     console.log(dailyWorkSummary);
     newSheet.activeDailySummery = dailyWorkSummary[0]._id;
@@ -79,6 +67,19 @@ const createSheet = async (req, res) => {
 
     console.log("newSheet", newSheet);
     const savedSheet = await newSheet.save({ session });
+    await updateBranchWithSession(
+      data.branchId,
+      {
+        activeSheet: savedSheet._id,
+        activeCalculator: newCalculator._id,
+        activeDailySummery: dailyWorkSummary[0]._id,
+        activeDGSummery: summary15Day._id,
+        activeDeliverySalaryTable: deliveryGuySalary._id,
+        activeStaffSalarySheet: staffSalary._id,
+        sheetStatus: "Pending",
+      },
+      session
+    );
     // Commit the transaction if successful
     await session.commitTransaction();
     io.emit("sheetCreated", savedSheet);

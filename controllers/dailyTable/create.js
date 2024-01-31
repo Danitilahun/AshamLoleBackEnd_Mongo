@@ -4,6 +4,10 @@ const updateBranchWithSession = require("../../services/sheetRelated/updateBranc
 const Branch = require("../../models/branchRelatedSchema/branchSchema");
 const DailyTable = require("../../models/table/DailyTable");
 const CompanyWorks = require("../../models/table/work/companyWorksSchema");
+const addTableToSheet = require("../../services/tableRelated/addTableToSheet");
+const { getIoInstance } = require("../../socket");
+const addDayToFifteenDayWorkSummary = require("../../services/sheetRelated/update/addDayToFifteenDayWorkSummary");
+const addTableIdAndIncrementCount = require("../../services/sheetRelated/addTableIdAndIncrementCount");
 
 const createDailyTable = async (req, res) => {
   const session = await mongoose.startSession();
@@ -11,9 +15,10 @@ const createDailyTable = async (req, res) => {
 
   try {
     const { branchId, sheetId, date } = req.body;
+    console.log(req.body);
+    const io = getIoInstance();
 
     const branch = await Branch.findById(branchId);
-
     if (branch.date === date) {
       return res.status(400).json({ message: "Daily table already created" });
     }
@@ -26,6 +31,12 @@ const createDailyTable = async (req, res) => {
         const deliveryGuyWork = new CompanyWorks({});
         return deliveryGuyWork.save({ session });
       })
+    );
+
+    await addDayToFifteenDayWorkSummary(
+      session,
+      branch.activeDailySummery,
+      date
     );
 
     // Create PersonWorkSchema for each delivery guy
@@ -50,12 +61,25 @@ const createDailyTable = async (req, res) => {
       },
       session
     );
+    const newSheetData = await addTableIdAndIncrementCount(
+      sheetId,
+      date,
+      savedDailyTable._id,
+      session
+    );
     await session.commitTransaction();
     session.endSession();
 
-    res.status(201).json(savedDailyTable);
+    console.log(newSheetData);
+
+    io.emit("sheetData", { success: true, data: newSheetData });
+
+    res.status(201).json({
+      message: "Table Created successfully.",
+    });
   } catch (error) {
     await session.abortTransaction();
+    console.log(error);
     session.endSession();
     res.status(500).json({ message: error.message });
   }

@@ -8,14 +8,13 @@ const getDailyTableDetails = async (socket, id) => {
   session.startTransaction();
 
   try {
-    // Retrieve DailyTable by ID within the session
-    const dailyTable = await DailyTable.findById(id).session(session);
-
-    if (!dailyTable) {
-      const io = getIoInstance();
-      io.emit("dailyTableDetailsNotFound", { id });
+    if (!id) {
       return;
     }
+
+    console.log(id);
+    // Retrieve DailyTable by ID within the session
+    const dailyTable = await DailyTable.findById(id).session(session);
 
     const result = [];
 
@@ -44,15 +43,16 @@ const getDailyTableDetails = async (socket, id) => {
         wifiCollect: companyWorks.wifiCollect,
         wifiDistribute: companyWorks.wifiDistribute,
         total: companyWorks.total,
-        workId: work,
+        id: work,
       });
     }
 
     await session.commitTransaction();
     session.endSession();
-
-    socket.emit("dailyTableDetailsRetrieved", {
+    console.log("re", result);
+    socket.emit("dailyTableDetailsData", {
       data: result,
+      success: true,
       message: `DailyTable details retrieved successfully.`,
     });
   } catch (error) {

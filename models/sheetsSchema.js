@@ -5,8 +5,14 @@ const SheetsSchema = new Schema(
   {
     Tables: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "DailyTable",
+        date: {
+          type: String, // Assuming date is of type Date, you can adjust it based on your requirements
+          required: true,
+        },
+        tableId: {
+          type: String, // Assuming tableId is of type String, you can adjust it based on your requirements
+          required: true,
+        },
       },
     ],
     activeDailySummery: {
