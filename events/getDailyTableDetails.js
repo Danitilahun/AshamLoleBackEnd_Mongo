@@ -1,22 +1,20 @@
 const mongoose = require("mongoose");
-const DailyTable = require("../../models/table/DailyTable");
-const Deliveryguy = require("../../models/deliveryguySchema");
-const CompanyWorks = require("../../models/table/work/companyWorksSchema");
+const DailyTable = require("../models/table/DailyTable");
+const Deliveryguy = require("../models/deliveryguySchema");
+const CompanyWorks = require("../models/table/work/companyWorksSchema");
 
-const getDailyTableDetails = async (req, res) => {
+const getDailyTableDetails = async (socket, id) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const { id } = req.params;
-
     // Retrieve DailyTable by ID within the session
     const dailyTable = await DailyTable.findById(id).session(session);
 
     if (!dailyTable) {
-      return res.status(404).json({
-        message: "DailyTable not found for the provided ID.",
-      });
+      const io = getIoInstance();
+      io.emit("dailyTableDetailsNotFound", { id });
+      return;
     }
 
     const result = [];
@@ -53,7 +51,7 @@ const getDailyTableDetails = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({
+    socket.emit("dailyTableDetailsRetrieved", {
       data: result,
       message: `DailyTable details retrieved successfully.`,
     });
@@ -62,7 +60,9 @@ const getDailyTableDetails = async (req, res) => {
     session.endSession();
 
     console.error(error);
-    res.status(500).json({ message: error.message });
+    socket.emit("dailyTableDetailsError", {
+      message: error.message,
+    });
   }
 };
 

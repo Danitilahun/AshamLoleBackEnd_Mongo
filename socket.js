@@ -6,6 +6,9 @@ const getAllDeliveryGuys = require("./events/getAllDeliveryGuys");
 const getAllFinances = require("./events/getAllFinances");
 const getAllStaffMembers = require("./events/getAllStaffMembers");
 const getAllSheets = require("./events/getAllSheets");
+const getDailyTableDetails = require("./events/getDailyTableDetails");
+const getFifteenDayWorkSummary = require("./events/getFifteenDayWorkSummary");
+const getDeliveryGuyWorkSummary = require("./events/getDeliveryGuyWorkSummary");
 
 let io;
 
@@ -31,6 +34,14 @@ const setupSocketIO = (server) => {
     socket.on("getAllSheets", (branchId) => getAllSheets(socket, branchId));
     socket.on("getAllStaffMembers", (branchId) =>
       getAllStaffMembers(socket, branchId)
+    );
+
+    socket.on("getFifteenDayWorkSummary", (tableId) =>
+      getFifteenDayWorkSummary(socket, tableId)
+    );
+    socket.on("getDailyTableDetails", (id) => getDailyTableDetails(socket, id));
+    socket.on("getDeliveryGuyWorkSummary", (tableId) =>
+      getDeliveryGuyWorkSummary(socket, tableId)
     );
 
     socket.on("disconnect", () => {
