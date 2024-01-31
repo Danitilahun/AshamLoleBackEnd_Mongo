@@ -10,6 +10,8 @@ const getDailyTableDetails = require("./events/getDailyTableDetails");
 const getFifteenDayWorkSummary = require("./events/getFifteenDayWorkSummary");
 const getDeliveryGuyWorkSummary = require("./events/getDeliveryGuyWorkSummary");
 const getSheetById = require("./events/getSheetById");
+const getStaffSalaryDetails = require("./events/getStaffSalaryDetails");
+const getDeliveryGuySalaryDetails = require("./events/getDeliveryGuySalaryDetails");
 
 let io;
 
@@ -49,6 +51,13 @@ const setupSocketIO = (server) => {
       getSheetById(socket, sheetId);
     });
 
+    socket.on("getStaffSalaryDetails", (id) => {
+      getStaffSalaryDetails(socket, id);
+    });
+
+    socket.on("getDeliveryGuySalaryDetails", (id) => {
+      getDeliveryGuySalaryDetails(socket, id);
+    });
     socket.on("disconnect", () => {
       console.log("user disconnected");
     });
