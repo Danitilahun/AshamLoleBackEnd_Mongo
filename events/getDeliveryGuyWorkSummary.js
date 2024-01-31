@@ -1,15 +1,13 @@
 const mongoose = require("mongoose");
-const DeliveryGuy15DayWorkSummary = require("../../../models/table/DeliveryGuy15DayWorkSummarySchema");
-const Deliveryguy = require("../../../models/deliveryguySchema");
-const CompanyWorks = require("../../../models/table/work/companyWorksSchema");
+const DeliveryGuy15DayWorkSummary = require("../models/table/DeliveryGuy15DayWorkSummarySchema");
+const Deliveryguy = require("../models/deliveryguySchema");
+const CompanyWorks = require("../models/table/work/companyWorksSchema");
 
-const getDeliveryGuyWorkSummary = async (req, res) => {
+const getDeliveryGuyWorkSummary = async (socket, tableId) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const { tableId } = req.params;
-
     // Retrieve DeliveryGuy15DayWorkSummary by tableId within the session
     const workSummary = await DeliveryGuy15DayWorkSummary.findById(
       tableId
@@ -22,19 +20,6 @@ const getDeliveryGuyWorkSummary = async (req, res) => {
     }
 
     const result = [];
-    // let sumFields = {
-    //   asbezaProfit: 0,
-    //   asbezaNumber: 0,
-    //   cardCollect: 0,
-    //   cardDistribute: 0,
-    //   cardFee: 0,
-    //   hotelProfit: 0,
-    //   waterCollect: 0,
-    //   waterDistribute: 0,
-    //   wifiCollect: 0,
-    //   wifiDistribute: 0,
-    //   total: 0,
-    // };
 
     // Iterate over personWork array and fetch additional details
     for (const item of workSummary.personWork) {
@@ -64,35 +49,25 @@ const getDeliveryGuyWorkSummary = async (req, res) => {
         workId: work,
       };
 
-      // // Update sumFields for numeric fields
-      // for (const [key, value] of Object.entries(workDetails)) {
-      //   if (typeof value === "number" && sumFields.hasOwnProperty(key)) {
-      //     sumFields[key] += value;
-      //   }
-      // }
-
       result.push(workDetails);
     }
-
-    // sumFields.name = "Total";
-    // sumFields.uniqueName = "T";
-    // result.push(sumFields);
-    // console.log("sumFields", sumFields);
-    // result.push();
 
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({
-      data: result,
-      message: `DeliveryGuy work summary retrieved successfully.`,
-    });
+    // Emit the result to the socket
+    socket.emit("deliveryGuyWorkSummary", { success: true, data: result });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
 
     console.error(error);
-    res.status(500).json({ message: error.message });
+
+    // Emit the error to the socket
+    socket.emit("deliveryGuyWorkSummary", {
+      success: false,
+      error: error.message,
+    });
   }
 };
 

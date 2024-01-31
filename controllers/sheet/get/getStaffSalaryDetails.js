@@ -34,9 +34,16 @@ const getStaffSalaryDetails = async (req, res) => {
 
       // Add relevant details to the result array
       result.push({
-        fullName: staff.fullName,
-        phone: staff.phone,
+        name: staff.fullName,
+        uniqueName: staff.uniqueName,
+        addbonus: staffWorkerInfo.addbonus,
+        bonus: staffWorkerInfo.bonus,
+        fixedSalary: staffWorkerInfo.fixedSalary,
+        penality: staffWorkerInfo.penality,
+        holidayBonus: staffWorkerInfo.holidayBonus,
         totalCredit: staffWorkerInfo.totalCredit,
+        total: staffWorkerInfo.total,
+        workId: work,
       });
     }
 
