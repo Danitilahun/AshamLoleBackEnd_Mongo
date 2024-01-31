@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const FifteenDayWorkSummary = require("../../../models/table/FifteenDayWorkSummarySchema");
+const CompanyWorks = require("../../../models/table/work/companyWorksSchema");
 
 const getFifteenDayWorkSummary = async (req, res) => {
   const session = await mongoose.startSession();
@@ -28,15 +29,25 @@ const getFifteenDayWorkSummary = async (req, res) => {
       const { day, dailyWork } = item;
 
       // Fetch details from DailyWork model within the session
-      const dailyWorkDetails = await DailyWork.findOne({ day }).session(
+      const companyWorks = await CompanyWorks.findOne({ dailyWork }).session(
         session
       );
 
       // Add relevant details to the result array
       result.push({
-        day,
-        dailyWork,
-        // Add other relevant fields from DailyWork model
+        day: day,
+        asbezaNumber: companyWorks.asbezaNumber,
+        asbezaProfit: companyWorks.asbezaProfit,
+        cardCollect: companyWorks.cardCollect,
+        cardDistribute: companyWorks.cardDistribute,
+        cardFee: companyWorks.cardFee,
+        hotelProfit: companyWorks.hotelProfit,
+        waterCollect: companyWorks.waterCollect,
+        waterDistribute: companyWorks.waterDistribute,
+        wifiCollect: companyWorks.wifiCollect,
+        wifiDistribute: companyWorks.wifiDistribute,
+        total: companyWorks.total,
+        workId: dailyWork,
       });
     }
 

@@ -8,9 +8,8 @@ const getStaffSalaryDetails = async (req, res) => {
   session.startTransaction();
 
   try {
-    const { id } = req.params; // Assuming the ID is passed in the request parameters
+    const { id } = req.params;
 
-    // Retrieve StaffSalaryTable by ID within the session
     const salaryTable = await StaffSalaryTable.findById(id).session(session);
 
     if (!salaryTable) {
@@ -38,8 +37,6 @@ const getStaffSalaryDetails = async (req, res) => {
         fullName: staff.fullName,
         phone: staff.phone,
         totalCredit: staffWorkerInfo.totalCredit,
-        // Add other relevant fields from Staff and StaffWorkerInfo models
-        // Add other fields from the salaryTable if needed
       });
     }
 

@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("staffSalary", getStaffSalaryDetails);
 router.get("daySummary", getFifteenDayWorkSummary);
-router.get("/deliveryGuySummary", getDeliveryGuyWorkSummary);
+router.get("/deliveryGuySummary/:tableId", getDeliveryGuyWorkSummary);
 router.get("/deliveryGuySalary", getDeliveryGuySalaryDetails);
 router.get("/", getAllSheetsByBranchId);
 router.post("/", createSheet);

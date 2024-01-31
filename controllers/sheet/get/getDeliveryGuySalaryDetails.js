@@ -8,7 +8,7 @@ const getDeliveryGuySalaryDetails = async (req, res) => {
   session.startTransaction();
 
   try {
-    const { id } = req.params; // Assuming the ID is passed in the request parameters
+    const { id } = req.params;
 
     // Retrieve DeliveryGuySalaryTable by ID within the session
     const salaryTable = await DeliveryGuySalaryTable.findById(id).session(
@@ -37,9 +37,24 @@ const getDeliveryGuySalaryDetails = async (req, res) => {
 
       // Add relevant details to the result array
       result.push({
-        fullName: deliveryGuy.fullName,
-        phone: deliveryGuy.phone,
+        name: deliveryGuy.fullName,
+        uniqueName: deliveryGuy.uniqueName,
+        asbeza: deliveryGuyWork.asbeza,
+        cardCollect: deliveryGuyWork.cardCollect,
+        cardDistribute: deliveryGuyWork.cardDistribute,
+        cardFee: deliveryGuyWork.cardFee,
+        wifiCollect: deliveryGuyWork.wifiCollect,
+        waterDistribute: deliveryGuyWork.waterDistribute,
+        wifiDistribute: deliveryGuyWork.wifiDistribute,
+        waterCollect: deliveryGuyWork.waterCollect,
+        bonus: deliveryGuyWork.bonus,
+        penality: deliveryGuyWork.penality,
+        fixedSalary: deliveryGuyWork.fixedSalary,
+        holidayBonus: deliveryGuyWork.holidayBonus,
+        hotelProfit: deliveryGuyWork.hotelProfit,
         totalCredit: deliveryGuyWork.totalCredit,
+        total: deliveryGuyWork.total,
+        workId: work,
       });
     }
 
