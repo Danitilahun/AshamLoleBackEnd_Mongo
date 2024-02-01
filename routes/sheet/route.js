@@ -7,12 +7,16 @@ const getDeliveryGuySalaryDetails = require("../../controllers/sheet/get/getDeli
 const getDeliveryGuyWorkSummary = require("../../controllers/sheet/get/getDeliveryGuyWorkSummary");
 const getFifteenDayWorkSummary = require("../../controllers/sheet/get/getFifteenDayWorkSummary");
 const getStaffSalaryDetails = require("../../controllers/sheet/get/getStaffSalaryDetails");
+const getLatestFourSheets = require("../../controllers/sheet/getLatestFourSheets");
+const getLatestFourStaffSheets = require("../../controllers/sheet/getLatestFourStaffSheets");
 const router = express.Router();
 
-router.get("staffSalary", getStaffSalaryDetails);
-router.get("daySummary", getFifteenDayWorkSummary);
+router.get("/salary/staffSalary/:id", getStaffSalaryDetails);
+router.get("/salary/deliveryGuySalary/:id", getDeliveryGuySalaryDetails);
+router.get("/daySummary", getFifteenDayWorkSummary);
 router.get("/deliveryGuySummary/:tableId", getDeliveryGuyWorkSummary);
-router.get("/deliveryGuySalary", getDeliveryGuySalaryDetails);
+router.get("/deliveryGuySalary/:branchId", getLatestFourSheets);
+router.get("/staffSalary/:branchId", getLatestFourStaffSheets);
 router.get("/", getAllSheetsByBranchId);
 router.post("/", createSheet);
 router.post("/changeStatus", ChangeSheetStatus);

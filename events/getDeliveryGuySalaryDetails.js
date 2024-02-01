@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const DeliveryGuySalaryTable = require("../../../models/table/salary/DeliveryGuySalaryTable");
-const Deliveryguy = require("../../../models/deliveryguySchema");
-const DeliveryGuyWork = require("../../../models/table/work/deliveryGuyWorkSchema");
+const DeliveryGuySalaryTable = require("../models/table/salary/DeliveryGuySalaryTable");
+const Deliveryguy = require("../models/deliveryguySchema");
+const DeliveryGuyWork = require("../models/table/work/deliveryGuyWorkSchema");
 
 const getDeliveryGuySalaryDetails = async (socket, id) => {
   const session = await mongoose.startSession();
