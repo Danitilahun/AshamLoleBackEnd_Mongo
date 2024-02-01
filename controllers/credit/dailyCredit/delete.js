@@ -37,9 +37,13 @@ const deleteCredit = async (req, res) => {
     const { creditId } = req.params;
 
     // Fetch the existing credit document
-    const existingCredit = await DailyCredit.findById(creditId);
-    const existingExpenseCredit = await DailyExpenseCredit.findById(creditId);
-    const existingGainCredit = await DailyGainCredit.findById(creditId);
+    const existingCredit = await DailyCredit.findByIdAndDelete(creditId);
+    const existingExpenseCredit = await DailyExpenseCredit.findByIdAndDelete(
+      creditId
+    );
+    const existingGainCredit = await DailyGainCredit.findByIdAndDelete(
+      creditId
+    );
 
     if (!existingCredit && !existingExpenseCredit && !existingGainCredit) {
       return res.status(404).json({
@@ -47,16 +51,15 @@ const deleteCredit = async (req, res) => {
       });
     }
 
+    console.log(existingCredit);
     if (existingCredit) {
       await performCommonUpdates(existingCredit, session);
-      await existingCredit.remove();
     } else if (existingExpenseCredit) {
       await performCommonUpdates(existingExpenseCredit, session);
       const branch = await Branch.findById(existingExpenseCredit.branchId);
       if (existingExpenseCredit.type === "cardFee") {
         await CardFee({ ...branch, ...existingExpenseCredit }, session);
       }
-      await existingExpenseCredit.remove();
     } else if (existingGainCredit) {
       const branch = await Branch.findById(existingGainCredit.branchId);
 
@@ -69,7 +72,6 @@ const deleteCredit = async (req, res) => {
       } else if (existingExpenseCredit.type === "hotelProfit") {
         await HotelProfit({ ...branch, ...existingGainCredit }, session);
       }
-      await existingGainCredit.remove();
     }
 
     // Commit the transaction
