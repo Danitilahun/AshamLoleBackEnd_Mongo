@@ -11,7 +11,7 @@ const getDailyCreditsByBranchId = async (req, res) => {
       .limit(limit)
       .sort({ createdAt: -1 });
 
-    res.status(200).json({ dailyCredits });
+    res.status(200).json(dailyCredits);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

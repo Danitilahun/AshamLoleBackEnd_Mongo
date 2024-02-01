@@ -35,11 +35,6 @@ const deleteCredit = async (req, res) => {
 
   try {
     const { creditId } = req.params;
-    if (!creditId) {
-      return res.status(400).json({
-        message: "Credit ID is required for the deletion.",
-      });
-    }
 
     // Fetch the existing credit document
     const existingCredit = await DailyCredit.findById(creditId);
