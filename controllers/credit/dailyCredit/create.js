@@ -16,18 +16,12 @@ const createCredit = async (req, res) => {
 
   try {
     const data = req.body;
-    if (!data || !data.deliveryguyId) {
-      return res.status(400).json({
-        message:
-          "Request body is missing or empty. Please refresh your browser and try again.",
-      });
-    }
-
     // Create a new credit document
     const dailyCredit = new DailyCredit({
       sheetId: data.sheetId,
       amount: parseFloat(data.amount),
       branchId: data.branchId,
+      date: data.date,
       deliveryguyId: data.deliveryguyId,
       deliveryguyName: data.deliveryguyName,
       reason: data.reason,

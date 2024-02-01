@@ -14,13 +14,8 @@ const editCredit = async (req, res) => {
   session.startTransaction();
 
   try {
-    const { creditId, newAmount } = req.body;
-    if (!creditId || newAmount === undefined) {
-      return res.status(400).json({
-        message: "Credit ID and new amount are required for the update.",
-      });
-    }
-
+    const data = req.body;
+    const { creditId } = req.params;
     // Fetch the existing credit document
     const existingCredit = await DailyCredit.findById(creditId);
 
@@ -28,17 +23,11 @@ const editCredit = async (req, res) => {
       return res.status(404).json({ message: "Credit document not found." });
     }
 
-    // Calculate the difference between the new and previous amounts
-    const amountDifference = newAmount - existingCredit.amount;
-
-    // Update the credit document
-    existingCredit.amount = newAmount;
-    await existingCredit.save();
-
+    await DailyCredit.findByIdAndUpdate(creditId, data, { session });
     // Update the delivery guy's document
     await updateDailyCredit(
       existingCredit.deliveryguyId,
-      amountDifference,
+      data.amount - existingCredit.amount,
       session
     );
 
@@ -46,7 +35,7 @@ const editCredit = async (req, res) => {
     await updateCredit(
       existingCredit.branchId,
       "dailyCredit",
-      amountDifference,
+      data.amount - existingCredit.amount,
       session
     );
 

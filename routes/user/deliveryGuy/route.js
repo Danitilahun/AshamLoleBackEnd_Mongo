@@ -10,7 +10,7 @@ const getDeliveryGuysByBranchId = require("../../../controllers/users/deliveryGu
 
 const router = express.Router();
 
-router.get("/deliveryguys/:branchId", getDeliveryGuysByBranchId);
+router.get("/list/:branchId", getDeliveryGuysByBranchId);
 router.get("/", getDeliveryguyById);
 router.post("/", createDeliveryGuy);
 router.post("/complete", completeTask);
