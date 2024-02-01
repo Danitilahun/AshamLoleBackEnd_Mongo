@@ -5,5 +5,4 @@ const router = express.Router();
 
 router.post("/", createDailyTable);
 router.get("/:id", getDailyTableDetails);
-
 module.exports = router;

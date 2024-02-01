@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const customerCreditSchema = new mongoose.Schema(
   {
-    sheetId: {
-      type: String,
-      required: true,
-    },
     address: {
       type: String,
       required: true,
@@ -14,8 +10,12 @@ const customerCreditSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    daysSinceBorrowed: {
+      type: Number,
+      default: 0,
+    },
     borrowedOn: {
-      type: Date,
+      type: String,
       required: true,
     },
     branchId: {
@@ -24,10 +24,6 @@ const customerCreditSchema = new mongoose.Schema(
     },
     date: {
       type: String,
-      required: true,
-    },
-    daysSinceBorrowed: {
-      type: Number,
       required: true,
     },
     name: {

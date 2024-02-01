@@ -46,17 +46,14 @@ const getDailyTableDetails = async (req, res) => {
         wifiCollect: companyWorks.wifiCollect,
         wifiDistribute: companyWorks.wifiDistribute,
         total: companyWorks.total,
-        workId: work,
+        id: work,
       });
     }
 
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({
-      data: result,
-      message: `DailyTable details retrieved successfully.`,
-    });
+    res.status(200).json(result);
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

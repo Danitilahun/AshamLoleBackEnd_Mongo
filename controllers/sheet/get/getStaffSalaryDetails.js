@@ -13,9 +13,7 @@ const getStaffSalaryDetails = async (req, res) => {
     const salaryTable = await StaffSalaryTable.findById(id).session(session);
 
     if (!salaryTable) {
-      return res.status(404).json({
-        message: "StaffSalaryTable not found for the provided ID.",
-      });
+      throw new Error("StaffSalaryTable not found for the provided ID.");
     }
 
     const result = [];
@@ -43,17 +41,15 @@ const getStaffSalaryDetails = async (req, res) => {
         holidayBonus: staffWorkerInfo.holidayBonus,
         totalCredit: staffWorkerInfo.totalCredit,
         total: staffWorkerInfo.total,
-        workId: work,
+        id: work,
       });
     }
 
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({
-      data: result,
-      message: `StaffSalary details retrieved successfully.`,
-    });
+    console.log(result);
+    res.status(200).json(result);
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

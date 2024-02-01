@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get("/salary/staffSalary/:id", getStaffSalaryDetails);
 router.get("/salary/deliveryGuySalary/:id", getDeliveryGuySalaryDetails);
-router.get("/daySummary", getFifteenDayWorkSummary);
+router.get("/daySummary/:tableId", getFifteenDayWorkSummary);
 router.get("/deliveryGuySummary/:tableId", getDeliveryGuyWorkSummary);
 router.get("/deliveryGuySalary/:branchId", getLatestFourSheets);
 router.get("/staffSalary/:branchId", getLatestFourStaffSheets);

@@ -61,7 +61,7 @@ const getDeliveryGuyWorkSummary = async (req, res) => {
         wifiCollect: companyWorks.wifiCollect,
         wifiDistribute: companyWorks.wifiDistribute,
         total: companyWorks.total,
-        workId: work,
+        id: work,
       };
 
       // // Update sumFields for numeric fields
@@ -83,10 +83,7 @@ const getDeliveryGuyWorkSummary = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({
-      data: result,
-      message: `DeliveryGuy work summary retrieved successfully.`,
-    });
+    res.status(200).json(result);
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

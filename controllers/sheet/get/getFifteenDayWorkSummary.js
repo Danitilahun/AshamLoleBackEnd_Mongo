@@ -15,10 +15,9 @@ const getFifteenDayWorkSummary = async (req, res) => {
     );
 
     if (!workSummary) {
-      return res.status(404).json({
-        message:
-          "FifteenDayWorkSummary not found for the provided Branch ID and Sheet ID.",
-      });
+      throw Error(
+        "FifteenDayWorkSummary not found for the provided Branch ID and Sheet ID."
+      );
     }
 
     const result = [];
@@ -26,15 +25,14 @@ const getFifteenDayWorkSummary = async (req, res) => {
     // Iterate over dailyWorkSummary array and fetch additional details
     for (const item of workSummary.dailyWorkSummary) {
       const { day, dailyWork } = item;
-
       // Fetch details from DailyWork model within the session
-      const companyWorks = await CompanyWorks.findOne({ dailyWork }).session(
+      const companyWorks = await CompanyWorks.findById(dailyWork).session(
         session
       );
 
       // Add relevant details to the result array
       result.push({
-        day: day,
+        name: day,
         asbezaNumber: companyWorks.asbezaNumber,
         asbezaProfit: companyWorks.asbezaProfit,
         cardCollect: companyWorks.cardCollect,
@@ -46,17 +44,15 @@ const getFifteenDayWorkSummary = async (req, res) => {
         wifiCollect: companyWorks.wifiCollect,
         wifiDistribute: companyWorks.wifiDistribute,
         total: companyWorks.total,
-        workId: dailyWork,
+        id: dailyWork,
       });
     }
 
+    console.log("d", result);
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({
-      data: result,
-      message: `FifteenDayWorkSummary details retrieved successfully.`,
-    });
+    res.status(200).json(result);
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

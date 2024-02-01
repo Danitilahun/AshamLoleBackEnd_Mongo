@@ -54,17 +54,15 @@ const getDeliveryGuySalaryDetails = async (req, res) => {
         hotelProfit: deliveryGuyWork.hotelProfit,
         totalCredit: deliveryGuyWork.totalCredit,
         total: deliveryGuyWork.total,
-        workId: work,
+        id: work,
       });
     }
 
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({
-      data: result,
-      message: `DeliveryGuySalary details retrieved successfully.`,
-    });
+    console.log(result);
+    res.status(200).json(result);
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
