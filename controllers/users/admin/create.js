@@ -24,6 +24,7 @@ const createAdmin = async (req, res) => {
     data.paid = true;
     data.password = "Asham123!";
     data.staffCredit = 0;
+    data.role = "BranchAdmin";
 
     const newStaff = await createStaff(session, data);
 
