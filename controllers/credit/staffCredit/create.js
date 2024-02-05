@@ -35,16 +35,14 @@ const createStaffCredit = async (req, res) => {
         session
       );
     }
-
+    console.log("employeeTotal", employeeTotal);
     if (employeeTotal < data.amount) {
       return res.status(400).json({
-        message: "Credit amount is greater than the total credit.",
+        error: "Credit amount is greater than the total credit.",
       });
     }
     // Create a new staff credit document in MongoDB
-    data.date = new Date();
     await StaffCredit.create([data], { session });
-
     // Update the total credit using the provided function
 
     await updateCredit(
@@ -58,18 +56,20 @@ const createStaffCredit = async (req, res) => {
       await updateDeliveryGuySalaryTable(
         branch.activeDeliverySalaryTable,
         data.deliveryguyId,
-        "totalCredit",
-        parseFloat(data.amount ? data.amount : 0),
-        -parseFloat(data.amount ? data.amount : 0),
+        {
+          totalCredit: parseFloat(data.amount ? data.amount : 0),
+          total: -parseFloat(data.amount ? data.amount : 0),
+        },
         session
       );
     } else {
       await updateStaffSalaryTableEntry(
         branch.activeStaffSalarySheet,
         data.employeeId,
-        "totalCredit",
-        parseFloat(data.amount ? data.amount : 0),
-        -parseFloat(data.amount ? data.amount : 0),
+        {
+          totalCredit: parseFloat(data.amount ? data.amount : 0),
+          total: -parseFloat(data.amount ? data.amount : 0),
+        },
         session
       );
     }

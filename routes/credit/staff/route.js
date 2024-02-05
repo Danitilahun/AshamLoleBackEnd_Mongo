@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", getStaffCreditsByBranchId);
 router.post("/", createStaffCredit);
-router.put("/:id", editStaffCredit);
-router.delete("/:id", deleteCredit);
+router.put("/:creditId", editStaffCredit);
+router.delete("/:creditId", deleteCredit);
 
 module.exports = router;

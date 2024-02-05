@@ -2,6 +2,7 @@ const { startSession } = require("mongoose");
 const StaffCredit = require("../../../models/credit/staffCreditSchema");
 const updateCredit = require("../../../services/creditRelated/updateCredit");
 const Branch = require("../../../models/branchRelatedSchema/branchSchema");
+const checkTotal = require("../../../services/creditRelated/checkTotal");
 
 const editStaffCredit = async (req, res) => {
   const session = await startSession();
@@ -13,9 +14,7 @@ const editStaffCredit = async (req, res) => {
     // Retrieve previous staff credit document
     const prevCredit = await StaffCredit.findById(creditId).session(session);
     if (!prevCredit) {
-      return res.status(404).json({
-        message: "Staff credit document not found for the given ID.",
-      });
+      throw new Error("StaffCredit not found.");
     }
 
     const amountDifference = data.amount - prevCredit.amount;
@@ -77,7 +76,7 @@ const editStaffCredit = async (req, res) => {
     // Respond with a success message
     res.status(200).json({ message: `StaffCredit Updated successfully.` });
   } catch (error) {
-    console.error(error);
+    console.log(error);
 
     await session.abortTransaction();
     session.endSession();

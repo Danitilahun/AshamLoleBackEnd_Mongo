@@ -24,7 +24,7 @@ const checkTotal = async (
 
     // Get the WorkModel ID from PersonWorkSchema
     const deliveryGuyWorkId = personWork.work;
-
+    console.log("deliveryGuyWorkId", deliveryGuyWorkId);
     // Find the WorkModel using the ID
     const deliveryGuyWork = await WorkModel.findById(deliveryGuyWorkId).session(
       session

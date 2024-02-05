@@ -11,7 +11,7 @@ const getStaffCreditsByBranchId = async (req, res) => {
       .limit(limit)
       .sort({ createdAt: -1 }); // Sorting based on createdAt timestamp, adjust as needed
 
-    res.status(200).json({ staffCredits });
+    res.status(200).json(staffCredits);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
