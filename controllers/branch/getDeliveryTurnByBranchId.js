@@ -10,7 +10,7 @@ async function getDeliveryTurnByBranchId(req, res) {
         .status(404)
         .json({ error: "Delivery turn not found for the specified branch id" });
     }
-    return res.status(200).json(deliveryTurn);
+    return res.status(200).json(deliveryTurn.deliveryGuyTurnQueue);
   } catch (error) {
     // Handle errors, e.g., log or send an error response
     console.error("Error fetching delivery turn:", error);
