@@ -9,6 +9,7 @@ const getFifteenDayWorkSummary = require("../../controllers/sheet/get/getFifteen
 const getStaffSalaryDetails = require("../../controllers/sheet/get/getStaffSalaryDetails");
 const getLatestFourSheets = require("../../controllers/sheet/getLatestFourSheets");
 const getLatestFourStaffSheets = require("../../controllers/sheet/getLatestFourStaffSheets");
+const getTotal = require("../../controllers/sheet/get/getTotal");
 const router = express.Router();
 
 router.get("/salary/staffSalary/:id", getStaffSalaryDetails);
@@ -17,6 +18,7 @@ router.get("/daySummary/:tableId", getFifteenDayWorkSummary);
 router.get("/deliveryGuySummary/:tableId", getDeliveryGuyWorkSummary);
 router.get("/deliveryGuySalary/:branchId", getLatestFourSheets);
 router.get("/staffSalary/:branchId", getLatestFourStaffSheets);
+router.get("/total", getTotal);
 router.get("/", getAllSheetsByBranchId);
 router.post("/", createSheet);
 router.post("/changeStatus", ChangeSheetStatus);

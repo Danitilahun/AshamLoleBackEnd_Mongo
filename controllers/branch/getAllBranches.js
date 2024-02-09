@@ -6,7 +6,7 @@ const getAllBranches = async (req, res) => {
       {
         managerId: null,
       },
-      "name _id activeStaffSalarySheet"
+      "name _id activeStaffSalarySheet activeTable"
     );
 
     // Transform the branches array before sending the response
@@ -14,6 +14,7 @@ const getAllBranches = async (req, res) => {
       id: branch._id,
       name: branch.name,
       active: branch.activeStaffSalarySheet,
+      activeTable: branch.activeTable,
     }));
 
     res.status(200).json(transformedBranches);

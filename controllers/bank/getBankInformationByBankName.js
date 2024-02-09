@@ -2,9 +2,19 @@ const Bank = require("../../models/bankSchema");
 
 const getBankFromBanksByName = async (req, res) => {
   try {
-    const { bankName } = req.params; // Assuming bankName is provided in the request parameters
+    const { bankName, branchId } = req.query;
 
-    const banks = await Bank.find({ bankName });
+    let query = {};
+
+    if (bankName) {
+      query.bankName = bankName;
+    }
+
+    if (branchId) {
+      query.branchId = branchId;
+    }
+
+    const banks = await Bank.find(query);
 
     res.status(200).json({
       success: true,

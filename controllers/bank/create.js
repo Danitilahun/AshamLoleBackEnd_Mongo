@@ -26,7 +26,6 @@ const createBankTransaction = async (req, res) => {
     const amount = req.body.amount;
 
     if (!foundBank) {
-      // If the bankName doesn't exist, add it to the BranchBankTotal
       foundBank = {
         name: req.body.bankName,
         total: 0,
@@ -36,13 +35,13 @@ const createBankTransaction = async (req, res) => {
 
     if (req.body.transactionType === "Withdrawal") {
       foundBank.total -= amount;
-      branchBankTotal.Withdraw += amount;
+      branchBankTotal.withdraw += amount;
     } else if (req.body.transactionType === "Deposit") {
       foundBank.total += amount;
-      branchBankTotal.Deposit += amount;
+      branchBankTotal.deposit += amount;
     }
 
-    branchBankTotal.total = branchBankTotal.Deposit - branchBankTotal.Withdraw;
+    branchBankTotal.total = branchBankTotal.deposit - branchBankTotal.withdraw;
 
     await branchBankTotal.save({ session });
     await session.commitTransaction();

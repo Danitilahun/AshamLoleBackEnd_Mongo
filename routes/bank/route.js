@@ -5,8 +5,8 @@ const getBankFromBanksByName = require("../../controllers/bank/getBankInformatio
 const getBranchBankTotalByBranchId = require("../../controllers/bank/getBranchBankInfo");
 const router = express.Router();
 
-router.get("/branch/:branchId", getBranchBankTotalByBranchId);
-router.get("/:bankName", getBankFromBanksByName);
+router.get("/:branchId", getBranchBankTotalByBranchId);
+router.get("/", getBankFromBanksByName);
 router.post("/", createBankTransaction);
 
 module.exports = router;
