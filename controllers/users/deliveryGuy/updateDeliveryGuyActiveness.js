@@ -7,24 +7,23 @@ const updateDeliveryGuyActiveness = async (req, res) => {
   session.startTransaction();
 
   try {
-    const { activeness, deliveryGuyId, branchId } = req.body;
-
+    const { id: deliveryGuyId } = req.params;
+    const { activeness, branchId } = req.body;
+    console.log(deliveryGuyId, activeness, branchId);
     if (
       activeness === undefined ||
       deliveryGuyId === undefined ||
       branchId === undefined
     ) {
-      return res
-        .status(400)
-        .json({
-          error: "activeness, deliveryGuyId, and branchId are required",
-        });
+      return res.status(400).json({
+        error: "activeness, deliveryGuyId, and branchId are required",
+      });
     }
 
     const updatedDeliveryGuy = await Deliveryguy.findByIdAndUpdate(
       deliveryGuyId,
       { activeness },
-      { new: true, session } // Use the session for the transaction
+      { new: true, session }
     );
 
     if (!updatedDeliveryGuy) {
@@ -43,7 +42,7 @@ const updateDeliveryGuyActiveness = async (req, res) => {
 
     // Find the delivery guy in the queue by ID and remove them
     const indexToRemove = deliveryTurn.deliveryGuyTurnQueue.findIndex(
-      (item) => item.deliveryGuyId.toString() === deliveryGuyId
+      (item) => item.deliveryGuyId === deliveryGuyId
     );
 
     if (indexToRemove !== -1) {
@@ -51,8 +50,11 @@ const updateDeliveryGuyActiveness = async (req, res) => {
     }
 
     if (activeness) {
-      // Add the delivery guy to the end of the queue
-      deliveryTurn.enqueue(deliveryGuyId, updatedDeliveryGuy.fullName);
+      // Push the delivery guy into the end of the queue
+      deliveryTurn.deliveryGuyTurnQueue.push({
+        id: deliveryGuyId,
+        name: updatedDeliveryGuy.fullName,
+      });
     }
 
     await deliveryTurn.save();
@@ -60,16 +62,18 @@ const updateDeliveryGuyActiveness = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    return res.status(200).json(updatedDeliveryGuy);
+    return res.status(200).json({
+      message: "Delivery guy activeness updated successfully",
+      deliveryGuy: updatedDeliveryGuy,
+    });
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
 
-    return res
-      .status(500)
-      .json({
-        error: `Error updating delivery guy activeness: ${error.message}`,
-      });
+    console.error("Error updating delivery guy activeness:", error);
+    return res.status(500).json({
+      error: `Error updating delivery guy activeness: ${error.message}`,
+    });
   }
 };
 
