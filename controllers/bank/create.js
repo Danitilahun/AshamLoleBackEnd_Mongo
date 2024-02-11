@@ -33,7 +33,7 @@ const createBankTransaction = async (req, res) => {
       branchBankTotal.banks.push(foundBank);
     }
 
-    if (req.body.transactionType === "Withdrawal") {
+    if (req.body.transactionType === "Withdraw") {
       foundBank.total -= amount;
       branchBankTotal.withdraw += amount;
     } else if (req.body.transactionType === "Deposit") {

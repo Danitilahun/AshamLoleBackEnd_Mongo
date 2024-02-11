@@ -22,11 +22,9 @@ const bankSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
     },
     placement: {
       type: String,
-      required: true,
     },
     reason: {
       type: String,
@@ -39,7 +37,7 @@ const bankSchema = new mongoose.Schema(
     transactionType: {
       type: String,
       required: true,
-      enum: ["Withdrawal", "Deposit"],
+      enum: ["Withdraw", "Deposit"],
     },
   },
   { strict: true, timestamps: true }
