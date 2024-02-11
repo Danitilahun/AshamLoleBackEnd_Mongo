@@ -2,7 +2,7 @@ const Asbeza = require("../../../models/service/asbezaSchema");
 
 const getAllAsbezaByDateAndBranch = async (req, res) => {
   try {
-    const { date, branchId, page = 1 } = req.query;
+    const { date, branchId, page = 1, fromWhere } = req.query;
     const limit = 10;
 
     // Convert page to a number
@@ -11,13 +11,17 @@ const getAllAsbezaByDateAndBranch = async (req, res) => {
     // Calculate skip value for pagination
     const skip = (pageNumber - 1) * limit;
 
-    // Fetch Asbeza records matching the provided date and branch ID with pagination
-    let asbezaRecords = await Asbeza.find({
+    // Construct query object with date, branchId, and optional fromWhere
+    const query = {
       date: { $eq: date },
       branchId: { $eq: branchId },
-    })
-      .skip(skip)
-      .limit(limit);
+    };
+    if (fromWhere) {
+      query.fromWhere = { $eq: fromWhere };
+    }
+
+    // Fetch Asbeza records matching the provided date, branch ID, and fromWhere with pagination
+    let asbezaRecords = await Asbeza.find(query).skip(skip).limit(limit);
 
     // Add rollNumber field in each asbeza record by incrementing
     asbezaRecords = asbezaRecords.map((asbeza, index) => ({
