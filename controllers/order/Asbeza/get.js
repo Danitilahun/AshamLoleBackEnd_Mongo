@@ -3,7 +3,7 @@ const Asbeza = require("../../../models/service/asbezaSchema");
 const getAllAsbezaByDateAndBranch = async (req, res) => {
   try {
     const { date, branchId, page = 1 } = req.query;
-    const limit = 10; // Default limit value
+    const limit = 10;
 
     // Convert page to a number
     const pageNumber = parseInt(page);
@@ -12,17 +12,21 @@ const getAllAsbezaByDateAndBranch = async (req, res) => {
     const skip = (pageNumber - 1) * limit;
 
     // Fetch Asbeza records matching the provided date and branch ID with pagination
-    const asbezaRecords = await Asbeza.find({
+    let asbezaRecords = await Asbeza.find({
       date: { $eq: date },
       branchId: { $eq: branchId },
     })
       .skip(skip)
-      .limit(limit); // Use default limit
+      .limit(limit);
 
-    res.status(200).json({
-      message: "Asbeza records retrieved successfully",
-      asbezaRecords,
-    });
+    // Add rollNumber field in each asbeza record by incrementing
+    asbezaRecords = asbezaRecords.map((asbeza, index) => ({
+      ...asbeza.toObject(),
+      rollNumber: skip + index + 1,
+    }));
+
+    console.log("Asbeza Records:", asbezaRecords);
+    res.status(200).json(asbezaRecords);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
