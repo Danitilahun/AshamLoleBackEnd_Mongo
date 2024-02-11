@@ -83,6 +83,8 @@ const getTotal = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
+    // console.log("result", result);
+    console.log("sumFields", sumFields);
     res.status(200).json(sumFields);
   } catch (error) {
     await session.abortTransaction();

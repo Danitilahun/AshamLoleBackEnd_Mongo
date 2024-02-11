@@ -18,7 +18,7 @@ router.get("/daySummary/:tableId", getFifteenDayWorkSummary);
 router.get("/deliveryGuySummary/:tableId", getDeliveryGuyWorkSummary);
 router.get("/deliveryGuySalary/:branchId", getLatestFourSheets);
 router.get("/staffSalary/:branchId", getLatestFourStaffSheets);
-router.get("/total", getTotal);
+router.get("/total/:tableId", getTotal);
 router.get("/", getAllSheetsByBranchId);
 router.post("/", createSheet);
 router.post("/changeStatus", ChangeSheetStatus);
