@@ -4,7 +4,7 @@ const editCalculatorNumbersById = require("../../controllers/calculator/update")
 const getCalculatorById = require("../../controllers/calculator/get");
 const router = express.Router();
 
-router.put("/:calculatorId", editCalculatorNumbersById);
 router.get("/:calculatorId", getCalculatorById);
+router.put("/:calculatorId", editCalculatorNumbersById);
 
 module.exports = router;

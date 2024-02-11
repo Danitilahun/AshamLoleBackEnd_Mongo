@@ -4,6 +4,7 @@ const Calculator = require("../../models/calculatorSchema");
 const editCalculatorNumbersById = async (req, res) => {
   try {
     const calculatorId = req.params.calculatorId;
+    const data = req.body;
     const { key, value } = req.body;
 
     const calculator = await Calculator.findById(calculatorId);
@@ -38,9 +39,8 @@ const editCalculatorNumbersById = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Calculator number updated successfully",
-      updatedCalculator: calculator,
-      changedKeyValues: changedData,
+      message: "Calculator updated successfully.",
+      data: changedData,
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

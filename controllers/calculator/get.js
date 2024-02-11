@@ -12,11 +12,7 @@ const getCalculatorById = async (req, res) => {
         .json({ success: false, error: "Calculator not found." });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Calculator retrieved successfully",
-      data: calculator,
-    });
+    res.status(200).json(calculator);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

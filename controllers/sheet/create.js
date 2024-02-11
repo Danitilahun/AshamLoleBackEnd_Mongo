@@ -66,12 +66,13 @@ const createSheet = async (req, res) => {
     newSheet.activeDGSummery = summary15Day._id;
 
     console.log("newSheet", newSheet);
+    console.log("newCalculator", newCalculator);
     const savedSheet = await newSheet.save({ session });
     await updateBranchWithSession(
       data.branchId,
       {
         activeSheet: savedSheet._id,
-        activeCalculator: newCalculator._id,
+        activeCalculator: newCalculator[0]._id,
         activeDailySummery: dailyWorkSummary[0]._id,
         activeDGSummery: summary15Day._id,
         activeDeliverySalaryTable: deliveryGuySalary._id,
