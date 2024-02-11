@@ -1,19 +1,36 @@
-const Wifi = require("../../../models/service/wifiSchema");
+const WiFi = require("../../../models/service/wifiSchema");
 
-const getAllWifiByDate = async (req, res) => {
+const getAllWiFiByDate = async (req, res) => {
   try {
-    const { date } = req.body;
+    const { date } = req.query;
+    const limit = 10;
 
-    // Fetch all Wifi records matching the provided date
-    const wifiRecords = await Wifi.find({ date: { $eq: date } });
+    // Convert page to a number
+    const page = req.query.page || 1;
+    const pageNumber = parseInt(page);
 
-    res.status(200).json({
-      message: "Wifi records retrieved successfully",
-      wifiRecords,
-    });
+    // Calculate skip value for pagination
+    const skip = (pageNumber - 1) * limit;
+
+    // Construct query object with date
+    const query = {
+      date: { $eq: date },
+    };
+
+    // Fetch WiFi records matching the provided date with pagination
+    let wifiRecords = await WiFi.find(query).skip(skip).limit(limit);
+
+    // Add rollNumber field in each WiFi record by incrementing
+    wifiRecords = wifiRecords.map((wifi, index) => ({
+      ...wifi.toObject(),
+      rollNumber: skip + index + 1,
+    }));
+
+    console.log("WiFi Records:", wifiRecords);
+    res.status(200).json(wifiRecords);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = getAllWifiByDate;
+module.exports = getAllWiFiByDate;
