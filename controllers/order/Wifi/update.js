@@ -8,7 +8,7 @@ const editCustomerAndWifi = async (req, res) => {
 
   try {
     const { blockHouse, branchId, branchName, name, phone } = req.body;
-    const wifiId = req.params.wifiId; // Get Wifi ID from URL parameters
+    const { id: wifiId } = req.params; // Get Wifi ID from URL parameters
 
     // Find Customer by orderId (wifiId)
     const customer = await Customer.findOne({ orderId: wifiId }).session(

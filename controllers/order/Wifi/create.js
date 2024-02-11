@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Wifi = require("../../../models/service/wifiSchema");
 const Customer = require("../../../models/customerSchema");
+const shiftDeliveryGuyInAndOutQueue = require("../shiftDeliveryGuyInAndOutQueue");
 
 const createCustomerAndWifi = async (req, res) => {
   const session = await mongoose.startSession();
@@ -24,6 +25,11 @@ const createCustomerAndWifi = async (req, res) => {
 
     await newWifi.save({ session });
     await newCustomer.save({ session });
+    await shiftDeliveryGuyInAndOutQueue(
+      req.body.deliveryguyId,
+      req.body.branchId,
+      session
+    );
 
     await session.commitTransaction();
     session.endSession();

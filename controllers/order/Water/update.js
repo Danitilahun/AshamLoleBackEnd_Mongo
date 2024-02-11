@@ -8,7 +8,7 @@ const editCustomerAndWater = async (req, res) => {
 
   try {
     const { blockHouse, branchId, branchName, name, phone } = req.body;
-    const waterId = req.params.waterId; // Get Water ID from URL parameters
+    const { id: waterId } = req.params;
 
     // Find Customer by orderId (waterId)
     const customer = await Customer.findOne({ orderId: waterId }).session(

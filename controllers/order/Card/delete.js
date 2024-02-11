@@ -7,7 +7,7 @@ const deleteCardAndUpdateCustomer = async (req, res) => {
   session.startTransaction();
 
   try {
-    const cardId = req.params.cardId; // Get Card ID from URL parameters
+    const { id: cardId } = req.params;
 
     // Delete Card
     await Card.findByIdAndDelete(cardId).session(session);

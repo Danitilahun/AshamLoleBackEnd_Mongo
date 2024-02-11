@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Customer = require("../../../models/customerSchema");
 const Water = require("../../../models/service/waterSchema");
+const shiftDeliveryGuyInAndOutQueue = require("../shiftDeliveryGuyInAndOutQueue");
 
 const createCustomerAndWater = async (req, res) => {
   const session = await mongoose.startSession();
@@ -24,6 +25,11 @@ const createCustomerAndWater = async (req, res) => {
 
     await newWater.save({ session });
     await newCustomer.save({ session });
+    await shiftDeliveryGuyInAndOutQueue(
+      req.body.deliveryguyId,
+      req.body.branchId,
+      session
+    );
 
     await session.commitTransaction();
     session.endSession();

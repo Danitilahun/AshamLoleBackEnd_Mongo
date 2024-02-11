@@ -7,7 +7,7 @@ const deleteWifiAndUpdateCustomer = async (req, res) => {
   session.startTransaction();
 
   try {
-    const wifiId = req.params.wifiId; // Get Wifi ID from URL parameters
+    const { id: wifiId } = req.params;
 
     // Delete Wifi
     await Wifi.findByIdAndDelete(wifiId).session(session);

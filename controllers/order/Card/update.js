@@ -8,7 +8,7 @@ const editCustomerAndCard = async (req, res) => {
 
   try {
     const { blockHouse, branchId, branchName, name, phone } = req.body;
-    const cardId = req.params.cardId; // Get Card ID from URL parameters
+    const { id: cardId } = req.params; // Get Card ID from URL parameters
 
     // Find Customer by orderId (cardId)
     const customer = await Customer.findOne({ orderId: cardId }).session(

@@ -7,7 +7,7 @@ const deleteWaterAndUpdateCustomer = async (req, res) => {
   session.startTransaction();
 
   try {
-    const waterId = req.params.waterId; // Get Water ID from URL parameters
+    const { id: waterId } = req.params;
 
     // Delete Water
     await Water.findByIdAndDelete(waterId).session(session);
