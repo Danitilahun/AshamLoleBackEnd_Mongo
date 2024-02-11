@@ -7,7 +7,7 @@ const deleteAsbezaAndUpdateCustomer = async (req, res) => {
   session.startTransaction();
 
   try {
-    const asbezaId = req.params.asbezaId; // Get Asbeza ID from URL parameters
+    const { id: asbezaId } = req.params; // Get Asbeza ID from URL parameters
 
     // Delete Asbeza
     await Asbeza.findByIdAndDelete(asbezaId).session(session);

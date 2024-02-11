@@ -8,16 +8,12 @@ const editCustomerAndAsbeza = async (req, res) => {
 
   try {
     const { blockHouse, branchId, branchName, name, phone } = req.body;
-    const asbezaId = req.params.asbezaId; // Get Asbeza ID from URL parameters
+    const { id: asbezaId } = req.params; // Get Asbeza ID from URL parameters
 
     // Find Customer by orderId (asbezaId)
     const customer = await Customer.findOne({ orderId: asbezaId }).session(
       session
     );
-
-    if (!customer) {
-      throw new Error("Customer not found");
-    }
 
     // Update Asbeza
     const updatedAsbeza = await Asbeza.findByIdAndUpdate(asbezaId, req.body, {
@@ -43,7 +39,7 @@ const editCustomerAndAsbeza = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-
+    console.error("Error:", error.message);
     res.status(500).json({ message: error.message });
   }
 };
