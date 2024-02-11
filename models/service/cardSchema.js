@@ -61,7 +61,7 @@ const cardSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Assigned", "Completed"],
-      required: true,
+      default: "Assigned",
     },
   },
   { strict: true, timestamps: true }

@@ -60,7 +60,8 @@ const wifiSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      required: true,
+      enum: ["Assigned", "Completed"],
+      default: "Assigned",
     },
   },
   { strict: true, timestamps: true }
