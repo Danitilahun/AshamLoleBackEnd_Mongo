@@ -1,19 +1,39 @@
 const Card = require("../../../models/service/cardSchema");
 
-const getAllCardByDate = async (req, res) => {
+const getAllCardByDateAndBranch = async (req, res) => {
   try {
-    const { date } = req.body;
+    const { date, branchId, page = 1, fromWhere } = req.query;
+    const limit = 10;
 
-    // Fetch all Card records matching the provided date
-    const cardRecords = await Card.find({ date: { $eq: date } });
+    // Convert page to a number
+    const pageNumber = parseInt(page);
 
-    res.status(200).json({
-      message: "Card records retrieved successfully",
-      cardRecords,
-    });
+    // Calculate skip value for pagination
+    const skip = (pageNumber - 1) * limit;
+
+    // Construct query object with date, branchId, and optional fromWhere
+    const query = {
+      date: { $eq: date },
+      branchId: { $eq: branchId },
+    };
+    if (fromWhere) {
+      query.fromWhere = { $eq: fromWhere };
+    }
+
+    // Fetch Card records matching the provided date, branch ID, and fromWhere with pagination
+    let cardRecords = await Card.find(query).skip(skip).limit(limit);
+
+    // Add rollNumber field in each card record by incrementing
+    cardRecords = cardRecords.map((card, index) => ({
+      ...card.toObject(),
+      rollNumber: skip + index + 1,
+    }));
+
+    console.log("Card Records:", cardRecords);
+    res.status(200).json(cardRecords);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = getAllCardByDate;
+module.exports = getAllCardByDateAndBranch;
