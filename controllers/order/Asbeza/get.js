@@ -1,20 +1,23 @@
 const Asbeza = require("../../../models/service/asbezaSchema");
 
-const getAllAsbezaByDate = async (req, res) => {
+const getAllAsbezaByDateAndBranch = async (req, res) => {
   try {
-    const { date, page = 1, limit = 10 } = req.query;
+    const { date, branchId, page = 1 } = req.query;
+    const limit = 10; // Default limit value
 
-    // Convert page and limit to numbers
+    // Convert page to a number
     const pageNumber = parseInt(page);
-    const limitNumber = parseInt(limit);
 
     // Calculate skip value for pagination
-    const skip = (pageNumber - 1) * limitNumber;
+    const skip = (pageNumber - 1) * limit;
 
-    // Fetch Asbeza records matching the provided date with pagination
-    const asbezaRecords = await Asbeza.find({ date: { $eq: date } })
+    // Fetch Asbeza records matching the provided date and branch ID with pagination
+    const asbezaRecords = await Asbeza.find({
+      date: { $eq: date },
+      branchId: { $eq: branchId },
+    })
       .skip(skip)
-      .limit(limitNumber);
+      .limit(limit); // Use default limit
 
     res.status(200).json({
       message: "Asbeza records retrieved successfully",
@@ -25,4 +28,4 @@ const getAllAsbezaByDate = async (req, res) => {
   }
 };
 
-module.exports = getAllAsbezaByDate;
+module.exports = getAllAsbezaByDateAndBranch;
