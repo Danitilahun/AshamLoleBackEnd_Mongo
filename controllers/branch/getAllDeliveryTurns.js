@@ -2,13 +2,15 @@ const DeliveryTurn = require("../../models/branchRelatedSchema/deliveryTurnSchem
 
 async function getAllDeliveryTurns(req, res) {
   try {
+    console.log("Fetching all delivery turns");
     const allDeliveryTurns = await DeliveryTurn.find().exec();
-
+    console.log("allDeliveryTurns", allDeliveryTurns);
     // Map delivery turn documents to the desired format
     const formattedDeliveryTurns = allDeliveryTurns.map((turn) => ({
       branchId: turn.branchId,
       deliveryGuyTurnQueue: turn.deliveryGuyTurnQueue,
     }));
+    console.log("formattedDeliveryTurns", formattedDeliveryTurns);
 
     return res.status(200).json(formattedDeliveryTurns);
   } catch (error) {

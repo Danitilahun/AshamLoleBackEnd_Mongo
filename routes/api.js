@@ -21,7 +21,11 @@ const verifyRoles = require("../middlewares/verifyRoles");
 router.use("/dashboard", verifyRoles(process.env.SUPERADMIN), DashboardRoute);
 router.use(
   "/branch",
-  verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
+  verifyRoles(
+    process.env.SUPERADMIN,
+    process.env.ADMIN,
+    process.env.CALLCENTER
+  ),
   BranchRoute
 );
 router.use(
@@ -67,7 +71,11 @@ router.use(
 router.use("/expense", verifyRoles(process.env.FINANCE), ExpenseRoute);
 router.use(
   "/order",
-  verifyRoles(process.env.SUPERADMIN, process.env.ADMIN),
+  verifyRoles(
+    process.env.SUPERADMIN,
+    process.env.ADMIN,
+    process.env.CALLCENTER
+  ),
   OrderRoute
 );
 router.use(

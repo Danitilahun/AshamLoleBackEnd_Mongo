@@ -11,14 +11,17 @@ const {
   getCreditByBranchId,
 } = require("../../controllers/branch/getCreditByBranchId");
 const getCompanyFinancialData = require("../../controllers/branch/getCompanyFinancialData");
+const fetchBranches = require("../../controllers/branch/fetchBranches");
 const router = express.Router();
 
-router.get("/deliveryTurn/:branchId", getDeliveryTurnByBranchId);
-router.get("/:id", getSingleBranch);
-router.get("/credit/:branchId", getCreditByBranchId);
 router.get("/deliveryTurn", getAllDeliveryTurns);
-router.get("/companyData", getCompanyFinancialData);
+router.get("/all", fetchBranches);
+
 router.get("/", getAllBranches);
+router.get("/:id", getSingleBranch);
+router.get("/deliveryTurn/:branchId", getDeliveryTurnByBranchId);
+router.get("/credit/:branchId", getCreditByBranchId);
+router.get("/companyData", getCompanyFinancialData);
 router.post("/", createBranch);
 router.put("/:id", editBranch);
 router.delete("/:id", deleteBranch);
