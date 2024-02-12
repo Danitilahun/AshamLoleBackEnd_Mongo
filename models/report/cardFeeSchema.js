@@ -26,13 +26,16 @@ const cardFeeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    reason: {
-      type: String,
-      required: true,
-    },
     returnCardNumber: {
       type: Number,
       required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    reason: {
+      type: String,
     },
     time: {
       type: String,

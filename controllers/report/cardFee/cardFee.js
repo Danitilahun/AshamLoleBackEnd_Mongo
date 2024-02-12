@@ -17,10 +17,10 @@ const createCardFeeAndDailyCredit = async (req, res) => {
       sheetId,
       amount,
       branchId,
+      date,
       deliveryguyId,
       deliveryguyName,
       numberOfCard,
-      reason,
       returnCardNumber,
       time,
     } = req.body;
@@ -30,10 +30,10 @@ const createCardFeeAndDailyCredit = async (req, res) => {
       sheetId,
       amount,
       branchId,
+      date,
       deliveryguyId,
       deliveryguyName,
       numberOfCard,
-      reason,
       returnCardNumber,
       time,
     });
@@ -44,6 +44,7 @@ const createCardFeeAndDailyCredit = async (req, res) => {
       amount,
       branchId,
       deliveryguyId,
+      date,
       deliveryguyName,
       reason: "cardFee",
       source: "Report",
@@ -55,7 +56,8 @@ const createCardFeeAndDailyCredit = async (req, res) => {
     await dailyCredit.save({ session });
     await updateDailyCredit(deliveryguyId, amount, session);
     const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
-    const cardFeePrice = deliveryGuyGainDoc.card_fee_price;
+
+    const cardFeePrice = deliveryGuyGainDoc?.card_fee_price || 10;
 
     const branch = await Branch.findById(branchId).session(session);
 
@@ -68,6 +70,7 @@ const createCardFeeAndDailyCredit = async (req, res) => {
       },
       session
     );
+
     await updateCredit(branchId, "dailyCredit", amount, session);
 
     // Commit the transaction

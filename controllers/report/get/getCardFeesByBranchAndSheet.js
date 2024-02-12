@@ -24,7 +24,7 @@ const getCardFeesByBranchAndSheet = async (req, res) => {
       .limit(limitNumber)
       .sort({ updatedAt: -1 });
 
-    return res.status(200).json({ cardFees });
+    return res.status(200).json(cardFees);
   } catch (error) {
     console.error("Error in getCardFeesByBranchAndSheet:", error);
     return res.status(500).json({ error: "Internal Server Error" });

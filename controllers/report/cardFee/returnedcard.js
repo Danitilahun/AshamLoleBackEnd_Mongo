@@ -2,18 +2,21 @@ const CardFee = require("../../../models/report/cardFeeSchema");
 
 const recordReturnCard = async (req, res) => {
   try {
-    const { cardFeeId } = req.params;
-    const { numberOfCardReturned, reason } = req.body;
+    const { id: cardFeeId } = req.params;
+    const { returnCardNumber, reason } = req.body;
 
-    if (!cardFeeId || !numberOfCardReturned || !reason) {
-      return res.status(400).json({ error: "Missing required fields" });
+    console.log("cardFeeId:", cardFeeId);
+    console.log("returnCardNumber:", returnCardNumber);
+    console.log("reason:", reason);
+    if (!cardFeeId || !returnCardNumber || !reason) {
+      throw new Error("cardFeeId, returnCardNumber and reason are required");
     }
 
     // Update the numberOfCardReturned and reason fields for the given cardFeeId
     const updatedCardFee = await CardFee.findByIdAndUpdate(
       cardFeeId,
-      { $set: { numberOfCard: numberOfCardReturned, reason: reason } },
-      { new: true } // To return the updated document
+      { $set: { returnCardNumber: returnCardNumber, reason: reason } },
+      { new: true }
     );
 
     if (!updatedCardFee) {

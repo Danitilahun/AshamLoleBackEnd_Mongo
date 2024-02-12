@@ -6,10 +6,10 @@ const {
   DailyGainCredit,
 } = require("../../models/credit/dailyCreditSchema");
 const DeliveryGuyGain = require("../../models/price/deliveryGuyGainSchema");
-const updateCredit = require("../../services/creditRelated/updateCredit");
-const updateTotalDeliveryGuySalary = require("../../services/reportRelated/updateTotalDeliveryGuySalary");
-const updateField = require("../../services/reportRelated/updateField");
 const updateDailyCredit = require("../../services/reportRelated/updateDailyCredit");
+const Branch = require("../../models/branchRelatedSchema/branchSchema");
+const updateDeliveryGuySalaryTable = require("../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
+const updateCredit = require("../../services/creditRelated/updateCredit");
 
 const createWaterDistributeAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
@@ -18,7 +18,7 @@ const createWaterDistributeAndDailyCredit = async (req, res) => {
   try {
     const data = req.body;
     const companyGainDoc = await CompanyGain.findOne();
-    const waterDistributeGain = companyGainDoc.water_distribute_gain;
+    const waterDistributeGain = companyGainDoc?.water_distribute_gain || 25;
     data.gain = data.numberOfCard * waterDistributeGain;
     data.total = data.amount + data.gain;
 
@@ -30,6 +30,7 @@ const createWaterDistributeAndDailyCredit = async (req, res) => {
       sheetId: data.sheetId,
       amount: data.amount,
       branchId: data.branchId,
+      date: data.date,
       deliveryguyId: data.deliveryguyId,
       deliveryguyName: data.deliveryguyName,
       reason: "waterDistribute",
@@ -41,6 +42,7 @@ const createWaterDistributeAndDailyCredit = async (req, res) => {
       sheetId: data.sheetId,
       amount: data.gain,
       branchId: data.branchId,
+      date: data.date,
       deliveryguyId: data.deliveryguyId,
       deliveryguyName: data.deliveryguyName,
       reason: "waterDistribute",
@@ -56,13 +58,21 @@ const createWaterDistributeAndDailyCredit = async (req, res) => {
     // Update various fields and documents
     await updateCredit(data.branchId, "dailyCredit", data.amount, session);
     const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
-    const waterDistributePrice = deliveryGuyGainDoc.water_distribute_price;
-    await updateTotalDeliveryGuySalary(
-      data.branchId,
-      waterDistributePrice,
+    const waterDistributePrice =
+      deliveryGuyGainDoc?.water_distribute_price || 15;
+
+    const branch = await Branch.findById(data.branchId).session(session);
+
+    await updateDeliveryGuySalaryTable(
+      branch.activeDeliverySalaryTable,
+      data.deliveryguyId,
+      {
+        waterDistribute: waterDistributePrice,
+        total: waterDistributePrice,
+      },
       session
     );
-    await updateField(data.branchId, "waterDistribute", data.amount, session);
+    // await updateField(data.branchId, "waterDistribute", data.amount, session);
     await updateDailyCredit(data.deliveryguyId, data.amount, session);
 
     // Commit the transaction

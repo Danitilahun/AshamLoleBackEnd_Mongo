@@ -30,10 +30,6 @@ const cardDistributeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    reason: {
-      type: String,
-      required: true,
-    },
     time: {
       type: String,
       required: true,

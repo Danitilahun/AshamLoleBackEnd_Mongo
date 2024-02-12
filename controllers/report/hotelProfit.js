@@ -18,6 +18,7 @@ const createHotelProfitAndDailyCredit = async (req, res) => {
       sheetId: data.sheetId,
       amount: data.amount,
       branchId: data.branchId,
+      date: data.date,
       deliveryguyId: data.deliveryguyId,
       deliveryguyName: data.deliveryguyName,
       reason: "hotelProfit",

@@ -8,8 +8,10 @@ const {
 const DeliveryGuyGain = require("../../models/price/deliveryGuyGainSchema");
 const updateCredit = require("../../services/creditRelated/updateCredit");
 const updateTotalDeliveryGuySalary = require("../../services/reportRelated/updateTotalDeliveryGuySalary");
-const updateField = require("../../services/reportRelated/updateField");
+// const updateField = require("../../services/reportRelated/updateField");
 const updateDailyCredit = require("../../services/reportRelated/updateDailyCredit");
+const Branch = require("../../models/branchRelatedSchema/branchSchema");
+const updateDeliveryGuySalaryTable = require("../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
 
 const createWifiDistributeAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
@@ -18,7 +20,7 @@ const createWifiDistributeAndDailyCredit = async (req, res) => {
   try {
     const data = req.body;
     const companyGainDoc = await CompanyGain.findOne();
-    const wifiDistributeGain = companyGainDoc.wifi_distribute_gain;
+    const wifiDistributeGain = companyGainDoc?.wifi_distribute_gain || 30;
     data.gain = data.numberOfCard * wifiDistributeGain;
     data.total = data.amount + data.gain;
 
@@ -30,6 +32,7 @@ const createWifiDistributeAndDailyCredit = async (req, res) => {
       sheetId: data.sheetId,
       amount: data.amount,
       branchId: data.branchId,
+      date: data.date,
       deliveryguyId: data.deliveryguyId,
       deliveryguyName: data.deliveryguyName,
       reason: "wifiDistribute",
@@ -41,6 +44,7 @@ const createWifiDistributeAndDailyCredit = async (req, res) => {
       sheetId: data.sheetId,
       amount: data.gain,
       branchId: data.branchId,
+      date: data.date,
       deliveryguyId: data.deliveryguyId,
       deliveryguyName: data.deliveryguyName,
       reason: "wifiDistribute",
@@ -56,13 +60,19 @@ const createWifiDistributeAndDailyCredit = async (req, res) => {
     // Update various fields and documents
     await updateCredit(data.branchId, "dailyCredit", data.amount, session);
     const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
-    const wifiDistributePrice = deliveryGuyGainDoc.wifi_distribute_price;
-    await updateTotalDeliveryGuySalary(
-      data.branchId,
-      wifiDistributePrice,
+    const wifiDistributePrice = deliveryGuyGainDoc?.wifi_distribute_price || 20;
+
+    const branch = await Branch.findById(data.branchId).session(session);
+    await updateDeliveryGuySalaryTable(
+      branch.activeDeliverySalaryTable,
+      data.deliveryguyId,
+      {
+        wifiDistribute: wifiDistributePrice,
+        total: wifiDistributePrice,
+      },
       session
     );
-    await updateField(data.branchId, "wifiDistribute", data.amount, session);
+    // await updateField(data.branchId, "wifiDistribute", data.amount, session);
     await updateDailyCredit(data.deliveryguyId, data.amount, session);
 
     // Commit the transaction

@@ -24,6 +24,7 @@ const getHotelProfitByBranchAndSheet = async (req, res) => {
       .limit(limitNumber)
       .sort({ updatedAt: -1 });
 
+    console.log("hotelProfitData", hotelProfitData);
     return res.json(hotelProfitData);
   } catch (error) {
     console.error("Error in fetching HotelProfit:", error);

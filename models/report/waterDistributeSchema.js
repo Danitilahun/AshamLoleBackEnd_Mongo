@@ -31,10 +31,6 @@ const WaterDistributeSchema = new Schema(
       type: Number,
       required: true,
     },
-    reason: {
-      type: String,
-      required: true,
-    },
     time: {
       type: String,
       required: true,
