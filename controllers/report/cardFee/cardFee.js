@@ -1,19 +1,17 @@
 const mongoose = require("mongoose");
-
 const DeliveryGuyGain = require("../../../models/price/deliveryGuyGainSchema");
 const updateDailyCredit = require("../../../services/reportRelated/updateDailyCredit");
-const updateTotalDeliveryGuySalary = require("../../../services/reportRelated/updateTotalDeliveryGuySalary");
-const updateField = require("../../../services/reportRelated/updateField");
 const {
   DailyExpenseCredit,
 } = require("../../../models/credit/dailyCreditSchema");
 const CardFee = require("../../../models/report/cardFeeSchema");
 const updateCredit = require("../../../services/creditRelated/updateCredit");
+const updateDeliveryGuySalaryTable = require("../../../services/sheetRelated/update/updateDeliveryGuySalaryTable");
+const Branch = require("../../../models/branchRelatedSchema/branchSchema");
 
 const createCardFeeAndDailyCredit = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
-
   try {
     const {
       sheetId,
@@ -56,10 +54,20 @@ const createCardFeeAndDailyCredit = async (req, res) => {
     await cardFee.save({ session });
     await dailyCredit.save({ session });
     await updateDailyCredit(deliveryguyId, amount, session);
-    await updateField(branchId, "cardFee", amount, session);
     const deliveryGuyGainDoc = await DeliveryGuyGain.findOne().session(session);
     const cardFeePrice = deliveryGuyGainDoc.card_fee_price;
-    await updateTotalDeliveryGuySalary(branchId, cardFeePrice, session);
+
+    const branch = await Branch.findById(branchId).session(session);
+
+    await updateDeliveryGuySalaryTable(
+      branch.activeDeliverySalaryTable,
+      deliveryguyId,
+      {
+        cardFee: cardFeePrice,
+        total: cardFeePrice,
+      },
+      session
+    );
     await updateCredit(branchId, "dailyCredit", amount, session);
 
     // Commit the transaction

@@ -7,9 +7,7 @@ const router = express.Router();
 
 router.get("/search", searchCardFees);
 router.get("/", getCardFeesByBranchAndSheet);
-
 router.post("/", createCardFeeAndDailyCredit);
-
 router.put("/:id", recordReturnCard);
 
 module.exports = router;
