@@ -4,7 +4,10 @@ const getAllCardByDateAndBranch = async (req, res) => {
   try {
     const { date, branchId, page = 1, fromWhere } = req.query;
     const limit = 10;
-
+    console.log("Date:", date);
+    console.log("Branch ID:", branchId);
+    console.log("Page:", page);
+    console.log("From Where:", fromWhere);
     // Convert page to a number
     const pageNumber = parseInt(page);
 

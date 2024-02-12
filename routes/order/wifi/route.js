@@ -1,11 +1,11 @@
 const express = require("express");
 const createCustomerAndWifi = require("../../../controllers/order/Wifi/create");
 const editCustomerAndWifi = require("../../../controllers/order/Wifi/update");
-const getAllWifiByDate = require("../../../controllers/order/Wifi/get");
+const getAllWifiByDateAndBranch = require("../../../controllers/order/Wifi/get");
 const deleteWifiAndUpdateCustomer = require("../../../controllers/order/Wifi/delete");
 const router = express.Router();
 
-router.get("/", getAllWifiByDate);
+router.get("/", getAllWifiByDateAndBranch);
 
 router.post("/", createCustomerAndWifi);
 

@@ -9,7 +9,7 @@ const createCustomerAndWifi = async (req, res) => {
 
   try {
     const { blockHouse, branchId, branchName, name, phone } = req.body;
-
+    console.log("req.body", req.body);
     const newWifi = new Wifi(req.body);
 
     const newCustomer = new Customer({

@@ -58,6 +58,10 @@ const cardSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    fromWhere: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       enum: ["Assigned", "Completed"],

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Card = require("../../../models/service/cardSchema");
 const Customer = require("../../../models/customerSchema");
+const CompanyGain = require("../../../models/price/companyGainSchema");
 
 const editCustomerAndCard = async (req, res) => {
   const session = await mongoose.startSession();
@@ -19,8 +20,13 @@ const editCustomerAndCard = async (req, res) => {
       throw new Error("Customer not found");
     }
 
+    const companyGainDoc = await CompanyGain.findOne();
+    const cardPrice = companyGainDoc?.card_price || 20;
+    const data = req.body;
+    data.dayRemain = data.amountBirr / cardPrice;
+    data.remaingMoney = data.amountBirr;
     // Update Card
-    const updatedCard = await Card.findByIdAndUpdate(cardId, req.body, {
+    const updatedCard = await Card.findByIdAndUpdate(cardId, data, {
       new: true,
       session,
     });

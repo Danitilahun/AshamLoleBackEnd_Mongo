@@ -9,7 +9,7 @@ const editCustomerAndWifi = async (req, res) => {
   try {
     const { blockHouse, branchId, branchName, name, phone } = req.body;
     const { id: wifiId } = req.params; // Get Wifi ID from URL parameters
-
+    console.log("req.body", req.body);
     // Find Customer by orderId (wifiId)
     const customer = await Customer.findOne({ orderId: wifiId }).session(
       session
@@ -43,6 +43,7 @@ const editCustomerAndWifi = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log("Error in editCustomerAndWifi:", error);
 
     res.status(500).json({ message: error.message });
   }

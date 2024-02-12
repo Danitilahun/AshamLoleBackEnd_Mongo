@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Card = require("../../../models/service/cardSchema");
 const Customer = require("../../../models/customerSchema");
 const shiftDeliveryGuyInAndOutQueue = require("../shiftDeliveryGuyInAndOutQueue");
+const CompanyGain = require("../../../models/price/companyGainSchema");
 
 const createCustomerAndCard = async (req, res) => {
   const session = await mongoose.startSession();
@@ -9,8 +10,12 @@ const createCustomerAndCard = async (req, res) => {
 
   try {
     const { blockHouse, branchId, branchName, name, phone } = req.body;
-
-    const newCard = new Card(req.body);
+    const companyGainDoc = await CompanyGain.findOne();
+    const cardPrice = companyGainDoc?.card_price || 20;
+    const data = req.body;
+    data.dayRemain = data.amountBirr / cardPrice;
+    data.remaingMoney = data.amountBirr;
+    const newCard = new Card(data);
 
     const newCustomer = new Customer({
       Card: "YES",
