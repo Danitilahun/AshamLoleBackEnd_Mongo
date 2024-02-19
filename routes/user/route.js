@@ -10,12 +10,16 @@ const staffRoute = require("./staff/route");
 const verifyRoles = require("../../middlewares/verifyRoles");
 const checkDuplicateEmail = require("../../middlewares/checkDuplicateEmail");
 const getEmployeesByBranchId = require("../../controllers/users/getEmployeesByBranchId");
+const {
+  getAllAshamstaff,
+} = require("../../controllers/users/getAllAshamstaff");
 
 router.get(
   "/employees/:branchId",
-  verifyRoles(process.env.ADMIN),
+  verifyRoles(process.env.FINANCE),
   getEmployeesByBranchId
 );
+router.get("/ashamStaff/", verifyRoles(process.env.ADMIN), getAllAshamstaff);
 router.use("/deliveryGuy", verifyRoles(process.env.ADMIN), deliveryGuyRoute);
 router.use("/admin", verifyRoles(process.env.SUPERADMIN), adminRoute);
 router.use("/callCenter", verifyRoles(process.env.SUPERADMIN), callCenterRoute);
