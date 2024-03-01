@@ -18,7 +18,6 @@ const deleteCredit = async (req, res) => {
       });
     }
 
-    // Update the total credit by reducing the amount (send negative of the credit amount)
     const negativeAmount = -parseFloat(creditToDelete.amount || 0);
 
     await updateCredit(
