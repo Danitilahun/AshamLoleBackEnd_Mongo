@@ -13,9 +13,8 @@ const deleteBranch = async (req, res) => {
   try {
     await session.withTransaction(async () => {
       const io = getIoInstance();
-      const branchId = req.params.id; // Get branch ID from request params
+      const branchId = req.params.id;
 
-      // Delete branch-related documents based on branch ID
       await Promise.all([
         BranchBankTotal.deleteOne({ branchId }, { session }),
         BranchSheetSummary.deleteOne({ branchId }, { session }),
@@ -23,7 +22,6 @@ const deleteBranch = async (req, res) => {
         DeliveryTurn.deleteOne({ branchId }, { session }),
       ]);
 
-      // Delete the branch
       await Branch.findByIdAndDelete(branchId).session(session);
 
       io.emit("branchDeleted", branchId);
