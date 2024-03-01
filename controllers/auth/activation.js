@@ -44,7 +44,6 @@ const activationController = async (req, res, next) => {
       res.status(400).json({ error: "User does not exist" });
     }
 
-    // Update the activated field to true
     user.activated = true;
     await user.save({ session });
 
