@@ -21,7 +21,6 @@ const createCredit = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    // Respond with a success message
     res.status(200).json({
       message: `CustomerCredit Created successfully.`,
       data: newCredit,

@@ -7,9 +7,8 @@ const deleteCredit = async (req, res) => {
   session.startTransaction();
 
   try {
-    const { creditId } = req.params; // Assuming creditId is passed in the request parameters
+    const { creditId } = req.params;
 
-    // Retrieve credit document to get the amount
     const creditToDelete = await CustomerCredit.findById(creditId).session(
       session
     );
