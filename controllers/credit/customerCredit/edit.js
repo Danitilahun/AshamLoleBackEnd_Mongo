@@ -13,9 +13,7 @@ const editCredit = async (req, res) => {
     // Retrieve previous credit document
     const prevCredit = await CustomerCredit.findById(creditId).session(session);
     if (!prevCredit) {
-      return res.status(404).json({
-        message: "Credit document not found for the given ID.",
-      });
+      throw new Error("Credit document not found for the given ID.");
     }
 
     // Update the credit document in MongoDB
