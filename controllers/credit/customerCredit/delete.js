@@ -13,9 +13,7 @@ const deleteCredit = async (req, res) => {
       session
     );
     if (!creditToDelete) {
-      return res.status(404).json({
-        message: "Credit document not found for the given ID.",
-      });
+      throw new Error("Credit document not found for the given ID.");
     }
 
     const negativeAmount = -parseFloat(creditToDelete.amount || 0);
